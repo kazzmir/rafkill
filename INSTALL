@@ -1,0 +1,100 @@
+Rafkill
+
+* Installation:
+
+If you just want to build rafkill immediately and play it, run the 
+build-rafkill.sh script:
+
+	$ ./build-rafkill.sh
+	OR
+	$ sh build-rafkill.sh
+
+If you want to have finer control over the build process read the following:
+
+Rafkill uses scons( http://www.scons.org ) to build. The makefile just calls scons.
+
+$ scons
+OR
+$ make
+
+$ scons install
+OR
+$ make install
+
+You can specify two parameters to the build system which determine where files end up upon installation. You can only do this with scons, not make.
+	prefix=/some/path
+	bin=/some/path/bin
+
+Prefix is the root directory where the data files will end up. Example:
+	$ scons prefix=/home/myuser/games
+	$ scons install
+	$ ls /home/myuser/games
+	rafkill/
+
+Prefix defaults to /usr/local/games. 
+
+*NOTE*: If you dont want to install rafkill anywhere and just run it from the 
+directory where the source is then set prefix to some arbitrary directory name:
+	$ mkdir x
+	$ scons prefix=x
+	$ scons install
+	$ ./rafkill
+
+Also unless you use '.' for prefix you should always use absolute paths, not relative ones.
+	$ scons prefix=/usr/stuff/games  ## Right!
+	$ scons prefix=../../games       ## Wrong!
+
+In truth, relative directories will work as long as you run it from the same directory you ran
+'scons install' from. This will not work as soon as you change directories, though.
+	$ scons prefix=../../games
+	$ scons install
+	$ rafkill       ## ok, we are still in the same directory
+	$ cd ..         ## go somewhere else
+	$ rafkill       ## wont work
+
+You could use a relative directory and wrap rafkill in a shell script that cd's to the proper
+directory. The choice is yours. Well heres an example shell script to do that anyway:
+	## assuming rafkill was built with 'prefix=./games' at /home/myuser/tmp
+	## then /home/myuser/tmp/games/rafkill was moved to /home/myuser/local/games
+	#!/bin/sh
+	RAFKILL_DIR=/home/myuser/local/games
+	cd $RAFKILL_DIR/..
+	$RAFKILL_DIR/rafkill/rafkill
+
+Bin is the directory where a symbolic link to the rafkill binary will end up. The entire
+rafkill distrobution will be in $prefix/rafkill including the binary and a symlink is made from
+$prefix/rafkill/rafkill to $bin/rafkill. Example:
+	$ scons prefix=/home/myuser/games bin=/home/myuser/bin
+	$ scons install
+	$ ls -l /home/myuser/bin
+	rafkill -> /home/myuser/games/rafkill/rafkill
+
+Bin defaults to /usr/local/bin
+
+* Cleanup:
+
+$ scons -c
+OR
+$ make clean
+
+If you installed rafkill somewhere then the entire package will be in that directory. Therefore
+if you want to erase rafkill from your system all you have to do is erase that directory. You 
+should probably also remove the symlink in the bin directory, but it wont kill you to leave that there. Example:
+	$ scons prefix=/home/myuser/games bin=/home/myuser/bin   ## Build rafkill
+	$ scons install                ## Install it
+	$ /home/myuser/bin/rafkill     ## Play the game
+	## Man, rafkill sucks!
+	$ rm -rf /home/myuser/games/rafkill  ## Erase rafkill
+	$ unlink /home/myuser/bin/rafkill    ## Remove symlink
+
+* Requirements:
+
+Allegro library - minimum 4.0.0
+Get it at http://alleg.sourceforge.net
+
+DUMB music library - minimum 0.9.1
+Get it at http://dumb.sourceforge.net
+
+PThreads
+Most unix's already have this
+For windows get it at http://sources.redhat.com/pthreads-win32

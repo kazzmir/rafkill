@@ -1,0 +1,78 @@
+Raptor 1.2.0 to Rafkill 1.2.1
+
+* Name change for real
+* Changed title screen background
+* Removed auto-cheat where player gains 100000 money when joining menu
+* Made collision detection fit to entire playing field
+* Added fade out at end of level( very cpu intensive! )
+* Fixed some memory leaks/segfaults
+* Music plays in seperate thread
+* Changed default font
+* Some internal plumbing revamped
+
+Raptor 1.1.0 to Raptor 1.2.0
+
+* OOP code revamped
+* Fixed a few memory leaks
+* Lets the compiler allocate more objects instead of dynamically
+* Save/Load functionality added
+* A few sounds added/changed
+
+Raptor 1.0.0 to Raptor 1.1.0
+
+* Shadows are translucent instead of black
+* Music added to buy menu
+* Fatal bug fixed
+* EBox updated
+
+Raptor 0.9.9 to Raptor 1.0.0
+
+* Shadows added
+* Music added
+* Sound quality improved
+* Explosions dont flicker anymore
+* Screen is larger than 640, now can scroll side to side
+* More guns added
+* Beam weapon redesigned( now the coolest weapon there is )
+* Some code optimized
+* Enemies exist in groups rather than unique entities
+* Meteors added
+* Levels randomly generated, infinite levels!
+* Death scene redesigned
+* 5 Levels of difficulty
+* Cheat key taken out( sorry! :( )
+* Uses srand on all systems instead of srandom on *NIX
+
+Raptor 0.9.0 to Raptor 0.9.9
+
+* 16 bit graphics instead of 8 bit
+* Intro menu
+* Buy menu redesigned
+* Some graphics pre-rendered using Blender( Thanks Elton! )
+* 14 new levels created
+* No more fading to white at end 
+* Accessory weapons added
+* Player is easier to control
+* Makefile improved
+* EBox invented. Now has 99% pixel perfect collision detection.
+* Bug fixes, game crashes less often.
+* Data moved to /data directory
+* 2 new hulls added
+
+Raptor 0.6.0 to Raptor 0.9.0
+
+* Source heavily restructured - More use of OOP
+* Source moved to ./src directory
+* 2 Levels made
+
+Raptor 0.5.2 to Raptor 0.6.0
+
+* Game structured to run at 25 FPS. 
+
+Raptor 0.3.1 to Raptor 0.5.2
+
+* Hand drawn sprites used for enemies instead of cirlcles and triangles
+* Player now has some inertia that they must deal with
+* Buy menu added
+* 3 gun slots
+* Lots of bug fixes

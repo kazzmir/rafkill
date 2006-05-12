@@ -1,0 +1,53 @@
+Rafkill
+
+INSTALL: Read INSTALL
+
+Game is built to run at 25 fps, but if you need more, look at the following parameters.
+
+Command line parameters:
+
+	-h, -help, --help	:	Show the help screen listing the parameters
+	-l			:	Run game without showing background.
+	-w			:	Run game in windowed mode.
+	-g#			:	Run game at # speed. 40 is normal.
+
+	If the game runs to slowly for you, try using a combination of -l -g#. 
+
+	In the game you can change whether to show a background and the speed of the game.
+Getting rid of the background should significantly increase the fps if less than desired rate.
+Changing the speed of the game to much may cuase the game to crash, so please be wary. 
+
+HOW TO PLAY:
+
+Rafkill is a standard shootem-up like Raptor: Call of the Shadows and Tyrian.
+
+You will have a bird's eye view of the playing field, which is on an alien
+world as you will be able to tell from the wierdo background I made up. Enemies
+will "fly" towards you shooting bullets at you that you should probably dodge.
+Your job is to shoot the enemies! How simple! 
+
+Killing enemies gives you money( score ). If you kill a group of enemies, 
+which you can kind of tell becuase they move in the same pattern and are
+close to each other, you might get a handy coin which gives you more score!
+There are other powerups, so look for them too. The score lets you buy more
+weapons and hull parts. There are 5 weapon groups and a few weapons in each
+group, but you can only have one weapon per group except for the accessory 
+weapons in which you can have *3* weapons only. Once you buy 3, you cant buy
+any more. In this version, there are only 4 weapons so its not a big deal 
+anyway. There are 3 hulls, which have higher life and shield than the last
+and can buy a new set of weapons. Buying a new hull doesnt throw away your
+weapons, but it does throw away your accessory weapons. 
+
+KEYS:
+
+UP - Up arrow, Key pad 8, or W
+DOWN - Down arrow, Key pad 2, X, or S
+LEFT - Left arrow, Key pad 4, or A
+RIGHT - Right arrow, Key pad 6, or D
+SHOOT - SpaceBar, Enter, Keypad Enter
+SWITCH ALTERNATE WEAPONS - Alt key
+
+Enjoy the game!!
+
+I love feedback, and money, so if you have either send them to me!
+email: workmin@ccs.neu.edu
