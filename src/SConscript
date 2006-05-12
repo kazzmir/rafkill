@@ -1,0 +1,173 @@
+Import( 'env' );
+
+# vector.cpp
+
+sources = Split("""
+animation.cpp
+bitmap.cpp
+booster.cpp
+defs.cpp
+drawer.cpp
+ebox.cpp
+explode.cpp
+explode_animate.cpp
+fader.cpp
+font.cpp
+group.cpp
+gunobj.cpp
+hull.cpp
+init.cpp
+keyboard.cpp
+level.cpp
+loadsave.cpp
+loading_screen.cpp
+logic.cpp
+main.cpp
+menu.cpp
+move.cpp
+move_find.cpp
+music.cpp
+pck.cpp
+playerobj.cpp
+raptor.cpp
+rfield.cpp
+rfont.cpp
+rgbhandle.cpp
+rmenu.cpp
+rmenu_animation.cpp
+section.cpp
+shipobj.cpp
+spaceobj.cpp
+strings.cpp
+timedifference.cpp
+trigger.cpp
+trigtable.cpp
+weaponobj.cpp
+""");
+
+sources.extend(map(lambda x: 'weapons/' + x, Split("""
+weapon_angle.cpp
+weapon_beam.cpp
+weapon_bounce.cpp
+weapon_chain.cpp
+weapon_damage.cpp
+weapon_emissle.cpp
+weapon_follow.cpp
+weapon_laser.cpp
+weapon_massive.cpp
+weapon_only_damage.cpp
+weapon_pulse.cpp
+weapon_rocket.cpp
+weapon_rotate.cpp
+weapon_shatter.cpp
+weapon_stick.cpp
+weapon_yehat.cpp
+""")));
+
+sources.extend(map(lambda x: 'guns/' + x, Split("""
+gun_angle.cpp
+gun_arc.cpp
+gun_beam.cpp
+gun_chain.cpp
+gun_destruct.cpp
+gun_ecork.cpp
+gun_edfstraight.cpp
+gun_ednstraight.cpp
+gun_eflarge.cpp
+gun_efmsingle.cpp
+gun_efsingle.cpp
+gun_elarge.cpp
+gun_emissle.cpp
+gun_emlight.cpp
+gun_eside.cpp
+gun_estraight.cpp
+gun_etwirl.cpp
+gun_etwirl_find.cpp
+gun_etwirl_machine.cpp
+gun_findgun.cpp
+gun_fire.cpp
+gun_follow.cpp
+gun_laser.cpp
+gun_machine.cpp
+gun_machine_circle.cpp
+gun_massive.cpp
+gun_minimissle.cpp
+gun_missle.cpp
+gun_pulse.cpp
+gun_rotate.cpp
+gun_saber.cpp
+gun_shatter.cpp
+gun_spread.cpp
+gun_stick.cpp
+gun_swirl.cpp
+gun_tractor_beam.cpp
+gun_yehat.cpp
+""")));
+
+sources.extend(map(lambda x: 'hulls/' + x, Split("""
+hull_animation.cpp
+hull_meteor.cpp
+hull_num_show.cpp
+hull_player.cpp
+hull_protect.cpp
+hull_rotate.cpp
+hull_ship_destruct.cpp
+hull_ship_shield.cpp
+hull_weapon.cpp
+hull_weapon_angle.cpp
+hull_weapon_arc.cpp
+hull_weapon_beam.cpp
+hull_weapon_bomb.cpp
+hull_weapon_chain.cpp
+hull_weapon_cork.cpp
+hull_weapon_dissipate.cpp
+hull_weapon_emissle.cpp
+hull_weapon_explode.cpp
+hull_weapon_fire.cpp
+hull_weapon_firetrail.cpp
+hull_weapon_follow.cpp
+hull_weapon_laser.cpp
+hull_weapon_light.cpp
+hull_weapon_machine.cpp
+hull_weapon_massive.cpp
+hull_weapon_mini.cpp
+hull_weapon_pulse_large.cpp
+hull_weapon_pulse_nova.cpp
+hull_weapon_pulse_small.cpp
+hull_weapon_rocket_heavy.cpp
+hull_weapon_rocket_normal.cpp
+hull_weapon_rotate.cpp
+hull_weapon_s_l.cpp
+hull_weapon_s_s.cpp
+hull_weapon_saber.cpp
+hull_weapon_shatter.cpp
+hull_weapon_spread.cpp
+hull_weapon_tractor_beam.cpp
+hull_weapon_twirl.cpp
+hull_weapon_yehat.cpp
+""")));
+
+import re
+headers = map( lambda x: re.compile( 'cpp' ).sub( 'h', x ), sources )
+headers.extend( [ 'fonts.h', 'sound.h', 'wormhole.h' ] )
+
+import os
+packageEnv = Environment( ENV = os.environ )
+
+#packageEnv.Execute( Delete( 'src' ) )
+#packageEnv.Execute( Mkdir( 'src' ) )
+#packageEnv.Execute( Mkdir( 'src/weapons' ) )
+#packageEnv.Execute( Mkdir( 'src/hulls' ) )
+#packageEnv.Execute( Mkdir( 'src/guns' ) )
+packageEnv.Append( TARFLAGS = [ '-h' ] )
+packageEnv.Tar( 'source.tar', sources + headers )
+packageEnv.Tar( 'source.tar', 'SConscript' )
+# packageEnv.Tar( 'source.tar', sources + headers )
+#for i in (sources+headers):
+#	packageEnv.Execute( Copy( 'src/' + i, i ) )
+# Execute( Copy( sources + headers, 'src' ) )
+#packageEnv.Tar( 'source.tar', 'src' )
+
+Return( 'sources' )
+# env.Program( 'rafkill', sources )
+# env.Default( 'rafkill' )
