@@ -490,6 +490,10 @@ int Bitmap::setGfxModeFullscreen( int x, int y ){
 int Bitmap::setGfxModeWindowed( int x, int y ){
 	return setGfxMode( GFX_AUTODETECT_WINDOWED, x, y );
 }
+
+int Bitmap::setGfxModeAny( int x, int y ){
+	return setGfxMode( GFX_AUTODETECT, x, y );
+}
 	
 int Bitmap::makeColor( int r, int g, int b ){
 	return ::makecol16( r, g, b );

@@ -9,7 +9,7 @@ void inc_speed_counter() {
 
 END_OF_FUNCTION( inc_speed_counter );
 
-void init( int mode, int GAME_SPEED ) {
+void init( int windowMode, int GAME_SPEED ) {
 
 	allegro_init();
 	srand( time( NULL ) );
@@ -23,25 +23,34 @@ void init( int mode, int GAME_SPEED ) {
 	}
 	*/
 
-	int gfx = GFX_AUTODETECT_WINDOWED;
-	switch ( mode ){
+	int (*gfx)( int x, int y ) = Bitmap::setGfxModeWindowed;
+
+	switch ( windowMode ){
 		case 0 : {
-			gfx = GFX_AUTODETECT_FULLSCREEN;
+			gfx = Bitmap::setGfxModeFullscreen;
 			break;
 		}
 		case 1 : {
-			gfx = GFX_AUTODETECT_WINDOWED;
+			gfx = Bitmap::setGfxModeWindowed;
 			break;
 		}
 	}
 
 	set_color_depth( 16 );
+	if ( gfx( GRAPHICS_X, GRAPHICS_Y ) != 0 ){
+		if ( Bitmap::setGfxModeAny( GRAPHICS_X, GRAPHICS_Y ) != 0 ){
+			allegro_message( "Could not initialize a graphics mode.. bailing" );
+			exit( 1 );
+		}
+	}
+	/*
 	if ( set_gfx_mode( gfx, GRAPHICS_X, GRAPHICS_Y, 0, 0 ) != 0 ){
 		if ( set_gfx_mode( GFX_AUTODETECT, GRAPHICS_X, GRAPHICS_Y, 0, 0 ) != 0 ) {
 			allegro_message( "Could not initialize a graphics mode.. bailing" );
 			exit( 1 );
 		}
 	}
+	*/
 	// text_mode( -1 );
 	reserve_voices (8, -1);
 	set_volume_per_voice( 0 );
@@ -61,6 +70,6 @@ void init( int mode, int GAME_SPEED ) {
 	dumb_resampling_quality = get_config_int( "sound", "dumb_resampling_quality", 1 );
 
 	/* set up global screen variable */
-	Bitmap::Screen = new Bitmap( screen );
+	// Bitmap::Screen = new Bitmap( screen );
 }
 

@@ -152,6 +152,7 @@ public:
 	static int setGfxModeText();
 	static int setGfxModeFullscreen( int x, int y );
 	static int setGfxModeWindowed( int x, int y );
+	static int setGfxModeAny( int x, int y );
 
 	static int makeColor( int r, int g, int b );
 	static void hsvToRGB( float h, float s, float v, int * r, int * g, int * b );
