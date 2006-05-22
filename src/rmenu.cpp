@@ -60,9 +60,9 @@ RMenu::~RMenu() {
 }
 
 
-void RMenu::addTitle( char * n, Font * rf ) {
+void RMenu::addTitle( string title, Font * rf ) {
 	int ta = countNodes();
-	RField * junk = new RField_Name( rf, n, false, true, 0, NULL, ta, NO_SOUND );
+	RField * junk = new RField_Name( rf, title, false, true, 0, NULL, ta, NO_SOUND );
 	RField * current = head;
 	while ( current->Next() != NULL ) current = current->Next();
 	current->Add( junk );
@@ -70,9 +70,9 @@ void RMenu::addTitle( char * n, Font * rf ) {
 }
 
 
-void RMenu::addMenu( char * n, Font * rf, bool s, int r, RMenu * who, int sound ) {
+void RMenu::addMenu( string title, Font * rf, bool s, int r, RMenu * who, int sound ) {
 	int ta = countNodes();
-	RField * junk = new RField_Name( rf, n, s, false, r, who, ta, sound );
+	RField * junk = new RField_Name( rf, title, s, false, r, who, ta, sound );
 	RField * current = head;
 	while ( current->Next() != NULL ) current = current->Next();
 	current->Add( junk );
@@ -88,12 +88,12 @@ void RMenu::addMenu( const Bitmap & look, bool s, int r, RMenu * who, int sound 
 }
 
 
-void RMenu::replace( int q, char * n, Font * rf, bool s, int r, RMenu * who, int sound ) {
+void RMenu::replace( int q, string title, Font * rf, bool s, int r, RMenu * who, int sound ) {
 	RField * current = head;
 	for ( int z = 0; z < q; z++ ){
 		current = current->Next();
 	}
-	RField * junk = new RField_Name( rf, n, s, false, r, who, current->Place(), sound );
+	RField * junk = new RField_Name( rf, title, s, false, r, who, current->Place(), sound );
 	current->Prev()->Add( junk );
 	junk->Add( current->Next() );
 	if ( location == current ) location = junk;
@@ -102,11 +102,11 @@ void RMenu::replace( int q, char * n, Font * rf, bool s, int r, RMenu * who, int
 }
 
 
-void RMenu::replaceTitle( int q, char * n, Font * rf ) {
+void RMenu::replaceTitle( int q, string title, Font * rf ) {
 	RField * current = head;
 	for ( int z = 0; z < q; z++ )
 		current = current->Next();
-	RField * junk = new RField_Name( rf, n, false, true, 0, NULL, current->Place(), NO_SOUND );
+	RField * junk = new RField_Name( rf, title, false, true, 0, NULL, current->Place(), NO_SOUND );
 	current->Prev()->Add( junk );
 	junk->Add( current->Next() );
 	if ( location == current ) location = junk;
@@ -168,18 +168,18 @@ void RMenu::spiffy_triangle( const Bitmap & work, int x1, int y1, int color, int
 
 }
 
-
-int RMenu::askPos( char * str ) {
+int RMenu::askPos( string title ) {
 
 	RField * junk = head->Next();
 	while ( junk != NULL ) {
-		if ( junk->equiv( str ) ) return junk->Place()+1;
+		if ( junk->equiv( &title ) ){
+			return junk->Place()+1;
+		}
 		junk = junk->Next();
 	}
 	return -1;
 
 }
-
 
 void RMenu::clear() {
 

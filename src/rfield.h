@@ -2,6 +2,9 @@
 #define _rfield_h
 
 #include "bitmap.h"
+#include <string>
+
+using namespace std;
 
 class Font;
 class RMenu;
@@ -57,13 +60,13 @@ protected:
 
 class RField_Name: public RField {
 public:
-	RField_Name( Font * f_font, char * name, bool selectable, bool perm, int return_val, RMenu * who, int number, int sound );
+	RField_Name( Font * f_font, string name, bool selectable, bool perm, int return_val, RMenu * who, int number, int sound );
 	virtual bool equiv( void * obj );
 	virtual void Draw( const Bitmap & work, int x, int y, int col );
 	virtual int Size();
 	virtual ~RField_Name();
 protected:
-	char * handle;
+	string handle;
 	Font * field_font;
 };
 

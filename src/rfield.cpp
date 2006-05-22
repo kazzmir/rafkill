@@ -53,11 +53,9 @@ int RField::Size() {
 void RField::Draw( const Bitmap & work, int x, int y, int col ) {
 }
 
-
 bool RField::equiv( void * obj ) {
 	return false;
 }
-
 
 int RField::Val() {
 	return ret;
@@ -87,56 +85,46 @@ RMenu * RField::NextMenu() {
 RField::~RField() {
 }
 
-
 //**//
-RField_Name::RField_Name( Font * f_font, char * name, bool selectable, bool perm, int return_val, RMenu * who, int number, int sound ):
+RField_Name::RField_Name( Font * f_font, string name, bool selectable, bool perm, int return_val, RMenu * who, int number, int sound ):
 RField( selectable, perm, return_val, who, number, sound ) {
 	handle = name;
 	field_font = f_font;
 }
 
-
 bool RField_Name::equiv( void * obj ) {
-	return ( strcasecmp( handle, (char *)obj ) == 0 );
+	return handle == *(string *)obj;
 }
-
 
 int RField_Name::Size() {
 	return field_font->getHeight();
 }
 
-
 void RField_Name::Draw( const Bitmap & work, int x, int y, int col ) {
 	work.printf( x, y, col, this->field_font, this->handle );
 }
 
-
 RField_Name::~RField_Name() {
 	//delete[] handle;
-	free( handle );
+	// free( handle );
 }
-
 
 RField_Bitmap::RField_Bitmap( const Bitmap & look, bool selectable, bool perm, int return_val, RMenu * who, int number, int sound ):
 RField( selectable, perm, return_val, who, number, sound ) {
 	scene =  look;
 }
 
-
 bool RField_Bitmap::equiv( void * obj ) {
 	return false;
 }
-
 
 int RField_Bitmap::Size() {
 	return scene.getHeight();
 }
 
-
 void RField_Bitmap::Draw( const Bitmap & work, int x, int y, int col ) {
 	scene.draw( x, y, work );
 }
-
 
 RField_Bitmap::~RField_Bitmap() {
 }

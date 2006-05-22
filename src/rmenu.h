@@ -4,6 +4,8 @@
 #include <string>
 #include "bitmap.h"
 
+using namespace std;
+
 /* TODO: Replace all char* with std::string
  */
 
@@ -16,17 +18,17 @@ public:
 	RMenu( const Bitmap & intr, int x, int y, int height, int c1, int c2, int title_color );
 
 	//addMenu: Adds a RField class to the list
-	virtual void addTitle( char * n, Font * rf );
-	virtual void addMenu( char * n, Font * rf, bool s, int r, RMenu * who, int sound );
+	virtual void addTitle( string title, Font * rf );
+	virtual void addMenu( string menu, Font * rf, bool s, int r, RMenu * who, int sound );
 	virtual void addMenu( const Bitmap & look, bool s, int r, RMenu * who, int sound );
 
 	//replace: Replaces a given RField with a new RField at position q in the list
-	virtual void replace( int q, char * n, Font * rf, bool s, int r, RMenu * who, int sound );
-	virtual void replaceTitle( int q, char * n, Font * rf );
+	virtual void replace( int q, string title, Font * rf, bool s, int r, RMenu * who, int sound );
+	virtual void replaceTitle( int q, string title, Font * rf );
 	virtual void replace( int q, const Bitmap & look, bool s, int r, RMenu * who, int sound );
 
 	//returns the place where field str lives, or -1 if cant find
-	virtual int askPos( char * str );
+	virtual int askPos( string title );
 
 	//procMenu: Runs the current menu, returning the value of the menu
 	//and changing the current menu to the selected one
