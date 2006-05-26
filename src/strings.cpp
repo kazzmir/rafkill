@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <string>
+
+using namespace std;
 
 int numDig( int q ) {
 
@@ -16,8 +19,7 @@ int numDig( int q ) {
 
 }
 
-
-char * int2str( int z ) {
+string int2str( int z ) {
 	bool neg = z < 0;
 	int nd = numDig( z );
 	char * str = (char *)malloc( sizeof(char) * (neg + nd + 1) );
@@ -30,12 +32,12 @@ char * int2str( int z ) {
 	}
 	if ( neg ) str[0] = '-';
 	str[ neg + nd ] = '\0';
-	return str;
-
+	string s = str;
+	free( str );
+	return s;
 }
 
-
-char * int2normal( int z ) {
+string int2normal( int z ) {
 	bool neg = z < 0;
 	int nd = numDig( z );
 	int total_char = neg + nd + abs(nd-1)/3+1;
@@ -57,10 +59,12 @@ char * int2normal( int z ) {
 		z /= 10;
 	}
 	if ( neg ) *str = '-';
-	return str;
+	string s = str;
+	free( str );
+	return s;
 }
 
-
+/*
 char * d2normal( double whole, int precise ) {
 	int z = (int)whole;
 	bool neg = z < 0;
@@ -107,7 +111,7 @@ char * d2normal( double whole, int precise ) {
 	if ( neg ) *str = '-';
 	return str;
 }
-
+*/
 
 char upcase( char u ) {
 
@@ -175,21 +179,7 @@ int length( char * q ) {
 	return z;
 }
 
-
 /*
-char * mstr( char * copy ) {
-
-	return strdup( copy );
-
-	int m1 = length( copy );
-	char * mv = (char *)malloc( sizeof(char) * ( m1 + 1 ) );
-	memmove( (void *)mv, (void *)copy, m1 );
-	mv[m1] = '\0';
-	return mv;
-
-}
-*/
-
 char * append( const char * first, const char * second ) {
 	//printf("Appending [%s] with [%s]\n", first, second );
 	int m1 = strlen( first );
@@ -202,3 +192,4 @@ char * append( const char * first, const char * second ) {
 	final[ m1 + m2 ] = '\0';
 	return final;
 }
+*/

@@ -321,7 +321,7 @@ void menuClass::GunMenu( RMenu * weap, int q, WeaponObject * current, const Bitm
 	for ( int z = 0; z < pgun[q].mgun; z++ )
 		legal[z] = GetWeapon( pgun[q].gunz[z] );
 
-	char * numnum;
+	string numnum;
 
 	if ( current != NULL ) {
 		/*
@@ -331,7 +331,7 @@ void menuClass::GunMenu( RMenu * weap, int q, WeaponObject * current, const Bitm
 		free( numnum );
 		free( sub );
 		*/
-		weap->addTitle( strdup( current->GetName() ), menuFont );
+		weap->addTitle( current->GetName(), menuFont );
 		// char * numnum = int2str( current->strength + 1 );
 		int max = current->maxPower();
 
@@ -341,7 +341,7 @@ void menuClass::GunMenu( RMenu * weap, int q, WeaponObject * current, const Bitm
 
 		char tmp[ 128 ];
 		snprintf( tmp, 128, "Strength %d out of %s", current->getPower()+1, power );
-		weap->addTitle( strdup(tmp), menuFont );
+		weap->addTitle( tmp, menuFont );
 
 		// char * maxnum;
 
@@ -360,24 +360,21 @@ void menuClass::GunMenu( RMenu * weap, int q, WeaponObject * current, const Bitm
 		free( sub2 );
 		*/
 
-	} else  weap->addTitle( strdup("No Weapon"), menuFont );
+	} else  weap->addTitle( "No Weapon", menuFont );
 	numnum = int2normal( score );
-	weap->addTitle( append("Score ",numnum), menuFont );
-	free( numnum );
-	weap->addMenu( strdup("Return"), menuFont, true, 0, NULL, NO_SOUND );
+	weap->addTitle( "Score " + numnum, menuFont );
+	weap->addMenu( "Return", menuFont, true, 0, NULL, NO_SOUND );
 	if ( current != NULL ) {
 
 		if ( current->getPower() < current->maxPower() || current->maxPower() == -1 ) {
 			numnum = int2normal( upgradeCost(current) );
-			weap->addMenu( append("Upgrade ",numnum), menuFont, score>=upgradeCost(current), MENU_UPGRADE, weap, -1 );
-			free(numnum);
+			weap->addMenu( "Upgrade " + numnum, menuFont, score>=upgradeCost(current), MENU_UPGRADE, weap, -1 );
 		}
 
 		numnum = int2normal( sellGun( current ) );
-		weap->addMenu( append("Sell for ",numnum), menuFont, true, MENU_SELL_WEAPON, weap, NO_SOUND );
-		free( numnum );
+		weap->addMenu( "Sell for " + numnum, menuFont, true, MENU_SELL_WEAPON, weap, NO_SOUND );
 	}
-	weap->addTitle( strdup("Purchase"), menuFont );
+	weap->addTitle( "Purchase", menuFont );
 	for ( int z = 0; z < pgun[q].mgun; z++ )
 	if ( !(current != NULL && strcasecmp(legal[z]->GetName(),current->GetName())==0) ) {
 
@@ -389,7 +386,7 @@ void menuClass::GunMenu( RMenu * weap, int q, WeaponObject * current, const Bitm
 		//weap->addMenu(strdup(sub2),menuFont,score>=legal[z]->Worth(),MENU_BUY_WEAPON+z, weap, NULL );
 		char sub2[ 256 ];
 		sprintf( sub2, "%s: %d", legal[z]->GetName(), legal[z]->Worth() );
-		weap->addMenu(strdup(sub2),menuFont,true,MENU_BUY_WEAPON+z, weap, NO_SOUND );
+		weap->addMenu(sub2,menuFont,true,MENU_BUY_WEAPON+z, weap, NO_SOUND );
 		/*
 		free( numnum );
 		free( sub2 );
@@ -400,7 +397,6 @@ void menuClass::GunMenu( RMenu * weap, int q, WeaponObject * current, const Bitm
 	for ( int z = 0; z < pgun[q].mgun; z++ )
 		delete legal[z];
 	delete[] legal;
-
 }
 
 
@@ -409,17 +405,16 @@ void menuClass::GetAccessoryMenu( RMenu * weap, WeaponObject ** a_list, const Bi
 	for ( int z = 0; z < agun.mgun; z++ )
 		legal[z] = GetWeapon( agun.gunz[z] );
 
-	weap->addTitle( strdup("Accessory Bays"), menuFont );
-	char * numnum;
+	weap->addTitle( "Accessory Bays", menuFont );
+	string numnum;
 	numnum = int2normal( score );
-	weap->addTitle( append("Score ",numnum), menuFont );
-	free( numnum );
-	weap->addTitle( strdup("Currently have"), menuFont );
+	weap->addTitle( "Score " + numnum, menuFont );
+	weap->addTitle( "Currently have", menuFont );
 	for ( int q = 0; q < MAX_ACCESSORY; q++ )
 		if ( a_list[q] != NULL )
-			weap->addTitle( strdup( a_list[q]->GetName() ), menuFont );
+			weap->addTitle( a_list[q]->GetName(), menuFont );
 
-	weap->addTitle( strdup("Purchase"), menuFont );
+	weap->addTitle( "Purchase", menuFont );
 	for ( int q = 0; q < agun.mgun; q++ ) {
 		bool cy = true;
 		int total = 0;
@@ -438,18 +433,12 @@ void menuClass::GetAccessoryMenu( RMenu * weap, WeaponObject ** a_list, const Bi
 			*/
 			char sub2[ 256 ];
 			snprintf( sub2, 256, "%s: %d", legal[q]->GetName(), legal[q]->Worth() );
-			weap->addMenu( strdup(sub2), menuFont, score>=legal[q]->Worth() && total < MAX_ACCESSORY, MENU_BUY_ACCESSORY+q, weap, NO_SOUND );
-
-			/*
-			free( numnum );
-			free( sub2 );
-			free( sub );
-			*/
+			weap->addMenu( sub2, menuFont, score>=legal[q]->Worth() && total < MAX_ACCESSORY, MENU_BUY_ACCESSORY+q, weap, NO_SOUND );
 		}
 
 	}
 
-	weap->addMenu( strdup("Return"), menuFont, true, 0, NULL, NO_SOUND );
+	weap->addMenu( "Return", menuFont, true, 0, NULL, NO_SOUND );
 
 	for ( int z = 0; z < agun.mgun; z++ )
 		delete legal[z];
@@ -457,20 +446,21 @@ void menuClass::GetAccessoryMenu( RMenu * weap, WeaponObject ** a_list, const Bi
 
 }
 
-
 void menuClass::weaponMenu( RMenu * gun_menu, SpaceObject * player ) {
 	//RMenu * gun_menu = new RMenu( intr, 1, 40, makecol(80,0,0),makecol(255,136,0), MENU_TITLE_COLOR );
-	gun_menu->addTitle( strdup("Buy Weapons"), menuFont );
-	char * numnum = int2normal( player->getScore() );
-	gun_menu->addTitle( append("Score ",numnum), menuFont );
-	free( numnum );
+	gun_menu->addTitle( "Buy Weapons", menuFont );
+	// string numnum = int2normal( player->getScore() );
+	string score = "Score ";
+	score += player->getScore();
+	gun_menu->addTitle( score, menuFont );
 	for ( int q = 0; q < player->getHull()->maxGuns()-1; q++ ) {
-		numnum = int2str(q+1);
-		gun_menu->addMenu( append("Weapon Bay ",numnum),menuFont,true,MENU_BUY+q,gun_menu, NO_SOUND );
-		free( numnum );
+		// numnum = int2str(q+1);
+		string bay = "Weapon Bay ";
+		bay += q + 1;
+		gun_menu->addMenu( bay, menuFont,true,MENU_BUY+q,gun_menu, NO_SOUND );
 	}
-	gun_menu->addMenu( strdup("Accessories"), menuFont, true, 1, gun_menu, NO_SOUND );
-	gun_menu->addMenu( strdup("Return"), menuFont, true, 0, NULL, NO_SOUND );
+	gun_menu->addMenu( "Accessories", menuFont, true, 1, gun_menu, NO_SOUND );
+	gun_menu->addMenu( "Return", menuFont, true, 0, NULL, NO_SOUND );
 }
 
 
@@ -534,33 +524,33 @@ void menuClass::GetHullMenu( RMenu * hull_menu, SpaceObject * human, const Bitma
 	PlayerHull * phull = (PlayerHull *)human->getHull();
 	char tmp[ 128 ];
 	snprintf( tmp, 128, "Score %d", human->getScore() );
-	hull_menu->addTitle( strdup(tmp), menuFont );
+	hull_menu->addTitle( tmp, menuFont );
 
 	snprintf( tmp, 128, "Hull life %d out of %d", (int)human->getHull()->life, phull->getMaxLife() );
-	hull_menu->addTitle( strdup(tmp), menuFont );
+	hull_menu->addTitle( tmp, menuFont );
 
 	snprintf( tmp, 128, "Hull Shield %d out of %d", (int)phull->getShield(), phull->getMaxShield() );
-	hull_menu->addTitle( strdup(tmp), menuFont );
+	hull_menu->addTitle( tmp, menuFont );
 
 	bool can_buy;
 
 	can_buy = ( human->getScore() >= HULL_LIFE_WORTH ) && ( human->getHull()->life < phull->getMaxLife() );
-	hull_menu->addMenu( strdup("Buy Life 1000"), menuFont, can_buy, MENU_HULL_LIFE, hull_menu, NO_SOUND );
+	hull_menu->addMenu( "Buy Life 1000", menuFont, can_buy, MENU_HULL_LIFE, hull_menu, NO_SOUND );
 
 	can_buy = (human->getScore() >= HULL_SHIELD_WORTH) && (phull->getShield() < phull->getMaxShield() );
-	hull_menu->addMenu( strdup("Buy Shield 3000"), menuFont, can_buy, MENU_HULL_SHIELD, hull_menu, NO_SOUND );
+	hull_menu->addMenu( "Buy Shield 3000", menuFont, can_buy, MENU_HULL_SHIELD, hull_menu, NO_SOUND );
 
-	hull_menu->addMenu( strdup("Maxout life"), menuFont, true, MENU_HULL_MAX, hull_menu, NO_SOUND );
-	hull_menu->addMenu( strdup("Maxout shield"), menuFont, true, MENU_SHIELD_MAX, hull_menu, NO_SOUND );
+	hull_menu->addMenu( "Maxout life", menuFont, true, MENU_HULL_MAX, hull_menu, NO_SOUND );
+	hull_menu->addMenu( "Maxout shield", menuFont, true, MENU_SHIELD_MAX, hull_menu, NO_SOUND );
 	
 	snprintf( tmp, 128, "Buy next hull for %d", hull_price( phull->rank() ) );
 	if ( phull->rank() < 3 ){
 		can_buy = human->getScore() >= hull_price( phull->rank() );
 
-		hull_menu->addMenu( strdup(tmp), menuFont, can_buy, MENU_BUY_HULL, hull_menu, NO_SOUND );
+		hull_menu->addMenu( tmp, menuFont, can_buy, MENU_BUY_HULL, hull_menu, NO_SOUND );
 	}
 
-	hull_menu->addMenu( strdup("Return"), menuFont, true, 0, NULL, NO_SOUND );
+	hull_menu->addMenu( "Return", menuFont, true, 0, NULL, NO_SOUND );
 
 }
 
@@ -591,9 +581,9 @@ bool menuClass::accept_sell(){
 	sell_screen.rectangle( 120, 80, 450, 235, Bitmap::makeColor(255,255,255) );
 	Bitmap::drawingMode( Bitmap::MODE_SOLID );
 	RMenu sell( sell_screen, 130, 100, 1000, Bitmap::makeColor(80,0,0), Bitmap::makeColor(255,136,0), MENU_TITLE_COLOR );
-	sell.addTitle( strdup( "Sell weapon"), menuFont );
-	sell.addMenu( strdup("Yes"), menuFont, true, 1, &sell, NO_SOUND );
-	sell.addMenu( strdup("No"), menuFont, true, 0, &sell, NO_SOUND );
+	sell.addTitle( "Sell weapon", menuFont );
+	sell.addMenu( "Yes", menuFont, true, 1, &sell, NO_SOUND );
+	sell.addMenu( "No", menuFont, true, 0, &sell, NO_SOUND );
 	sell.init();
 
 	int call = -1;
@@ -646,7 +636,7 @@ void menuClass::getSaveMenu( RMenu * save_menu ){
 	for ( int q = 0; q < 6; q++ ){
 		save_menu->addMenu( getFileInfo(q), menuFont, true, MENU_SAVE+q, NULL, NO_SOUND ); 
 	}
-	save_menu->addMenu( strdup("Return"), menuFont, true, 345345, NULL, NO_SOUND ); 
+	save_menu->addMenu( "Return", menuFont, true, 345345, NULL, NO_SOUND ); 
 
 }
 
@@ -711,22 +701,21 @@ bool menuClass::activate( SpaceObject * player ){
 		gun_menu.nextMenu( q+3, weapon_menu[q] );
 	}
 
-	intro_menu.addTitle( strdup("Buy Menu"), menuFont );
-	char * numnum = int2normal( human->getScore() );
-	intro_menu.addTitle( append("Score ",numnum), menuFont );
-	intro_menu.addMenu( strdup("Weapon Menu"), menuFont, true, MENU_WEAPON, &gun_menu, menu_sound );
-	intro_menu.addMenu( strdup("Hull Menu"), menuFont, true, MENU_HULL, &hull_menu, menu_sound );
-	intro_menu.addMenu( strdup("Save Game"), menuFont, true, MENU_HULL, &save_menu, menu_sound );
-	intro_menu.addMenu( strdup("Next Level"), menuFont, true, MENU_NEXT, NULL, menu_sound );
-	intro_menu.addMenu( strdup("Main Menu"), menuFont, true, MENU_QUIT, NULL, menu_sound );
-	free( numnum );
+	intro_menu.addTitle( "Buy Menu", menuFont );
+	string numnum = int2normal( human->getScore() );
+	intro_menu.addTitle( "Score " + numnum, menuFont );
+	intro_menu.addMenu( "Weapon Menu", menuFont, true, MENU_WEAPON, &gun_menu, menu_sound );
+	intro_menu.addMenu( "Hull Menu", menuFont, true, MENU_HULL, &hull_menu, menu_sound );
+	intro_menu.addMenu( "Save Game", menuFont, true, MENU_HULL, &save_menu, menu_sound );
+	intro_menu.addMenu( "Next Level", menuFont, true, MENU_NEXT, NULL, menu_sound );
+	intro_menu.addMenu( "Main Menu", menuFont, true, MENU_QUIT, NULL, menu_sound );
 
 	getSaveMenu( &save_menu );
 
 	/*
 	for ( int q = 0; q < 6; q++ )
 		save_menu.addMenu( getFileInfo(q), Util::raptor_font, true, MENU_SAVE+q, NULL, NULL ); 
-	save_menu.addMenu( strdup("Return"), Util::raptor_font, true, 345345, NULL, NULL ); 
+	save_menu.addMenu( "Return", Util::raptor_font, true, 345345, NULL, NULL ); 
 	*/
 
 	/** END INIT **/
@@ -986,10 +975,9 @@ bool menuClass::activate( SpaceObject * player ){
 		if ( score_change ) {
 
 			numnum = int2normal( human->getScore() );
-			intro_menu.replaceTitle( 2, append("Score ",numnum ), menuFont );
+			intro_menu.replaceTitle( 2, "Score " + numnum, menuFont );
 			gun_menu.clear();
 			weaponMenu( &gun_menu, human );
-			free( numnum );
 
 			for ( int q = 0; q < num_guns; q++ ) {
 				weapon_menu[q]->clear();

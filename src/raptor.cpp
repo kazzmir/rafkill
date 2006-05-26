@@ -222,7 +222,7 @@ void getLoadMenu( RMenu * menu, int load_num, int select_smp ){
 		}
 	}
 	
-	menu->addMenu( strdup("Return"), normalFont, true, 800, NULL, select_smp );
+	menu->addMenu( "Return", normalFont, true, 800, NULL, select_smp );
 }
 
 void popUp( const char * title ){
@@ -238,8 +238,8 @@ void popUp( const char * title ){
 	sell_screen.rectangle( begin, 80, begin+length, 235, Bitmap::makeColor(255,255,255) );
 	Bitmap::drawingMode( Bitmap::MODE_SOLID );
 	RMenu sell( sell_screen, begin+10, 100, 1000, Bitmap::makeColor(80,0,0), Bitmap::makeColor(255,136,0), RAPTOR_TITLE_COLOR );
-	sell.addTitle(strdup( title ), normalFont );
-	sell.addMenu( strdup("OK"), normalFont, true, 1, &sell, NO_SOUND );
+	sell.addTitle( title, normalFont );
+	sell.addMenu( "OK", normalFont, true, 1, &sell, NO_SOUND );
 	sell.init();
 
 	int call = -1;
@@ -298,39 +298,39 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 	RMenu sound_menu( intr, 1, 145, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
 	RMenu load_menu( intr, 1, 200, 1000, Bitmap::makeColor(128,64,0), Bitmap::makeColor(255,128,0), RAPTOR_TITLE_COLOR );
 
-	// load_menu.addMenu( strdup("Return"), Util::raptor_font, true, 800, NULL, select_smp );
+	// load_menu.addMenu( "Return", Util::raptor_font, true, 800, NULL, select_smp );
 	getLoadMenu( &load_menu, INIT_LOAD, select_smp );
 
 	if ( *player != NULL ){
-		intro_menu.addMenu( strdup("Continue"), normalFont, true, INIT_CONTINUE,NULL,select_smp);
+		intro_menu.addMenu( "Continue", normalFont, true, INIT_CONTINUE,NULL,select_smp);
 	}
 
-	intro_menu.addMenu( strdup("Play new"), normalFont, true,INIT_PLAY,NULL,select_smp);
-	intro_menu.addMenu( strdup("Load Game"), normalFont, true,INIT_LOAD,&load_menu,select_smp);
-	intro_menu.addMenu( strdup("Options"), normalFont, true,INIT_OPT,&option_menu,select_smp);
-	intro_menu.addMenu( strdup("Credits"), normalFont, true,INIT_CREDITS,&intro_menu,select_smp);
-	intro_menu.addMenu( strdup("Quit"), normalFont, true,INIT_QUIT,NULL,select_smp);
+	intro_menu.addMenu( "Play new", normalFont, true,INIT_PLAY,NULL,select_smp);
+	intro_menu.addMenu( "Load Game", normalFont, true,INIT_LOAD,&load_menu,select_smp);
+	intro_menu.addMenu( "Options", normalFont, true,INIT_OPT,&option_menu,select_smp);
+	intro_menu.addMenu( "Credits", normalFont, true,INIT_CREDITS,&intro_menu,select_smp);
+	intro_menu.addMenu( "Quit", normalFont, true,INIT_QUIT,NULL,select_smp);
 
-	option_menu.addTitle( strdup("Options"), normalFont );
-	char * numnum = int2str( frames );
+	option_menu.addTitle( "Options", normalFont );
+	string numnum = int2str( frames );
 	// option_menu.addMenu( append("Frame rate ",numnum), normalFont, true,244,&frame_menu,select_smp);
 	//if ( window_mode == GFX_AUTODETECT )
-	//	option_menu->addMenu( strdup("Windowed"),Util::raptor_font,true,INIT_SCREEN,option_menu,select_smp);
-	//else    option_menu->addMenu( strdup("Fullscreen"),Util::raptor_font,true,INIT_SCREEN,option_menu,select_smp);
-	option_menu.addMenu( strdup("Windowed"), normalFont, true,INIT_SCREEN_WINDOW,&option_menu,select_smp);
-	option_menu.addMenu( strdup("Fullscreen"), normalFont, true,INIT_SCREEN_FULL,&option_menu,select_smp);
+	//	option_menu->addMenu( "Windowed",Util::raptor_font,true,INIT_SCREEN,option_menu,select_smp);
+	//else    option_menu->addMenu( "Fullscreen",Util::raptor_font,true,INIT_SCREEN,option_menu,select_smp);
+	option_menu.addMenu( "Windowed", normalFont, true,INIT_SCREEN_WINDOW,&option_menu,select_smp);
+	option_menu.addMenu( "Fullscreen", normalFont, true,INIT_SCREEN_FULL,&option_menu,select_smp);
 	if ( dl )
-		option_menu.addMenu( strdup("Background on"), normalFont, true,INIT_BACK,&option_menu,select_smp);
-	else    option_menu.addMenu( strdup("Background off"), normalFont, true,INIT_BACK,&option_menu,select_smp);
-	option_menu.addMenu( strdup("Sound"), normalFont, true, 800, &sound_menu, select_smp );
-	option_menu.addMenu( strdup("Return to Menu"), normalFont, true,800,NULL,select_smp);
+		option_menu.addMenu( "Background on", normalFont, true,INIT_BACK,&option_menu,select_smp);
+	else    option_menu.addMenu( "Background off", normalFont, true,INIT_BACK,&option_menu,select_smp);
+	option_menu.addMenu( "Sound", normalFont, true, 800, &sound_menu, select_smp );
+	option_menu.addMenu( "Return to Menu", normalFont, true,800,NULL,select_smp);
 
 	/*
 	frame_menu.addTitle( append("Frame Rate ",numnum), normalFont );
-	//frame_menu->addTitle( strdup("Frame Rate is Unstable"),Util::raptor_font );
-	frame_menu.addMenu( strdup("Increase Rate"), normalFont, true,INC_RATE,&frame_menu,select_smp);
-	frame_menu.addMenu( strdup("Decrease Rate"), normalFont, true,DEC_RATE,&frame_menu,select_smp);
-	frame_menu.addMenu( strdup("Return to options"), normalFont, true,800,NULL,select_smp);
+	//frame_menu->addTitle( "Frame Rate is Unstable",Util::raptor_font );
+	frame_menu.addMenu( "Increase Rate", normalFont, true,INC_RATE,&frame_menu,select_smp);
+	frame_menu.addMenu( "Decrease Rate", normalFont, true,DEC_RATE,&frame_menu,select_smp);
+	frame_menu.addMenu( "Return to options", normalFont, true,800,NULL,select_smp);
 	*/
 
 	// char * sound_num = int2str( (int)(sound_vol * 100 ) );
@@ -347,20 +347,20 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 	/* make music_volume be the Music::volume */
 	sprintf( musicNum, "Music volume %d", (int)(Music::getVolume() * 100) );
 
-	sound_menu.addTitle( strdup(soundNum), &menuFont );
-	sound_menu.addMenu( strdup("Increase sound volume"), &menuFont, true, SOUND_INC, &sound_menu, select_smp );
-	sound_menu.addMenu( strdup("Decrease sound volume"), &menuFont, true, SOUND_DEC, &sound_menu, select_smp );
-	sound_menu.addTitle( strdup(musicNum), &menuFont );
-	sound_menu.addMenu( strdup("Increase music volume"), &menuFont, true, MUSIC_INC, &sound_menu, select_smp );
-	sound_menu.addMenu( strdup("Decrease music volume"), &menuFont, true, MUSIC_DEC, &sound_menu, select_smp );
-	sound_menu.addMenu( strdup("Return to options"), &menuFont, true,800,NULL,select_smp);
+	sound_menu.addTitle( soundNum, &menuFont );
+	sound_menu.addMenu( "Increase sound volume", &menuFont, true, SOUND_INC, &sound_menu, select_smp );
+	sound_menu.addMenu( "Decrease sound volume", &menuFont, true, SOUND_DEC, &sound_menu, select_smp );
+	sound_menu.addTitle( musicNum, &menuFont );
+	sound_menu.addMenu( "Increase music volume", &menuFont, true, MUSIC_INC, &sound_menu, select_smp );
+	sound_menu.addMenu( "Decrease music volume", &menuFont, true, MUSIC_DEC, &sound_menu, select_smp );
+	sound_menu.addMenu( "Return to options", &menuFont, true,800,NULL,select_smp);
 
-	difficulty_menu.addTitle( strdup("Difficulty"), &menuFont );
-	difficulty_menu.addMenu( strdup("Very Easy"), &menuFont, true, DIFFICULT_MENU+1, NULL, select_smp );
-	difficulty_menu.addMenu( strdup("Easy"), &menuFont, true, DIFFICULT_MENU+2, NULL, select_smp );
-	difficulty_menu.addMenu( strdup("Medium"), &menuFont, true, DIFFICULT_MENU+3, NULL, select_smp );
-	difficulty_menu.addMenu( strdup("Hard"), &menuFont, true, DIFFICULT_MENU+4, NULL, select_smp );
-	difficulty_menu.addMenu( strdup("Impossible"), &menuFont, true, DIFFICULT_MENU+5, NULL, select_smp );
+	difficulty_menu.addTitle( "Difficulty", &menuFont );
+	difficulty_menu.addMenu( "Very Easy", &menuFont, true, DIFFICULT_MENU+1, NULL, select_smp );
+	difficulty_menu.addMenu( "Easy", &menuFont, true, DIFFICULT_MENU+2, NULL, select_smp );
+	difficulty_menu.addMenu( "Medium", &menuFont, true, DIFFICULT_MENU+3, NULL, select_smp );
+	difficulty_menu.addMenu( "Hard", &menuFont, true, DIFFICULT_MENU+4, NULL, select_smp );
+	difficulty_menu.addMenu( "Impossible", &menuFont, true, DIFFICULT_MENU+5, NULL, select_smp );
 
 	RMenu * current = &intro_menu;
 	RMenu * temp = current;
@@ -453,15 +453,15 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 			window_mode = GFX_AUTODETECT_WINDOWED;
 			else    window_mode = GFX_AUTODETECT_FULLSCREEN;
 			if ( window_mode == GFX_AUTODETECT_WINDOWED )
-			option_menu->replace( 3, strdup("Windowed"), Util::raptor_font,true, INIT_SCREEN, option_menu, select_smp  );
-			else    option_menu->replace( 3, strdup("Fullscreen"), Util::raptor_font,true, INIT_SCREEN, option_menu, select_smp );
+			option_menu->replace( 3, "Windowed", Util::raptor_font,true, INIT_SCREEN, option_menu, select_smp  );
+			else    option_menu->replace( 3, "Fullscreen", Util::raptor_font,true, INIT_SCREEN, option_menu, select_smp );
 			printf("Setting gfx mode to %d - Status ",window_mode);
 			int cap = set_gfx_mode( window_mode, GRAPHICS_X, GRAPHICS_Y, 0, 0 );
 			printf("%d\n",cap );
 			if ( cap == -1 ) {
 			printf("Allegro error: %s\n", allegro_error );
 			set_gfx_mode(GFX_AUTODETECT,GRAPHICS_X,GRAPHICS_Y,0,0);
-			option_menu->replace(3,strdup("Error with gfx set"), Util::raptor_font,false, INIT_SCREEN, option_menu, select_smp );
+			option_menu->replace(3,"Error with gfx set", Util::raptor_font,false, INIT_SCREEN, option_menu, select_smp );
 			}
 
 			break;
@@ -477,8 +477,8 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 			}
 			case INIT_BACK          : {
 				if ( dl ) dl = false;else dl=true;
-				if ( dl ) option_menu.replace( 5, strdup("Background ON"), &menuFont, true, INIT_BACK, &option_menu, select_smp ); else
-					option_menu.replace( 5, strdup("Background off"), &menuFont, true, INIT_BACK, &option_menu, select_smp );
+				if ( dl ) option_menu.replace( 5, "Background ON", &menuFont, true, INIT_BACK, &option_menu, select_smp ); else
+					option_menu.replace( 5, "Background off", &menuFont, true, INIT_BACK, &option_menu, select_smp );
 				break;
 			}
 
@@ -498,14 +498,14 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 			// free( sound_num );
 			// sound_num = int2str( (int)(sound_vol * 100 ) );
 			sprintf( soundNum, "Sound volume %d", (int)(Util::sound_vol * 100) );
-			sound_menu.replaceTitle( 1, strdup(soundNum), &menuFont );
+			sound_menu.replaceTitle( 1, soundNum, &menuFont );
 		}
 
 		if ( changed_music ) {
 			// free( music_num );
 			// music_num = int2str( (int)(music_vol * 100 ) );
 			sprintf( musicNum, "Music volume %d", (int)(Music::getVolume() * 100) );
-			sound_menu.replaceTitle( 4, strdup(musicNum), &menuFont );
+			sound_menu.replaceTitle( 4, musicNum, &menuFont );
 			// al_duh_set_volume( dumb_player, music_vol );
 		}
 
@@ -559,20 +559,13 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 	delete difficulty_menu;
 	delete sound_menu;
 	*/
-	free( numnum );
 	// free( sound_num );
 	// free( music_num );
 
 	// destroy_bitmap( intr );
 
 	return g;
-
-	#undef INC_RATE
-	#undef DEC_RATE
-
 }
-
-
 
 void usage(){
 
