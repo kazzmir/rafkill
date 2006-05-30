@@ -1,8 +1,11 @@
 #include <allegro.h>
 #include "keyboard.h"
+#include <string>
+
+using namespace std;
 
 static const bool getKey( int k ){
-	return key[ k ];
+	return ::key[ k ];
 }
 
 const bool Keyboard::getAnyKey( int k1, int k2, int k3, int k4 ){
@@ -19,6 +22,150 @@ const bool Keyboard::getAnyKey( int k1, int k2 ){
 
 const bool Keyboard::getAnyKey( int k1 ){
 	return getKey( k1 );
+}
+	
+const bool Keyboard::keyPressed(){
+	return ::keypressed();
+}
+	
+const int Keyboard::readKey(){
+	if ( ! ::keypressed() ){
+		return -1;
+	}
+	return ::readkey() >> 8;
+}
+	
+string Keyboard::keyToString( int key ){
+	if ( key == A ) return "A";
+	if ( key == B ) return "B";
+	if ( key == C ) return "C";
+	if ( key == D ) return "D";
+	if ( key == E ) return "E";
+	if ( key == F ) return "F";
+	if ( key == G ) return "G";
+	if ( key == H ) return "H";
+	if ( key == I ) return "I";
+	if ( key == J ) return "J";
+	if ( key == K ) return "K";
+	if ( key == L ) return "L";
+	if ( key == M ) return "M";
+	if ( key == N ) return "N";
+	if ( key == O ) return "O";
+	if ( key == P ) return "P";
+	if ( key == Q ) return "Q";
+	if ( key == R ) return "R";
+	if ( key == S ) return "S";
+	if ( key == T ) return "T";
+	if ( key == U ) return "U";
+	if ( key == V ) return "V";
+	if ( key == W ) return "W";
+	if ( key == X ) return "X";
+	if ( key == Y ) return "Y";
+	if ( key == Z ) return "Z";
+	if ( key == N0 ) return "N0";
+	if ( key == N1 ) return "N1";
+	if ( key == N2 ) return "N2";
+	if ( key == N3 ) return "N3";
+	if ( key == N4 ) return "N4";
+	if ( key == N5 ) return "N5";
+	if ( key == N6 ) return "N6";
+	if ( key == N7 ) return "N7";
+	if ( key == N8 ) return "N8";
+	if ( key == N9 ) return "N9";
+	if ( key == PAD_0 ) return "PAD_0";
+	if ( key == PAD_1 ) return "PAD_1";
+	if ( key == PAD_2 ) return "PAD_2";
+	if ( key == PAD_3 ) return "PAD_3";
+	if ( key == PAD_4 ) return "PAD_4";
+	if ( key == PAD_5 ) return "PAD_5";
+	if ( key == PAD_6 ) return "PAD_6";
+	if ( key == PAD_7 ) return "PAD_7";
+	if ( key == PAD_8 ) return "PAD_8";
+	if ( key == PAD_9 ) return "PAD_9";
+	if ( key == F1 ) return "F1";
+	if ( key == F2 ) return "F2";
+	if ( key == F3 ) return "F3";
+	if ( key == F4 ) return "F4";
+	if ( key == F5 ) return "F5";
+	if ( key == F6 ) return "F6";
+	if ( key == F7 ) return "F7";
+	if ( key == F8 ) return "F8";
+	if ( key == F9 ) return "F9";
+	if ( key == F10 ) return "F10";
+	if ( key == F11 ) return "F11";
+	if ( key == F12 ) return "F12";
+	if ( key == ESC ) return "ESC";
+	if ( key == TILDE ) return "TILDE";
+	if ( key == MINUS ) return "MINUS";
+	if ( key == EQUALS ) return "EQUALS";
+	if ( key == BACKSPACE ) return "BACKSPACE";
+	if ( key == TAB ) return "TAB";
+	if ( key == OPENBRACE ) return "OPENBRACE";
+	if ( key == CLOSEBRACE ) return "CLOSEBRACE";
+	if ( key == ENTER ) return "ENTER";
+	if ( key == COLON ) return "COLON";
+	if ( key == QUOTE ) return "QUOTE";
+	if ( key == BACKSLASH ) return "BACKSLASH";
+	if ( key == BACKSLASH2 ) return "BACKSLASH2";
+	if ( key == COMMA ) return "COMMA";
+	if ( key == STOP ) return "STOP";
+	if ( key == SLASH ) return "SLASH";
+	if ( key == SPACE ) return "SPACE";
+	if ( key == INSERT ) return "INSERT";
+	if ( key == DEL ) return "DEL";
+	if ( key == HOME ) return "HOME";
+	if ( key == END ) return "END";
+	if ( key == PGUP ) return "PGUP";
+	if ( key == PGDN ) return "PGDN";
+	if ( key == LEFT ) return "LEFT";
+	if ( key == RIGHT ) return "RIGHT";
+	if ( key == UP ) return "UP";
+	if ( key == DOWN ) return "DOWN";
+	if ( key == SLASH_PAD ) return "SLASH_PAD";
+	if ( key == ASTERISK ) return "ASTERISK";
+	if ( key == MINUS_PAD ) return "MINUS_PAD";
+	if ( key == PLUS_PAD ) return "PLUS_PAD";
+	if ( key == DEL_PAD ) return "DEL_PAD";
+	if ( key == ENTER_PAD ) return "ENTER_PAD";
+	if ( key == PRTSCR ) return "PRTSCR";
+	if ( key == PAUSE ) return "PAUSE";
+	if ( key == C1 ) return "C1";
+	if ( key == YEN ) return "YEN";
+	if ( key == KANA ) return "KANA";
+	if ( key == CONVERT ) return "CONVERT";
+	if ( key == NOCONVERT ) return "NOCONVERT";
+	if ( key == AT ) return "AT";
+	if ( key == CIRCUMFLEX ) return "CIRCUMFLEX";
+	if ( key == COLON2 ) return "COLON2";
+	if ( key == KANJI ) return "KANJI";
+	if ( key == EQUALS_PAD ) return "EQUALS_PAD";
+	if ( key == BACKQUOTE ) return "BACKQUOTE";
+	if ( key == SEMICOLON ) return "SEMICOLON";
+	if ( key == COMMAND ) return "COMMAND";
+	if ( key == UNKNOWN1 ) return "UNKNOWN1";
+	if ( key == UNKNOWN2 ) return "UNKNOWN2";
+	if ( key == UNKNOWN3 ) return "UNKNOWN3";
+	if ( key == UNKNOWN4 ) return "UNKNOWN4";
+	if ( key == UNKNOWN5 ) return "UNKNOWN5";
+	if ( key == UNKNOWN6 ) return "UNKNOWN6";
+	if ( key == UNKNOWN7 ) return "UNKNOWN7";
+	if ( key == UNKNOWN8 ) return "UNKNOWN8";
+	if ( key == MODIFIERS ) return "MODIFIERS";
+	if ( key == LSHIFT ) return "LSHIFT";
+	if ( key == RSHIFT ) return "RSHIFT";
+	if ( key == LCONTROL ) return "LCONTROL";
+	if ( key == RCONTROL ) return "RCONTROL";
+	if ( key == ALT ) return "ALT";
+	if ( key == ALTGR ) return "ALTGR";
+	if ( key == LWIN ) return "LWIN";
+	if ( key == RWIN ) return "RWIN";
+	if ( key == MENU ) return "MENU";
+	if ( key == SCRLOCK ) return "SCRLOCK";
+	if ( key == NUMLOCK ) return "NUMLOCK";
+	if ( key == CAPSLOCK ) return "CAPSLOCK";
+	if ( key == MAX ) return "MAX";
+
+	return "Unknown";
 }
 
 const int Keyboard::A = KEY_A;

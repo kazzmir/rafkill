@@ -6,9 +6,6 @@
 
 using namespace std;
 
-/* TODO: Replace all char* with std::string
- */
-
 class Font;
 class RField;
 
@@ -18,9 +15,9 @@ public:
 	RMenu( const Bitmap & intr, int x, int y, int height, int c1, int c2, int title_color );
 
 	//addMenu: Adds a RField class to the list
-	virtual void addTitle( string title, Font * rf );
-	virtual void addMenu( string menu, Font * rf, bool s, int r, RMenu * who, int sound );
-	virtual void addMenu( const Bitmap & look, bool s, int r, RMenu * who, int sound );
+	virtual RField * addTitle( string title, Font * rf );
+	virtual RField * addMenu( string menu, Font * rf, bool s, int r, RMenu * who, int sound );
+	virtual RField * addMenu( const Bitmap & look, bool s, int r, RMenu * who, int sound );
 
 	//replace: Replaces a given RField with a new RField at position q in the list
 	virtual void replace( int q, string title, Font * rf, bool s, int r, RMenu * who, int sound );

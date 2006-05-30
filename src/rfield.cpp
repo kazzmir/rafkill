@@ -61,6 +61,8 @@ int RField::Val() {
 	return ret;
 }
 
+void RField::set( void * object ){
+}
 
 RField * RField::Next() {
 	return next;
@@ -98,6 +100,11 @@ bool RField_Name::equiv( void * obj ) {
 
 int RField_Name::Size() {
 	return field_font->getHeight();
+}
+	
+void RField_Name::set( void * object ){
+	string * str = (string *) object;
+	this->handle = *str;
 }
 
 void RField_Name::Draw( const Bitmap & work, int x, int y, int col ) {

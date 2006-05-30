@@ -9,6 +9,7 @@
 #include "keyboard.h"
 #include "strings.h"
 #include <string.h>
+#include <sstream>
 #include <iostream>
 #include "loadsave.h"
 #include "defs.h"
@@ -16,6 +17,7 @@
 #include "raptor.h"
 #include "sound.h"
 #include "rmenu.h"
+#include "rfield.h"
 #include "hull.h"
 #include "wormhole.h"
 #include "explode.h"
@@ -25,6 +27,8 @@
 #include "hulls/hull_player.h"
 #include "playerobj.h"
 #include "guns/gun_machine.h"
+
+#include "config.h"
 
 #ifndef debug
 #define debug cout << "File: " << __FILE__ << " Line: " << __LINE__ << endl;
@@ -41,6 +45,7 @@ static const int INIT_QUIT = 3;
 static const int INIT_CREDITS = 4;
 static const int INIT_BACK = 6;
 static const int INIT_SAVE = 7;
+static const int INIT_CHANGE_KEYS = 8;
 static const int INIT_LOAD = 5000;
 static const int INC_RATE = 10;
 static const int DEC_RATE = 11;
@@ -52,6 +57,12 @@ static const int SOUND_DEC = 16;
 static const int MUSIC_INC = 17;
 static const int MUSIC_DEC = 18;
 static const int DIFFICULT_MENU = 1000;
+
+static const int CHANGE_KEY_FORWARD = 20;
+static const int CHANGE_KEY_BACKWARD = 21;
+static const int CHANGE_KEY_LEFT = 22;
+static const int CHANGE_KEY_RIGHT = 23;
+static const int CHANGE_KEY_SHOOT = 24;
 
 static Font * normalFont = NULL;
 
@@ -257,15 +268,39 @@ void popUp( const char * title ){
 	// destroy_bitmap( sell_screen );
 }
 
-int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** player, DATAFILE * sound ){
+static int userSelectKey(){
 
-	//RGB * crap = new RGB[256];
-	// char * file_name_pcx = Util::data_file( "logosmoot.pcx" );
+	Bitmap work( normalFont->textLength( "Press a key" ) + 20, 50 );
+	work.fill( Bitmap::makeColor( 32, 32, 32 ) );
+
+	work.printf( 10, 10, Bitmap::makeColor( 200, 64, 23 ), normalFont, "Press a key" );
+	work.drawBorder( 2, Bitmap::makeColor( 200, 200, 200 ) );
+
+	work.drawTrans( GRAPHICS_X / 2 - work.getWidth() / 2, GRAPHICS_Y / 2 - work.getHeight() / 2 - 100, *Bitmap::Screen );
+
+	while ( Keyboard::readKey() != -1 ){
+		Util::YIELD();
+	}
+
+	int key = Keyboard::readKey();
+	while ( key == -1 ){
+		Util::YIELD();
+		key = Keyboard::readKey();
+	}
+
+	while ( Keyboard::keyPressed() ){
+		Util::YIELD();
+	}
+
+	return key;
+}
+
+int intro_screen( int & frames, int window_mode, bool & background, SpaceObject ** player, DATAFILE * sound ){
+
 	char backgroundFile[ 4096 ];
 	Util::getDataPath( backgroundFile, "logosmoot.pcx" );
 	Bitmap intr( backgroundFile );
-	// free( file_name_pcx );
-	//delete[] crap;
+
 	if ( intr.getError() ) {
 		string message = "Could not load: ";
 		message += backgroundFile;
@@ -273,28 +308,13 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 		return 3;
 	}
 
-	/*
-	DUH * dumb_file = NULL;
-	AL_DUH_PLAYER * dumb_player = NULL;
-	char * d_file = data_file( "intro.mod" );
-	dumb_file = dumb_load_mod( d_file );
-	free( d_file );
-	dumb_player = al_start_duh( dumb_file, 2, 0, music_vol, 4096, 22050 );
-	*/
-
 	int select_smp = INTRO_MENU_SELECT;
 
-	/*
-	RMenu * intro_menu = new RMenu( intr, 170, 220, makecol(120,0,0),makecol(255,0,0), RAPTOR_TITLE_COLOR);
-	RMenu * option_menu = new RMenu( intr, 1, 120, makecol(120,0,0),makecol(255,0,0), RAPTOR_TITLE_COLOR );
-	RMenu * frame_menu = new RMenu( intr, 1, 230, makecol(120,0,0),makecol(255,0,0), RAPTOR_TITLE_COLOR );
-	RMenu * difficulty_menu = new RMenu( intr, 1, 210, makecol(120,0,0),makecol(255,0,0), RAPTOR_TITLE_COLOR );
-	RMenu * sound_menu = new RMenu( intr, 1, 145, makecol(120,0,0), makecol(255,0,0), RAPTOR_TITLE_COLOR );
-	*/
 	RMenu intro_menu( intr, 170, 200, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR);
 	RMenu option_menu( intr, 1, 120, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
 	RMenu frame_menu( intr, 1, 230, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
 	RMenu difficulty_menu( intr, 1, 180, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
+	RMenu changeKeyMenu( intr, 1, 180, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
 	RMenu sound_menu( intr, 1, 145, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
 	RMenu load_menu( intr, 1, 200, 1000, Bitmap::makeColor(128,64,0), Bitmap::makeColor(255,128,0), RAPTOR_TITLE_COLOR );
 
@@ -313,15 +333,29 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 
 	option_menu.addTitle( "Options", normalFont );
 	string numnum = int2str( frames );
+
+	RField * forwardKey = changeKeyMenu.addMenu( string("Forward: ") + Configuration::getForwardKeyName(), normalFont, true, CHANGE_KEY_FORWARD, &changeKeyMenu, select_smp );
+	RField * backwardKey = changeKeyMenu.addMenu( string("Backward: ") + Configuration::getBackwardKeyName(), normalFont, true, CHANGE_KEY_BACKWARD, &changeKeyMenu, select_smp );
+	RField * leftKey = changeKeyMenu.addMenu( string("Left: ") + Configuration::getLeftKeyName(), normalFont, true, CHANGE_KEY_LEFT, &changeKeyMenu, select_smp );
+	RField * rightKey = changeKeyMenu.addMenu( string("Right: ") + Configuration::getRightKeyName(), normalFont, true, CHANGE_KEY_RIGHT, &changeKeyMenu, select_smp );
+	RField * shootKey = changeKeyMenu.addMenu( string("Shoot: ") + Configuration::getShootKeyName(), normalFont, true, CHANGE_KEY_SHOOT, &changeKeyMenu, select_smp );
+
+	changeKeyMenu.addMenu( "Return", normalFont, true, INIT_OPT, NULL, select_smp );
+
 	// option_menu.addMenu( append("Frame rate ",numnum), normalFont, true,244,&frame_menu,select_smp);
 	//if ( window_mode == GFX_AUTODETECT )
 	//	option_menu->addMenu( "Windowed",Util::raptor_font,true,INIT_SCREEN,option_menu,select_smp);
 	//else    option_menu->addMenu( "Fullscreen",Util::raptor_font,true,INIT_SCREEN,option_menu,select_smp);
-	option_menu.addMenu( "Windowed", normalFont, true,INIT_SCREEN_WINDOW,&option_menu,select_smp);
-	option_menu.addMenu( "Fullscreen", normalFont, true,INIT_SCREEN_FULL,&option_menu,select_smp);
-	if ( dl )
-		option_menu.addMenu( "Background on", normalFont, true,INIT_BACK,&option_menu,select_smp);
-	else    option_menu.addMenu( "Background off", normalFont, true,INIT_BACK,&option_menu,select_smp);
+	option_menu.addMenu( "Change Keys", normalFont, true, INIT_CHANGE_KEYS, &changeKeyMenu, select_smp );
+	option_menu.addMenu( "Windowed", normalFont, true, INIT_SCREEN_WINDOW, &option_menu, select_smp );
+	option_menu.addMenu( "Fullscreen", normalFont, true, INIT_SCREEN_FULL, &option_menu, select_smp );
+
+	RField * backgroundField;
+	if ( background ){
+		backgroundField = option_menu.addMenu( "Background on", normalFont, true, INIT_BACK, &option_menu, select_smp );
+	} else {
+		backgroundField = option_menu.addMenu( "Background off", normalFont, true, INIT_BACK, &option_menu, select_smp);
+	}
 	option_menu.addMenu( "Sound", normalFont, true, 800, &sound_menu, select_smp );
 	option_menu.addMenu( "Return to Menu", normalFont, true,800,NULL,select_smp);
 
@@ -347,10 +381,10 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 	/* make music_volume be the Music::volume */
 	sprintf( musicNum, "Music volume %d", (int)(Music::getVolume() * 100) );
 
-	sound_menu.addTitle( soundNum, &menuFont );
+	RField * soundTitle = sound_menu.addTitle( soundNum, &menuFont );
 	sound_menu.addMenu( "Increase sound volume", &menuFont, true, SOUND_INC, &sound_menu, select_smp );
 	sound_menu.addMenu( "Decrease sound volume", &menuFont, true, SOUND_DEC, &sound_menu, select_smp );
-	sound_menu.addTitle( musicNum, &menuFont );
+	RField * musicTitle = sound_menu.addTitle( musicNum, &menuFont );
 	sound_menu.addMenu( "Increase music volume", &menuFont, true, MUSIC_INC, &sound_menu, select_smp );
 	sound_menu.addMenu( "Decrease music volume", &menuFont, true, MUSIC_DEC, &sound_menu, select_smp );
 	sound_menu.addMenu( "Return to options", &menuFont, true,800,NULL,select_smp);
@@ -423,28 +457,68 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 				break;
 			}
 			case MUSIC_INC  : {
-				/*
-				music_vol += 0.02;
-				if ( music_vol > 1.0 ) music_vol = 1.0;
-				*/
 				Music::louden();
-				// dumb_player->louden();
 				changed_music = true;
 				break;
 			}
 			case MUSIC_DEC  : {
-				/*
-				music_vol -= 0.02;
-				if ( music_vol < 0 ) music_vol = 0;
-				*/
-				// dumb_player->soften();
 				Music::soften();
 				changed_music = true;
-
 				break;
 			}
 			case INIT_CREDITS       : {
 				do_credits();
+				break;
+			}
+
+			case CHANGE_KEY_FORWARD : {
+				int key = userSelectKey();
+				Configuration::setForwardKey( key );
+				stringstream stream;
+				stream << "Forward: " << Configuration::getForwardKeyName();
+				string str( stream.str() );
+				forwardKey->set( &str );
+				break;
+			}
+
+			case CHANGE_KEY_LEFT : {
+				int key = userSelectKey();
+				Configuration::setLeftKey( key );
+				stringstream stream;
+				stream << "Left: " << Configuration::getLeftKeyName();
+				string str( stream.str() );
+				leftKey->set( &str );
+				break;
+			}
+
+			case CHANGE_KEY_RIGHT : {
+				int key = userSelectKey();
+				Configuration::setRightKey( key );
+				stringstream stream;
+				stream << "Right: " << Configuration::getRightKeyName();
+				string str( stream.str() );
+				rightKey->set( &str );
+
+				break;
+			}
+
+			case CHANGE_KEY_BACKWARD : {
+				int key = userSelectKey();
+				Configuration::setBackwardKey( key );
+				stringstream stream;
+				stream << "Backwards: " << Configuration::getBackwardKeyName();
+				string str( stream.str() );
+				backwardKey->set( &str );
+				break;
+			}
+
+			case CHANGE_KEY_SHOOT : {
+				int key = userSelectKey();
+				Configuration::setShootKey( key );
+				stringstream stream;
+				stream << "Shoot: " << Configuration::getShootKeyName();
+				string str( stream.str() );
+				shootKey->set( &str );
 				break;
 			}
 						  /*
@@ -475,10 +549,17 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 				Bitmap::setGfxModeWindowed( GRAPHICS_X, GRAPHICS_Y );
 				break;
 			}
-			case INIT_BACK          : {
-				if ( dl ) dl = false;else dl=true;
-				if ( dl ) option_menu.replace( 5, "Background ON", &menuFont, true, INIT_BACK, &option_menu, select_smp ); else
-					option_menu.replace( 5, "Background off", &menuFont, true, INIT_BACK, &option_menu, select_smp );
+			case INIT_BACK : {
+				background = ! background;	
+				if ( background ){
+					// option_menu.replace( 5, "Background ON", &menuFont, true, INIT_BACK, &option_menu, select_smp );
+					string str( "Background On" );
+					backgroundField->set( &str );
+				} else {
+					// option_menu.replace( 5, "Background off", &menuFont, true, INIT_BACK, &option_menu, select_smp );
+					string str( "Background Off" );
+					backgroundField->set( &str );
+				}
 				break;
 			}
 
@@ -495,18 +576,17 @@ int intro_screen( int & frames, int window_mode, bool & dl, SpaceObject ** playe
 		*/
 
 		if ( changed_sound ) {
-			// free( sound_num );
-			// sound_num = int2str( (int)(sound_vol * 100 ) );
-			sprintf( soundNum, "Sound volume %d", (int)(Util::sound_vol * 100) );
-			sound_menu.replaceTitle( 1, soundNum, &menuFont );
+			stringstream stream;
+			stream << "Sound volume " << (int)(Util::sound_vol * 100);
+			string str( stream.str() );
+			soundTitle->set( &str );
 		}
 
 		if ( changed_music ) {
-			// free( music_num );
-			// music_num = int2str( (int)(music_vol * 100 ) );
-			sprintf( musicNum, "Music volume %d", (int)(Music::getVolume() * 100) );
-			sound_menu.replaceTitle( 4, musicNum, &menuFont );
-			// al_duh_set_volume( dumb_player, music_vol );
+			stringstream stream;
+			stream << "Music volume " << (int)(Music::getVolume() * 100);
+			string str( stream.str() );
+			musicTitle->set( &str );
 		}
 
 	}
@@ -821,27 +901,6 @@ static vector< string > getSongs(){
 	return Util::getFiles( "music/", "*" );
 }
 
-/*
-static string getSong(){
-	struct al_ffblk info;
-	vector< string > files;
-
-	string dataPath = "music/";
-
-	if ( al_findfirst( (dataPath + "*").c_str(), &info, 0 ) != 0 ){
-		return "";
-	}
-	files.push_back( string( info.name ) );
-	while ( al_findnext( &info ) == 0 ){
-		files.push_back( string( info.name ) );
-	}
-	al_findclose( &info );
-
-	return dataPath + files[ Util::rnd( files.size() ) ];
-}
-*/
-
-//******************************MAIN**************************
 int rafkill( int argc, char ** argv ) {
 
 	int window = 0;

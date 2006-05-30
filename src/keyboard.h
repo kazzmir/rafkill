@@ -1,12 +1,19 @@
 #ifndef _KEYBOARD_H
 #define _KEYBOARD_H
 
+#include <string>
+
 namespace Keyboard{
 
 	const bool getAnyKey( int k1, int k2, int k3, int k4 );
 	const bool getAnyKey( int k1, int k2, int k3 );
 	const bool getAnyKey( int k1, int k2 );
 	const bool getAnyKey( int k1 );
+
+	const int readKey();
+	const bool keyPressed();
+
+	std::string keyToString( int key );
 
 	extern const int A;
 	extern const int B;

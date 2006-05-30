@@ -24,6 +24,8 @@ public:
 	//returns place in list
 	virtual int Place();
 
+	virtual void set( void * object );
+
 	//add RField to list
 	virtual void Add( RField * rf );
 
@@ -64,6 +66,7 @@ public:
 	virtual bool equiv( void * obj );
 	virtual void Draw( const Bitmap & work, int x, int y, int col );
 	virtual int Size();
+	virtual void set( void * object );
 	virtual ~RField_Name();
 protected:
 	string handle;

@@ -60,31 +60,33 @@ RMenu::~RMenu() {
 }
 
 
-void RMenu::addTitle( string title, Font * rf ) {
+RField * RMenu::addTitle( string title, Font * rf ) {
 	int ta = countNodes();
 	RField * junk = new RField_Name( rf, title, false, true, 0, NULL, ta, NO_SOUND );
 	RField * current = head;
 	while ( current->Next() != NULL ) current = current->Next();
 	current->Add( junk );
-
+	return junk;
 }
 
 
-void RMenu::addMenu( string title, Font * rf, bool s, int r, RMenu * who, int sound ) {
+RField * RMenu::addMenu( string title, Font * rf, bool s, int r, RMenu * who, int sound ) {
 	int ta = countNodes();
 	RField * junk = new RField_Name( rf, title, s, false, r, who, ta, sound );
 	RField * current = head;
 	while ( current->Next() != NULL ) current = current->Next();
 	current->Add( junk );
+	return junk;
 }
 
-
-void RMenu::addMenu( const Bitmap & look, bool s, int r, RMenu * who, int sound ) {
+RField * RMenu::addMenu( const Bitmap & look, bool s, int r, RMenu * who, int sound ) {
 	int ta = countNodes();
 	RField * junk = new RField_Bitmap( look, s, false, r, who, ta, sound );
 	RField * current = head;
 	while ( current->Next() != NULL ) current = current->Next();
 	current->Add( junk );
+
+	return junk;
 }
 
 

@@ -404,6 +404,12 @@ void Bitmap::acquire(){
 	acquire_bitmap( getBitmap() );
 }
 
+void Bitmap::drawBorder( const int border, const int color ) const {
+	for ( int i = 0; i < border; i++ ){
+		rectangle( i, i, getWidth() - i - 1, getHeight() - i - 1, color );
+	}
+}
+
 void Bitmap::release(){
 	release_bitmap( getBitmap() );
 }

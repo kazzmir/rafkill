@@ -98,6 +98,7 @@ public:
 	void vLine( const int y1, const int x, const int y2, const int color ) const;
 	void polygon( const int * verts, const int nverts, const int color ) const;
 
+	void drawBorder( const int border, const int color ) const;
 	void draw( const int x, const int y, const Bitmap & where ) const;
 	void drawLit( const int x, const int y, const int level, const Bitmap & where ) const;
 	void drawHFlip( const int x, const int y, const Bitmap & where );

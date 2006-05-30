@@ -6,6 +6,7 @@ sources = Split("""
 animation.cpp
 bitmap.cpp
 booster.cpp
+config.cpp
 defs.cpp
 drawer.cpp
 ebox.cpp
