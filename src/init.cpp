@@ -23,35 +23,13 @@ void init( int windowMode, int GAME_SPEED ) {
 	}
 	*/
 
-	int (*gfx)( int x, int y ) = Bitmap::setGfxModeWindowed;
-
-	switch ( windowMode ){
-		case 0 : {
-			gfx = Bitmap::setGfxModeFullscreen;
-			break;
-		}
-		case 1 : {
-			gfx = Bitmap::setGfxModeWindowed;
-			break;
-		}
-	}
-
 	set_color_depth( 16 );
-	if ( gfx( GRAPHICS_X, GRAPHICS_Y ) != 0 ){
-		if ( Bitmap::setGfxModeAny( GRAPHICS_X, GRAPHICS_Y ) != 0 ){
-			allegro_message( "Could not initialize a graphics mode.. bailing" );
-			exit( 1 );
-		}
+	if ( windowMode ){
+		Bitmap::setGfxModeWindowed( GRAPHICS_X, GRAPHICS_Y );
+	} else {
+		Bitmap::setGfxModeFullscreen( GRAPHICS_X, GRAPHICS_Y );
 	}
-	/*
-	if ( set_gfx_mode( gfx, GRAPHICS_X, GRAPHICS_Y, 0, 0 ) != 0 ){
-		if ( set_gfx_mode( GFX_AUTODETECT, GRAPHICS_X, GRAPHICS_Y, 0, 0 ) != 0 ) {
-			allegro_message( "Could not initialize a graphics mode.. bailing" );
-			exit( 1 );
-		}
-	}
-	*/
-	// text_mode( -1 );
+	
 	reserve_voices (8, -1);
 	set_volume_per_voice( 0 );
 	install_sound( DIGI_AUTODETECT, MIDI_NONE, "" );
@@ -68,8 +46,5 @@ void init( int windowMode, int GAME_SPEED ) {
 	Util::sound_vol = 1.0;			  //max volume to begin with
 	// music_vol = 0.50;
 	dumb_resampling_quality = get_config_int( "sound", "dumb_resampling_quality", 1 );
-
-	/* set up global screen variable */
-	// Bitmap::Screen = new Bitmap( screen );
 }
 

@@ -9,13 +9,11 @@ Command line parameters:
 	-h, -help, --help	:	Show the help screen listing the parameters
 	-l			:	Run game without showing background.
 	-w			:	Run game in windowed mode.
-	-g#			:	Run game at # speed. 40 is normal.
 
 	If the game runs to slowly for you, try using a combination of -l -g#. 
 
 	In the game you can change whether to show a background and the speed of the game.
 Getting rid of the background should significantly increase the fps if less than desired rate.
-Changing the speed of the game to much may cuase the game to crash, so please be wary. 
 
 HOW TO PLAY:
 
@@ -27,7 +25,7 @@ will "fly" towards you shooting bullets at you that you should probably dodge.
 Your job is to shoot the enemies! How simple! 
 
 Killing enemies gives you money( score ). If you kill a group of enemies, 
-which you can kind of tell becuase they move in the same pattern and are
+which you can kind of tell because they move in the same pattern and are
 close to each other, you might get a handy coin which gives you more score!
 There are other powerups, so look for them too. The score lets you buy more
 weapons and hull parts. There are 5 weapon groups and a few weapons in each

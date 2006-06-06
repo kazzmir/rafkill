@@ -50,8 +50,7 @@ static const int INIT_LOAD = 5000;
 static const int INC_RATE = 10;
 static const int DEC_RATE = 11;
 static const int INIT_HELP = 12;
-static const int INIT_SCREEN_FULL = 13;
-static const int INIT_SCREEN_WINDOW = 14;
+static const int INIT_SCREEN = 13;
 static const int SOUND_INC = 15;
 static const int SOUND_DEC = 16;
 static const int MUSIC_INC = 17;
@@ -65,6 +64,8 @@ static const int CHANGE_KEY_RIGHT = 23;
 static const int CHANGE_KEY_SHOOT = 24;
 
 static Font * normalFont = NULL;
+static int windowMode = 0;
+static bool background = true;
 
 extern void init( int GFX, int GAME_SPEED );
 
@@ -295,7 +296,7 @@ static int userSelectKey(){
 	return key;
 }
 
-int intro_screen( int & frames, int window_mode, bool & background, SpaceObject ** player, DATAFILE * sound ){
+int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 
 	char backgroundFile[ 4096 ];
 	Util::getDataPath( backgroundFile, "logosmoot.pcx" );
@@ -342,13 +343,14 @@ int intro_screen( int & frames, int window_mode, bool & background, SpaceObject 
 
 	changeKeyMenu.addMenu( "Return", normalFont, true, INIT_OPT, NULL, select_smp );
 
-	// option_menu.addMenu( append("Frame rate ",numnum), normalFont, true,244,&frame_menu,select_smp);
-	//if ( window_mode == GFX_AUTODETECT )
-	//	option_menu->addMenu( "Windowed",Util::raptor_font,true,INIT_SCREEN,option_menu,select_smp);
-	//else    option_menu->addMenu( "Fullscreen",Util::raptor_font,true,INIT_SCREEN,option_menu,select_smp);
 	option_menu.addMenu( "Change Keys", normalFont, true, INIT_CHANGE_KEYS, &changeKeyMenu, select_smp );
-	option_menu.addMenu( "Windowed", normalFont, true, INIT_SCREEN_WINDOW, &option_menu, select_smp );
-	option_menu.addMenu( "Fullscreen", normalFont, true, INIT_SCREEN_FULL, &option_menu, select_smp );
+	
+	RField * fullscreenField;
+	if ( windowMode ){
+		fullscreenField = option_menu.addMenu( "Fullscreen on", normalFont, true,INIT_SCREEN,&option_menu,select_smp);
+	} else {
+		fullscreenField = option_menu.addMenu( "Fullscreen off",  normalFont, true,INIT_SCREEN,&option_menu,select_smp);
+	}
 
 	RField * backgroundField;
 	if ( background ){
@@ -521,34 +523,19 @@ int intro_screen( int & frames, int window_mode, bool & background, SpaceObject 
 				shootKey->set( &str );
 				break;
 			}
-						  /*
-			case INIT_SCREEN        : {
-			if ( window_mode == GFX_AUTODETECT_FULLSCREEN )
-			window_mode = GFX_AUTODETECT_WINDOWED;
-			else    window_mode = GFX_AUTODETECT_FULLSCREEN;
-			if ( window_mode == GFX_AUTODETECT_WINDOWED )
-			option_menu->replace( 3, "Windowed", Util::raptor_font,true, INIT_SCREEN, option_menu, select_smp  );
-			else    option_menu->replace( 3, "Fullscreen", Util::raptor_font,true, INIT_SCREEN, option_menu, select_smp );
-			printf("Setting gfx mode to %d - Status ",window_mode);
-			int cap = set_gfx_mode( window_mode, GRAPHICS_X, GRAPHICS_Y, 0, 0 );
-			printf("%d\n",cap );
-			if ( cap == -1 ) {
-			printf("Allegro error: %s\n", allegro_error );
-			set_gfx_mode(GFX_AUTODETECT,GRAPHICS_X,GRAPHICS_Y,0,0);
-			option_menu->replace(3,"Error with gfx set", Util::raptor_font,false, INIT_SCREEN, option_menu, select_smp );
-			}
-
-			break;
-			}
-			*/
-			case INIT_SCREEN_FULL   : {
-				Bitmap::setGfxModeFullscreen( GRAPHICS_X, GRAPHICS_Y );
-				break;
-			}
-			case INIT_SCREEN_WINDOW : {
-				Bitmap::setGfxModeWindowed( GRAPHICS_X, GRAPHICS_Y );
-				break;
-			}
+			case INIT_SCREEN : {
+				windowMode = !windowMode;
+				if ( windowMode ) {
+					Bitmap::setGfxModeWindowed( GRAPHICS_X, GRAPHICS_Y );
+					string str( "Fullscreen off" );
+					fullscreenField->set( &str );
+				} else {
+					Bitmap::setGfxModeFullscreen( GRAPHICS_X, GRAPHICS_Y );
+					string str( "Fullscreen on" );
+					fullscreenField->set( &str );
+				}
+  				break;
+  			}
 			case INIT_BACK : {
 				background = ! background;	
 				if ( background ){
@@ -781,6 +768,7 @@ void playLevel( PlayerObject * const player ){
 	Drawer draw;
 	Logic logic;
 	LevelCreator level( file_level, player ); 
+	draw.setDrawLand(background);
 				
 	/* stop loading screen */
 	endLoadingScreen();
@@ -903,20 +891,18 @@ static vector< string > getSongs(){
 
 int rafkill( int argc, char ** argv ) {
 
-	int window = 0;
-	bool dl = true;
 	int gameSpeed = 40;
 
-	printf("raptor -h for help screen\n");
+	printf("rafkill -h for help screen\n");
 	for ( int q = 1; q < argc; q++ ) {
 		if ( strcmp( argv[q], "-h" ) == 0 || strcmp( argv[q], "-help" ) == 0 || strcmp( argv[q], "--help" ) == 0 ) {
 			usage();
 			return 0;
 		}
 		if ( strcmp( argv[q], "-w" ) == 0 ){
-			window = 1;
+			windowMode = 1;
 		} else if ( strcmp( argv[q], "-l" ) == 0 ){
-			dl = false;
+			background = false;
 		} else if ( strlen( argv[q] ) > 2 ){
 			if ( argv[q][1] == 'g' ){
 				gameSpeed = atoi( &argv[q][2] );
@@ -929,8 +915,8 @@ int rafkill( int argc, char ** argv ) {
 	}
 
 	cout << "Running game at " << gameSpeed << endl;
-	cout << "Using mode " << window << endl;
-	init( window, gameSpeed );
+	cout << "Using mode " << windowMode << endl;
+	init( windowMode, gameSpeed );
 	cout << "OS " << Util::getOS() << endl;
 
 	Util::loadGlobals();
@@ -966,7 +952,7 @@ int rafkill( int argc, char ** argv ) {
 	bool quit;
 	// int real_level = 1;
 	int geti;
-	while ( (geti = intro_screen( gameSpeed, window, dl, &player, Util::global_snd ) ) != INIT_QUIT ) {
+	while ( (geti = intro_screen( gameSpeed, &player, Util::global_snd ) ) != INIT_QUIT ) {
 		quit = geti == INIT_QUIT;
 		while ( ! quit ) {
 

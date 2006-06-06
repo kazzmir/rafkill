@@ -22,7 +22,7 @@ const int Bitmap::MaskColor = MASK_COLOR_16;
 const int Bitmap::MODE_TRANS = 0;
 const int Bitmap::MODE_SOLID = 1;
 
-Bitmap * Bitmap::Screen;
+Bitmap * Bitmap::Screen = NULL;
 
 Bitmap::Bitmap():
 error( false ){
@@ -497,9 +497,11 @@ int Bitmap::setGfxModeWindowed( int x, int y ){
 	return setGfxMode( GFX_AUTODETECT_WINDOWED, x, y );
 }
 
+/*
 int Bitmap::setGfxModeAny( int x, int y ){
 	return setGfxMode( GFX_AUTODETECT, x, y );
 }
+*/
 	
 int Bitmap::makeColor( int r, int g, int b ){
 	return ::makecol16( r, g, b );

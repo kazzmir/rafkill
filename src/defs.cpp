@@ -234,7 +234,7 @@ int Util::addcol( int c1, int c2 ) {
 	if ( g1 > 255 ) g1 = 255;
 	if ( b1 > 255 ) b1 = 255;
 
-	printf("C1 = %d. C2 = %d. New color = %d\n", c1, c2, makecol(r1,g1,b1) );
+	/* printf("C1 = %d. C2 = %d. New color = %d\n", c1, c2, makecol(r1,g1,b1) ); */
 
 	return makecol(r1,g1,b1);
 

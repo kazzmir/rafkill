@@ -32,6 +32,10 @@ public:
 		drawTrans = false;
 	}
 
+	inline void setDrawLand(bool value){
+		draw_land = value;
+	}
+
 	~Drawer();
 
 protected:
