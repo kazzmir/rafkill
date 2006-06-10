@@ -1,6 +1,5 @@
 Rafkill
 
-
 INSTALL: Read INSTALL
 
 Game is built to run at 25 fps, but if you need more, look at the following parameters.
