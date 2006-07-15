@@ -948,7 +948,7 @@ bool menuClass::activate( SpaceObject * player ){
 			PlayerHull * ph = (PlayerHull *)human->getHull();
 
 			while ( human->getScore() > HULL_SHIELD_WORTH && ph->getShield() < ph->getMaxShield() ) {
-				ph->incShield( 3 );
+				ph->incShield( INCREASE_SHIELD );
 
 				/*
 				if ( ph->getMaxShield() - ph->getShield() < 3 )
