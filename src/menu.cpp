@@ -82,6 +82,8 @@ using namespace std;
 #define HULL_LIFE_WORTH 1000
 #define HULL_SHIELD_WORTH 3000
 
+static const int INCREASE_SHIELD = 3;
+
 #define ANIMATION_X 180
 
 #define MENU_TITLE_COLOR (Bitmap::makeColor(240,205,7))
@@ -874,7 +876,7 @@ bool menuClass::activate( SpaceObject * player ){
 			// human->score -= HULL_SHIELD_WORTH;
 			human->IncScore( -HULL_SHIELD_WORTH );
 			// ((PlayerHull *)human->getHull())->getShield() += 3;
-			((PlayerHull *)human->getHull() )->incShield( 3 );
+			((PlayerHull *)human->getHull() )->incShield( INCREASE_SHIELD );
 
 			/*
 			if ( ((PlayerHull *)human->getHull())->getShield() > ((PlayerHull *)human->getHull())->getMaxShield() )
@@ -929,9 +931,11 @@ bool menuClass::activate( SpaceObject * player ){
 
 			PlayerHull * ph = (PlayerHull *)human->getHull();
 			while ( human->getScore() > HULL_LIFE_WORTH && ph->life < ph->getMaxLife() ) {
-				if ( ph->getMaxLife()-ph->life < 3 )
+				if ( ph->getMaxLife()-ph->life < 3 ){
 					ph->life += ph->getMaxLife()-ph->life;
-				else    ph->life+=3;
+				} else {
+					ph->life += 3;
+				}
 				// human->score -= HULL_LIFE_WORTH;
 				human->IncScore( -HULL_LIFE_WORTH );
 				score_change = true;
@@ -944,7 +948,7 @@ bool menuClass::activate( SpaceObject * player ){
 			PlayerHull * ph = (PlayerHull *)human->getHull();
 
 			while ( human->getScore() > HULL_SHIELD_WORTH && ph->getShield() < ph->getMaxShield() ) {
-				ph->incShield( ph->getMaxShield() );
+				ph->incShield( 3 );
 
 				/*
 				if ( ph->getMaxShield() - ph->getShield() < 3 )
