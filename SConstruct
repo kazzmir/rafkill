@@ -8,9 +8,20 @@ config = env.Configure();
 
 print "Use 'scons -h' for help"
 
+prefix = '/usr/local/games'
+bin = '/usr/local/bin'
+if sys.platform == 'win32':
+	try:
+		Execute(Mkdir('tmp'))
+	except:
+		pass
+	
+	prefix = 'tmp'
+	bin = 'tmp'
+
 opts = Options( 'rafkill.conf' )
-opts.Add( PathOption('prefix', 'Directory to install under', '/usr/local/games') )
-opts.Add( PathOption('bin', 'Directory where symlinked executable should go', '/usr/local/bin' ) )
+opts.Add( PathOption('prefix', 'Directory to install under', prefix ) )
+opts.Add( PathOption('bin', 'Directory where symlinked executable should go', bin ) )
 opts.Update( env )
 opts.Save( 'rafkill.conf', env )
 
