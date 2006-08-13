@@ -336,7 +336,7 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	string numnum = int2str( frames );
 
 	RField * forwardKey = changeKeyMenu.addMenu( string("Forward: ") + Configuration::getForwardKeyName(), normalFont, true, CHANGE_KEY_FORWARD, &changeKeyMenu, select_smp );
-	RField * backwardKey = changeKeyMenu.addMenu( string("Backward: ") + Configuration::getBackwardKeyName(), normalFont, true, CHANGE_KEY_BACKWARD, &changeKeyMenu, select_smp );
+	RField * backwardKey = changeKeyMenu.addMenu( string("Backwards: ") + Configuration::getBackwardKeyName(), normalFont, true, CHANGE_KEY_BACKWARD, &changeKeyMenu, select_smp );
 	RField * leftKey = changeKeyMenu.addMenu( string("Left: ") + Configuration::getLeftKeyName(), normalFont, true, CHANGE_KEY_LEFT, &changeKeyMenu, select_smp );
 	RField * rightKey = changeKeyMenu.addMenu( string("Right: ") + Configuration::getRightKeyName(), normalFont, true, CHANGE_KEY_RIGHT, &changeKeyMenu, select_smp );
 	RField * shootKey = changeKeyMenu.addMenu( string("Shoot: ") + Configuration::getShootKeyName(), normalFont, true, CHANGE_KEY_SHOOT, &changeKeyMenu, select_smp );
@@ -984,6 +984,8 @@ int rafkill( int argc, char ** argv ) {
 	if ( player ){
 		delete player;
 	}
+
+	Configuration::saveConfiguration();
 
 	cout << "Unloading data" << endl;
 

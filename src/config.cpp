@@ -1,6 +1,9 @@
 #include "config.h"
 #include "keyboard.h"
+#include "system.h"
 #include <string>
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 
@@ -123,7 +126,23 @@ void Configuration::internalSetShootKey( const int k ){
 	keyShoot = k;
 }
 
+string getConfigFile(){
+	if ( System::onWindows() ){
+		return System::getHomeDirectory() + "/" + filename;
+	} else if ( System::onUnix() ){
+		return System::getHomeDirectory() + "/.rafkill";
+	}
+	return filename;
+}
+
 void Configuration::saveConfiguration(){
+
+	ofstream config( getConfigFile().c_str() );
+
+	cout << "Config file: " << getConfigFile() << endl;
+	config << "## Rafkill config file" << endl;
+	config.close();
+
 	delete instance;
 	instance = NULL;
 }

@@ -69,27 +69,30 @@ installDir = '$prefix/'
 env.Install( installDir + 'rafkill', rafkill )
 def addData( file ):
 	env.Install( installDir + 'rafkill/data', "data/%s" % file )
-addData( '1.pck' )
-addData( '2.pck' )
-addData( '3.pck' )
-addData( 'beast.fnt' )
-addData( 'buy-menu.pcx' )
-addData( 'buy-scene.pcx' )
-addData( 'fonts.dat' )
-addData( 'intro.mod' )
-addData( 'level1.lev' )
-addData( 'level2.lev' )
-addData( 'level3.lev' )
-addData( 'level4.lev' )
-addData( 'level5.lev' )
-addData( 'level6.lev' )
-addData( 'level7.lev' )
-addData( 'level8.lev' )
-addData( 'logosmoot.pcx' )
-addData( 'raptor.dat' )
-addData( 'sound.dat' )
-addData( 'table.col' )
-addData( 'vulture.fnt' )
+
+map( lambda x: addData( x ), Split( """
+1.pck
+2.pck
+3.pck
+beast.fnt
+buy-menu.pcx
+buy-scene.pcx
+fonts.dat
+intro.mod
+level1.lev
+level2.lev
+level3.lev
+level4.lev
+level5.lev
+level6.lev
+level7.lev
+level8.lev
+logosmoot.pcx
+raptor.dat
+sound.dat
+table.col
+vulture.fnt
+"""));
 
 def addMusic( file ):
 	env.Install( installDir + 'rafkill/music', "music/%s" % file )
