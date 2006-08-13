@@ -30,6 +30,8 @@ public:
 private:
 	Configuration();
 	static Configuration * instance;
+	
+	void loadConfiguration();
 
 	int internalGetForwardKey() const;
 	int internalGetBackwardKey() const;

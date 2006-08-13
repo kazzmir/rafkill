@@ -630,6 +630,8 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	// free( music_num );
 
 	// destroy_bitmap( intr );
+	
+	Configuration::saveConfiguration();
 
 	return g;
 }
@@ -985,7 +987,7 @@ int rafkill( int argc, char ** argv ) {
 		delete player;
 	}
 
-	Configuration::saveConfiguration();
+	// Configuration::saveConfiguration();
 
 	cout << "Unloading data" << endl;
 

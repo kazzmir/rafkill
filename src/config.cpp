@@ -9,21 +9,66 @@ using namespace std;
 
 static const char * filename = "rafkill.config";
 
+string getConfigFile(){
+	if ( System::onWindows() ){
+		return System::getHomeDirectory() + "/" + filename;
+	} else if ( System::onUnix() ){
+		return System::getHomeDirectory() + "/.rafkill";
+	}
+	return filename;
+}
+
 Configuration * Configuration::instance = NULL;
 
 Configuration * Configuration::getInstance(){
-	if ( Configuration::instance == NULL ){
-		Configuration::instance = new Configuration();
+	if ( instance == NULL ){
+		instance = new Configuration();
 	}
-	return Configuration::instance;
+	return instance;
 }
 
 Configuration::Configuration(){
-	keyForward = Keyboard::UP;
-	keyBackward = Keyboard::DOWN;
-	keyLeft = Keyboard::LEFT;
-	keyRight = Keyboard::RIGHT;
-	keyShoot = Keyboard::SPACE;
+	internalSetForwardKey( Keyboard::UP );
+	internalSetBackwardKey( Keyboard::DOWN );
+	internalSetLeftKey( Keyboard::LEFT );
+	internalSetRightKey( Keyboard::RIGHT );
+	internalSetShootKey( Keyboard::SPACE );
+
+	loadConfiguration();
+}
+
+void Configuration::loadConfiguration(){
+	FILE * config = fopen( getConfigFile().c_str(), "rb" );
+	if ( ! config ){
+		return;
+	}
+	char buf[ 1024 ];
+	while ( ! feof( config ) ){
+		fgets( buf, sizeof( buf ), config );
+		if ( feof( config ) ){
+			continue;
+		}
+		if ( buf[ 0 ] != '#' ){
+			char bname[ 1024 ];
+			int key = 0;
+			sscanf( buf, "%s = %d", bname, &key );
+			string name( bname );
+			if ( name == "forward" ){
+				internalSetForwardKey( key );
+			} else if ( name == "backward" ){
+				internalSetBackwardKey( key );
+			} else if ( name == "left" ){
+				internalSetLeftKey( key );
+			} else if ( name == "right" ){
+				internalSetRightKey( key );
+			} else if ( name == "shoot" ){
+				internalSetShootKey( key );
+			} else {
+				cout << "Ignoring line " << buf << endl;
+			}
+		}
+	}
+	fclose( config );
 }
 	
 std::string Configuration::getForwardKeyName(){
@@ -126,21 +171,18 @@ void Configuration::internalSetShootKey( const int k ){
 	keyShoot = k;
 }
 
-string getConfigFile(){
-	if ( System::onWindows() ){
-		return System::getHomeDirectory() + "/" + filename;
-	} else if ( System::onUnix() ){
-		return System::getHomeDirectory() + "/.rafkill";
-	}
-	return filename;
-}
-
 void Configuration::saveConfiguration(){
 
 	ofstream config( getConfigFile().c_str() );
 
 	cout << "Config file: " << getConfigFile() << endl;
 	config << "## Rafkill config file" << endl;
+	config << "## Do not hand edit, the loader will get messed up" << endl;
+	config << "forward = " << getForwardKey() << endl;
+	config << "backward = " << getBackwardKey() << endl;
+	config << "left = " << getLeftKey() << endl;
+	config << "right = " << getRightKey() << endl;
+	config << "shoot = " << getShootKey() << endl;
 	config.close();
 
 	delete instance;
