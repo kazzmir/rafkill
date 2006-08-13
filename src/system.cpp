@@ -7,8 +7,8 @@ static const char * type(){
 	return "WINBLOWS";
 }
 
-static string homeDir(){
-	return string( "." );
+static std::string homeDir(){
+	return std::string( "." );
 }
 
 #else
