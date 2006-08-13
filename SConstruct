@@ -135,7 +135,8 @@ xpath = '$prefix/rafkill/rafkill'
 # print "XPath = " + xpath
 
 # env.SymLink( '$bin/rafkill', os.path.abspath( '$prefix/rafkill/rafkill' ) )
-env.SymLink( '$bin/rafkill', xpath )
+if sys.platform != 'win32':
+	env.SymLink( '$bin/rafkill', xpath )
 
 env.Alias( 'install', installDir )
 env.Alias( 'install', installSymlink )
