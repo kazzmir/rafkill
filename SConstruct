@@ -12,7 +12,7 @@ prefix = '/usr/local/games'
 bin = '/usr/local/bin'
 if sys.platform == 'win32':
 	try:
-		Execute(Mkdir('tmp'))
+		Execute(Mkdir('gen'))
 	except:
 		pass
 	
