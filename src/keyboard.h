@@ -13,6 +13,8 @@ namespace Keyboard{
 	const int readKey();
 	const bool keyPressed();
 
+	void clear();
+
 	std::string keyToString( int key );
 
 	extern const int A;

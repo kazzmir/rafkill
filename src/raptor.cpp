@@ -403,7 +403,10 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	current->init();
 
 	int option = -1;
-	while ( option != INIT_QUIT && option != INIT_CONTINUE && option != INIT_PLAY ) {
+	while ( option != INIT_QUIT &&
+		option != INIT_CONTINUE &&
+		option != INIT_PLAY ) {
+
 		Util::YIELD();
 		// al_poll_duh( dumb_player );
 		/*
@@ -550,6 +553,21 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 				break;
 			}
 
+		}
+
+		/* wait for enter/space to be released
+		 * so the user doesnt get into a loop of selecting
+		 * enter or space for the key and then modifying
+		 * that key again
+		 */
+		if ( option == CHANGE_KEY_SHOOT ||
+                     option == CHANGE_KEY_FORWARD ||
+                     option == CHANGE_KEY_BACKWARD ||
+                     option == CHANGE_KEY_LEFT ||
+                     option == CHANGE_KEY_RIGHT ){
+			while ( Keyboard::getAnyKey( Keyboard::SPACE, Keyboard::ENTER ) ){
+				Util::YIELD();
+			}
 		}
 
 		/*

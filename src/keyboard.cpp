@@ -27,6 +27,10 @@ const bool Keyboard::getAnyKey( int k1 ){
 const bool Keyboard::keyPressed(){
 	return ::keypressed();
 }
+
+void Keyboard::clear(){
+	::clear_keybuf();
+}
 	
 const int Keyboard::readKey(){
 	if ( ! ::keypressed() ){
