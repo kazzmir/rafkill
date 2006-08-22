@@ -402,8 +402,8 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	RMenu * temp = current;
 	current->init();
 
-	int g = -1;
-	while ( g != INIT_QUIT && g != INIT_CONTINUE && g != INIT_PLAY ) {
+	int option = -1;
+	while ( option != INIT_QUIT && option != INIT_CONTINUE && option != INIT_PLAY ) {
 		Util::YIELD();
 		// al_poll_duh( dumb_player );
 		/*
@@ -411,15 +411,15 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 		*/
 
 		temp = current;
-		g = current->procMenu( &current );
-		if ( !temp->Selected() ) g = -1;
+		option = current->procMenu( &current );
+		if ( !temp->Selected() ) option = -1;
 
 		bool changed_frames = false;
 		bool changed_sound = false;
 		bool changed_music = false;
 
-		if ( g > INIT_LOAD && g <= INIT_LOAD+6 ){
-			int load = g - INIT_LOAD;
+		if ( option > INIT_LOAD && option <= INIT_LOAD+6 ){
+			int load = option - INIT_LOAD;
 
 			// printf("Loading %d\n", load );
 			*player = loadPlayer( load );
@@ -430,10 +430,10 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 				snprintf( tmp, 64, "Error loading slot %d", load );
 				popUp( tmp );
 
-			} else g = INIT_CONTINUE;
+			} else option = INIT_CONTINUE;
 		}
 
-		switch ( g ) {
+		switch ( option ) {
 			case INC_RATE   : {
 				frames++;
 				changed_frames = true;
@@ -578,7 +578,7 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 
 	}
 
-	if ( g == INIT_PLAY ) {
+	if ( option == INIT_PLAY ) {
 
 		if ( *player != NULL )
 			delete *player;
@@ -633,7 +633,7 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	
 	Configuration::saveConfiguration();
 
-	return g;
+	return option;
 }
 
 void usage(){
