@@ -16,8 +16,8 @@ if sys.platform == 'win32':
 	except:
 		pass
 	
-	prefix = 'tmp'
-	bin = 'tmp'
+	prefix = 'gen'
+	bin = 'gen'
 
 opts = Options( 'rafkill.conf' )
 opts.Add( PathOption('prefix', 'Directory to install under', prefix ) )
