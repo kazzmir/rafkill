@@ -13,6 +13,7 @@ UninstPage instfiles
 Section "Rafkill (required)"
 	SetOutPath $INSTDIR
 	File "..\rafkill.exe"
+	File "c:\WINDOWS\system32\alleg42.dll"
 	File /r "..\gen"
 	WriteUninstaller "uninstall.exe"
 SectionEnd
