@@ -64,11 +64,8 @@ static const int CHANGE_KEY_RIGHT = 23;
 static const int CHANGE_KEY_SHOOT = 24;
 
 static Font * normalFont = NULL;
-static int windowMode = 0;
-static bool background = true;
 
 extern void init( int GFX, int GAME_SPEED );
-
 
 void credits() {
 	cout << "Exiting normally.. " << endl;
@@ -346,17 +343,17 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	option_menu.addMenu( "Change Keys", normalFont, true, INIT_CHANGE_KEYS, &changeKeyMenu, select_smp );
 	
 	RField * fullscreenField;
-	if ( windowMode ){
+	if ( Configuration::getWindowMode() ){
 		fullscreenField = option_menu.addMenu( "Fullscreen on", normalFont, true,INIT_SCREEN,&option_menu,select_smp);
 	} else {
 		fullscreenField = option_menu.addMenu( "Fullscreen off",  normalFont, true,INIT_SCREEN,&option_menu,select_smp);
 	}
 
 	RField * backgroundField;
-	if ( background ){
-		backgroundField = option_menu.addMenu( "Background on", normalFont, true, INIT_BACK, &option_menu, select_smp );
+	if ( Configuration::getBackground() ){
+		backgroundField = option_menu.addMenu( "Background off", normalFont, true, INIT_BACK, &option_menu, select_smp );
 	} else {
-		backgroundField = option_menu.addMenu( "Background off", normalFont, true, INIT_BACK, &option_menu, select_smp);
+		backgroundField = option_menu.addMenu( "Background on", normalFont, true, INIT_BACK, &option_menu, select_smp);
 	}
 	option_menu.addMenu( "Sound", normalFont, true, 800, &sound_menu, select_smp );
 	option_menu.addMenu( "Return to Menu", normalFont, true,800,NULL,select_smp);
@@ -527,8 +524,8 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 				break;
 			}
 			case INIT_SCREEN : {
-				windowMode = !windowMode;
-				if ( windowMode ) {
+				Configuration::setWindowMode( ! Configuration::getWindowMode() );
+				if ( Configuration::getWindowMode() ) {
 					Bitmap::setGfxModeWindowed( GRAPHICS_X, GRAPHICS_Y );
 					string str( "Fullscreen off" );
 					fullscreenField->set( &str );
@@ -540,14 +537,14 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
   				break;
   			}
 			case INIT_BACK : {
-				background = ! background;	
-				if ( background ){
+				Configuration::setBackground( ! Configuration::getBackground() );
+				if ( Configuration::getBackground() ){
 					// option_menu.replace( 5, "Background ON", &menuFont, true, INIT_BACK, &option_menu, select_smp );
-					string str( "Background On" );
+					string str( "Background Off" );
 					backgroundField->set( &str );
 				} else {
 					// option_menu.replace( 5, "Background off", &menuFont, true, INIT_BACK, &option_menu, select_smp );
-					string str( "Background Off" );
+					string str( "Background On" );
 					backgroundField->set( &str );
 				}
 				break;
@@ -788,7 +785,7 @@ void playLevel( PlayerObject * const player ){
 	Drawer draw;
 	Logic logic;
 	LevelCreator level( file_level, player ); 
-	draw.setDrawLand(background);
+	draw.setDrawLand( Configuration::getBackground() );
 				
 	/* stop loading screen */
 	endLoadingScreen();
@@ -920,9 +917,9 @@ int rafkill( int argc, char ** argv ) {
 			return 0;
 		}
 		if ( strcmp( argv[q], "-w" ) == 0 ){
-			windowMode = 1;
+			Configuration::setWindowMode( true );
 		} else if ( strcmp( argv[q], "-l" ) == 0 ){
-			background = false;
+			Configuration::setBackground( false );
 		} else if ( strlen( argv[q] ) > 2 ){
 			if ( argv[q][1] == 'g' ){
 				gameSpeed = atoi( &argv[q][2] );
@@ -935,8 +932,8 @@ int rafkill( int argc, char ** argv ) {
 	}
 
 	cout << "Running game at " << gameSpeed << endl;
-	cout << "Using mode " << windowMode << endl;
-	init( windowMode, gameSpeed );
+	cout << "Using window mode " << Configuration::getWindowMode() << endl;
+	init( Configuration::getWindowMode(), gameSpeed );
 	cout << "OS " << Util::getOS() << endl;
 
 	Util::loadGlobals();

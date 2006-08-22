@@ -33,6 +33,8 @@ Configuration::Configuration(){
 	internalSetLeftKey( Keyboard::LEFT );
 	internalSetRightKey( Keyboard::RIGHT );
 	internalSetShootKey( Keyboard::SPACE );
+	internalSetWindowMode( false );
+	internalSetBackground( true );
 
 	loadConfiguration();
 }
@@ -63,6 +65,10 @@ void Configuration::loadConfiguration(){
 				internalSetRightKey( key );
 			} else if ( name == "shoot" ){
 				internalSetShootKey( key );
+			} else if ( name == "window" ){
+				internalSetWindowMode( key );
+			} else if ( name == "background" ){
+				internalSetBackground( key );
 			} else {
 				cout << "Ignoring line " << buf << endl;
 			}
@@ -89,6 +95,14 @@ std::string Configuration::getRightKeyName(){
 
 std::string Configuration::getShootKeyName(){
 	return Keyboard::keyToString( getShootKey() );
+}
+
+bool Configuration::getWindowMode(){
+	return getInstance()->internalGetWindowMode();
+}
+
+bool Configuration::getBackground(){
+	return getInstance()->internalGetBackground();
 }
 
 int Configuration::getForwardKey(){
@@ -131,6 +145,14 @@ int Configuration::internalGetShootKey() const {
 	return keyShoot;
 }
 
+bool Configuration::internalGetWindowMode() const {
+	return windowMode;
+}
+
+bool Configuration::internalGetBackground() const {
+	return background;
+}
+
 void Configuration::setForwardKey( int k ){
 	getInstance()->internalSetForwardKey( k );
 }
@@ -149,6 +171,14 @@ void Configuration::setRightKey( int k ){
 
 void Configuration::setShootKey( int k ){
 	getInstance()->internalSetShootKey( k );
+}
+
+void Configuration::setWindowMode( bool b ){
+	getInstance()->internalSetWindowMode( b );
+}
+
+void Configuration::setBackground( bool b ){
+	getInstance()->internalSetBackground( b );
 }
 
 void Configuration::internalSetForwardKey( const int k ){
@@ -171,6 +201,14 @@ void Configuration::internalSetShootKey( const int k ){
 	keyShoot = k;
 }
 
+void Configuration::internalSetWindowMode( const bool b ){
+	windowMode = b;
+}
+
+void Configuration::internalSetBackground( const bool b ){
+	background = b;
+}
+
 void Configuration::saveConfiguration(){
 
 	ofstream config( getConfigFile().c_str() );
@@ -183,6 +221,8 @@ void Configuration::saveConfiguration(){
 	config << "left = " << getLeftKey() << endl;
 	config << "right = " << getRightKey() << endl;
 	config << "shoot = " << getShootKey() << endl;
+	config << "window = " << getWindowMode() << endl;
+	config << "background = " << getBackground() << endl;
 	config.close();
 
 	delete instance;
