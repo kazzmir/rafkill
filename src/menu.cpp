@@ -453,12 +453,13 @@ void menuClass::weaponMenu( RMenu * gun_menu, SpaceObject * player ) {
 	gun_menu->addTitle( "Buy Weapons", menuFont );
 	// string numnum = int2normal( player->getScore() );
 	string score = "Score ";
-	score += player->getScore();
+	score += int2normal( player->getScore() );
+	cout << "String = '" << score << "'" << endl;
 	gun_menu->addTitle( score, menuFont );
 	for ( int q = 0; q < player->getHull()->maxGuns()-1; q++ ) {
 		// numnum = int2str(q+1);
 		string bay = "Weapon Bay ";
-		bay += q + 1;
+		bay += int2normal( q + 1 );
 		gun_menu->addMenu( bay, menuFont,true,MENU_BUY+q,gun_menu, NO_SOUND );
 	}
 	gun_menu->addMenu( "Accessories", menuFont, true, 1, gun_menu, NO_SOUND );
