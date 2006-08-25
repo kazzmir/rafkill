@@ -10,7 +10,7 @@ Command line parameters:
 	-l			:	Run game without showing background.
 	-w			:	Run game in windowed mode.
 
-	If the game runs to slowly for you, try using a combination of -l -g#. 
+	If the game runs too slowly for you, try using a combination of -l -g#. 
 
 	In the game you can change whether to show a background and the speed of the game.
 Getting rid of the background should significantly increase the fps if less than desired rate.
