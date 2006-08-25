@@ -344,16 +344,16 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	
 	RField * fullscreenField;
 	if ( Configuration::getWindowMode() ){
-		fullscreenField = option_menu.addMenu( "Fullscreen on", normalFont, true,INIT_SCREEN,&option_menu,select_smp);
+		fullscreenField = option_menu.addMenu( "Fullscreen Off", normalFont, true,INIT_SCREEN,&option_menu,select_smp);
 	} else {
-		fullscreenField = option_menu.addMenu( "Fullscreen off",  normalFont, true,INIT_SCREEN,&option_menu,select_smp);
+		fullscreenField = option_menu.addMenu( "Fullscreen On",  normalFont, true,INIT_SCREEN,&option_menu,select_smp);
 	}
 
 	RField * backgroundField;
 	if ( Configuration::getBackground() ){
-		backgroundField = option_menu.addMenu( "Background off", normalFont, true, INIT_BACK, &option_menu, select_smp );
+		backgroundField = option_menu.addMenu( "Background On", normalFont, true, INIT_BACK, &option_menu, select_smp );
 	} else {
-		backgroundField = option_menu.addMenu( "Background on", normalFont, true, INIT_BACK, &option_menu, select_smp);
+		backgroundField = option_menu.addMenu( "Background Off", normalFont, true, INIT_BACK, &option_menu, select_smp);
 	}
 	option_menu.addMenu( "Sound", normalFont, true, 800, &sound_menu, select_smp );
 	option_menu.addMenu( "Return to Menu", normalFont, true,800,NULL,select_smp);
@@ -527,11 +527,11 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 				Configuration::setWindowMode( ! Configuration::getWindowMode() );
 				if ( Configuration::getWindowMode() ) {
 					Bitmap::setGfxModeWindowed( GRAPHICS_X, GRAPHICS_Y );
-					string str( "Fullscreen off" );
+					string str( "Fullscreen Off" );
 					fullscreenField->set( &str );
 				} else {
 					Bitmap::setGfxModeFullscreen( GRAPHICS_X, GRAPHICS_Y );
-					string str( "Fullscreen on" );
+					string str( "Fullscreen On" );
 					fullscreenField->set( &str );
 				}
   				break;
@@ -540,11 +540,11 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 				Configuration::setBackground( ! Configuration::getBackground() );
 				if ( Configuration::getBackground() ){
 					// option_menu.replace( 5, "Background ON", &menuFont, true, INIT_BACK, &option_menu, select_smp );
-					string str( "Background Off" );
+					string str( "Background On" );
 					backgroundField->set( &str );
 				} else {
 					// option_menu.replace( 5, "Background off", &menuFont, true, INIT_BACK, &option_menu, select_smp );
-					string str( "Background On" );
+					string str( "Background Off" );
 					backgroundField->set( &str );
 				}
 				break;
