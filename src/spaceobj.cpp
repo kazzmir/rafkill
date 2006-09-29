@@ -75,6 +75,10 @@ void SpaceObject::MoveMe( vector< SpaceObject * > * Ammo, const vector< SpaceObj
 	// return ( actualx < -20 || actualx > screen_x + 20 || actualy < -10 || actualy > screen_y + 20 );
 }
 
+void SpaceObject::destroy( vector< SpaceObject * > * objects ){
+	/* do nothing */
+}
+
 void SpaceObject::addSection( Section * onscreen ){
 	if ( hull ) hull->addSection( this, onscreen, actualx, actualy );
 }

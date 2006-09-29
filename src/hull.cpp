@@ -25,9 +25,9 @@ using namespace std;
 HullObject::HullObject( Bitmap * _drawBitmap, double _life, double _strength, int num_guns, int level, int _drawing_plane, bool _trans, ECollide * ec):
 crash( false ),
 trans( _trans ),
-strength( _strength ),
 drawLevel( _drawing_plane ),
 guns( NULL ),
+strength( _strength ),
 max_guns( num_guns ) {
 	myBitmap = _drawBitmap;
 	Shadow_Bitmap = NULL;

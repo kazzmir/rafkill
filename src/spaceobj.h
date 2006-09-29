@@ -70,6 +70,11 @@ public:
 	// fight - array of pointers to ships
 	virtual void MoveMe( vector< SpaceObject * > * Ammo, const vector< SpaceObject * > * fight, Section * onscreen );
 
+	/* the absolute last method called on this object.
+	 * gives this object a chance to spawn new objects
+	 */
+	virtual void destroy( vector< SpaceObject * > * objects );
+
 	//process: changes check according to death of object
 	virtual void Died(SpaceObject * check,ExplosionClass ** explr, int ME );
 

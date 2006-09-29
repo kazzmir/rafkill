@@ -15,8 +15,7 @@ public:
 	
 	virtual bool Damage( double much );
 	virtual void Died(SpaceObject * check,ExplosionClass ** explr, int ME );
-protected:
-	vector< SpaceObject * > * myAmmo;
+	void destroy( vector< SpaceObject * > * objects );
 };
 
 #endif

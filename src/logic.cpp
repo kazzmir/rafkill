@@ -196,6 +196,8 @@ void Logic::DeleteSpace( vector< SpaceObject *> * objs, Section * sec, const Spa
 				}
 			}
 
+			(*it)->destroy( &objs_special );
+
 			SpaceObject * del = *it;
 			it = objs->erase( it );
 			delete del;

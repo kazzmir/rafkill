@@ -45,6 +45,10 @@ public:
 	//process: returns whether or not hull can be hit by bullets
 	bool Translucent();
 
+	virtual inline const double getStrength() const{
+		return strength;
+	}
+
 	virtual inline int getHeight(){
 		if ( myBitmap ) return myBitmap->getHeight();
 		if ( collide ) return collide->getHeight();
@@ -111,7 +115,6 @@ public:
 	double original_life;
 	bool trans;
 
-	double strength;
 
 	int drawNum;
 	int drawLevel;
@@ -121,6 +124,8 @@ protected:
 	Bitmap * Shadow_Bitmap;
 	WeaponObject ** guns;
 	ECollide * collide;
+	
+	double strength;
 
 public:
 
