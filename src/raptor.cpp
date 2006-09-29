@@ -323,7 +323,8 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 		intro_menu.addMenu( "Continue", normalFont, true, INIT_CONTINUE,NULL,select_smp);
 	}
 
-	intro_menu.addMenu( "Play new", normalFont, true,INIT_PLAY,NULL,select_smp);
+	// intro_menu.addMenu( "Play new", normalFont, true,INIT_PLAY,NULL,select_smp);
+	intro_menu.addMenu( "Play new", normalFont, true, INIT_PLAY, &difficulty_menu, select_smp );
 	intro_menu.addMenu( "Load Game", normalFont, true,INIT_LOAD,&load_menu,select_smp);
 	intro_menu.addMenu( "Options", normalFont, true,INIT_OPT,&option_menu,select_smp);
 	intro_menu.addMenu( "Credits", normalFont, true,INIT_CREDITS,&intro_menu,select_smp);
@@ -400,15 +401,10 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	current->init();
 
 	int option = -1;
-	while ( option != INIT_QUIT &&
-		option != INIT_CONTINUE &&
-		option != INIT_PLAY ) {
+	bool done = false;
+	while ( ! done ){
 
 		Util::YIELD();
-		// al_poll_duh( dumb_player );
-		/*
-		dumb_player->play();
-		*/
 
 		temp = current;
 		option = current->procMenu( &current );
@@ -536,6 +532,13 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 				}
   				break;
   			}
+			
+			case INIT_CONTINUE :
+			case INIT_QUIT : {
+				done = true;
+				break;
+			}
+
 			case INIT_BACK : {
 				Configuration::setBackground( ! Configuration::getBackground() );
 				if ( Configuration::getBackground() ){
@@ -550,6 +553,21 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 				break;
 			}
 
+			/* selected a new game */
+			case DIFFICULT_MENU + 1 :
+			case DIFFICULT_MENU + 2 :
+			case DIFFICULT_MENU + 3 :
+			case DIFFICULT_MENU + 4 :
+			case DIFFICULT_MENU + 5 : {
+				if ( *player != NULL ){
+					delete *player;
+				}
+
+				int difficulty = option - DIFFICULT_MENU;
+				*player = getNewPlayer( difficulty );
+				done = true;
+				break;
+			}
 		}
 
 		/* wait for enter/space to be released
@@ -567,16 +585,6 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 			}
 		}
 
-		/*
-		if ( changed_frames ) {
-			free( numnum );
-			numnum = int2str( frames );
-			option_menu.replaceTitle( 2, append("Frame Rate ",numnum), &menuFont );
-			frame_menu.replaceTitle( 1, append("Frame Rate ",numnum), &menuFont );
-			install_int_ex( inc_speed_counter, MSEC_TO_TIMER( frames ) );
-		}
-		*/
-
 		if ( changed_sound ) {
 			stringstream stream;
 			stream << "Sound volume " << (int)(Util::sound_vol * 100);
@@ -593,7 +601,8 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 
 	}
 
-	if ( option == INIT_PLAY ) {
+	/*
+	if ( 0 && option == INIT_PLAY ) {
 
 		if ( *player != NULL )
 			delete *player;
@@ -609,20 +618,8 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 		int difficulty = v - DIFFICULT_MENU;
 
 		*player = getNewPlayer( difficulty );
-
-		/*
-		BITMAP ** pics = new BITMAP*[ 9 ];
-		for ( int q = 0; q < 9; q++ )
-			pics[q] = (BITMAP *)Util::global_data[HULL_1_1+q].dat;
-		HullObject * hwho = new PlayerHull( pics, 9, 100, 100, 3, 1, new ECollide( pics[4], 6, makecol(255,0,255), 52 ) );
-		*player = new PlayerObject(320,450, difficulty, hwho );
-		WeaponObject * wwho = new WeaponMachineGun( 0, -1, NULL, TEAM_PLAYER );
-		(*player)->giveWeapon( wwho, 0 );
-		( ((PlayerObject *) (*player) ) )->level = 1;
-		*/
-
-
 	}
+	*/
 
 	if ( *player != NULL ){
 		PlayerObject * px = (PlayerObject *)(*player);
@@ -631,21 +628,6 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 		else    Util::screen_x = 640*3/2;
 	}
 
-	//al_stop_duh( dumb_player );
-	//unload_duh( dumb_file );
-
-	/*
-	delete intro_menu;
-	delete option_menu;
-	delete frame_menu;
-	delete difficulty_menu;
-	delete sound_menu;
-	*/
-	// free( sound_num );
-	// free( music_num );
-
-	// destroy_bitmap( intr );
-	
 	Configuration::saveConfiguration();
 
 	return option;

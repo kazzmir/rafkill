@@ -454,7 +454,7 @@ void menuClass::weaponMenu( RMenu * gun_menu, SpaceObject * player ) {
 	// string numnum = int2normal( player->getScore() );
 	string score = "Score ";
 	score += int2normal( player->getScore() );
-	cout << "String = '" << score << "'" << endl;
+	// cout << "String = '" << score << "'" << endl;
 	gun_menu->addTitle( score, menuFont );
 	for ( int q = 0; q < player->getHull()->maxGuns()-1; q++ ) {
 		// numnum = int2str(q+1);

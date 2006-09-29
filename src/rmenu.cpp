@@ -423,6 +423,11 @@ int RMenu::procMenu( RMenu ** current ) {
 			}  else *current = prev;
 		}
 	}
-	return location->Val();
 
+	if ( Keyboard::getAnyKey( Keyboard::ESC ) ){
+		*current = (*current)->prev;
+		return 0;
+	}
+
+	return location->Val();
 }
