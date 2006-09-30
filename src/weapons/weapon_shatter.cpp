@@ -20,9 +20,9 @@ bool Shatter::Damage( double much ) {
 }
 
 void Shatter::destroy( vector< SpaceObject * > * objects ){
-	for ( int q = 0; q < hull->getStrength() * 3; q++ ) {
+	for ( int q = 0; q < hull->getStrength() * 4; q++ ) {
 		int ang = Util::rnd( 360 );
-		double speed = 9.1;
+		double speed = 8 + (double)Util::rnd( 20 ) / 5.0;
 
 		HullObject * add_h = new Machine_WHull( 1 );
 		add_h->life = hull->getStrength() / 3 + 1;

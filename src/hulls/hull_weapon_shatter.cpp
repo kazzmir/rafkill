@@ -18,13 +18,15 @@ bool Shatter_WHull::Collide( int mx, int my, SpaceObject * check ) {
 	if ( check->HitMe( mx, my ) )
 		return true;
 
-	for ( int ang = 0; ang < 360; ang += 65 ) {
+	for ( double f = 2; f < getStrength(); f += 3 ){
+		for ( int ang = 0; ang < 360; ang += 60 ) {
 
-		int tx = (int)(mx + Tcos(ang)*strength );
-		int ty = (int)(my + Tsine(ang)*strength );
-		if ( check->HitMe( tx, ty ) )
-			return true;
-
+			int tx = (int)(mx + Tcos(ang) * f );
+			int ty = (int)(my + Tsine(ang) * f );
+			if ( check->HitMe( tx, ty ) ){
+				return true;
+			}
+		}
 	}
 
 	return false;

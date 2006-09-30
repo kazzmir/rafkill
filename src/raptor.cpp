@@ -805,10 +805,12 @@ void playLevel( PlayerObject * const player ){
 			Util::getTicks( &ticks );
 		}
 
+		/*
 		while ( Keyboard::getAnyKey( Keyboard::L ) && counter < 7 ){
 			counter += Util::getTicks( &ticks );
 			Util::YIELD();
 		}
+		*/
 
 		if ( deathCounter == 0 ){
 			if ( player->getLife() <= 0 ){
