@@ -1,6 +1,6 @@
 Name "Rafkill"
 
-OutFile "rafkill-1.2.2.exe"
+OutFile "rafkill-1.2.3.exe"
 
 InstallDir $PROGRAMFILES\Rafkill
 
