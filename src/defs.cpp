@@ -170,7 +170,7 @@ vector< string > Util::getFiles( string dataPath, string find ){
 
 	dataPath = getInstallDirectory() + dataPath;
 
-	if ( al_findfirst( (dataPath + find).c_str(), &info, FA_ARCH ) != 0 ){
+	if ( al_findfirst( (dataPath + find).c_str(), &info, FA_ALL ) != 0 ){
 		return files;
 	}
 	files.push_back( string( info.name ) );
