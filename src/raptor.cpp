@@ -902,6 +902,8 @@ int rafkill( int argc, char ** argv ) {
 		}
 		if ( strcmp( argv[q], "-w" ) == 0 ){
 			Configuration::setWindowMode( true );
+		} else if ( strcmp( argv[q], "-W" ) == 0 ){
+			Configuration::setWindowMode( false );
 		} else if ( strcmp( argv[q], "-l" ) == 0 ){
 			Configuration::setBackground( false );
 		} else if ( strlen( argv[q] ) > 2 ){
