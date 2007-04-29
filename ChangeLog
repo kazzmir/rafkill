@@ -1,3 +1,7 @@
+Rafkill 1.2.3 to 1.2.4
+
+* Added -W switch for fullscreen mode
+
 Rafkill 1.2.2 to 1.2.3
 
 * Fixed a crash where the shatter weapon would try to add other objects to a
