@@ -26,6 +26,9 @@ o_dy( _dy ){
 	accel_y = 0;
 }
 
+Move::~Move(){
+}
+
 /*
 int Move::AX(){
 	/ *
@@ -108,6 +111,8 @@ Move( _dx, _dy ) {
 	//dx = 2.3;
 }
 
+MoveHorizontal::~MoveHorizontal(){
+}
 
 void MoveHorizontal::action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy ) {
 
@@ -134,6 +139,9 @@ fx( -1 ),
 fy( -1 ),
 sx( _dx ),
 sy( _dy ){}
+
+MoveMine::~MoveMine(){
+}
 
 void MoveMine::action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy ) {
 
@@ -170,6 +178,8 @@ dir( Util::rnd(10) + 2 ) {
 	// if ( dx == 0 ) dx = dy;
 }
 
+MoveAngular::~MoveAngular(){
+}
 
 void MoveAngular::action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy ) {
 
@@ -193,6 +203,9 @@ MoveSwingRight::MoveSwingRight( double _dx, double _dy ):
 Move( _dx, _dy ){
 	accel_x = 0.15;
 	accel_y = 0;
+}
+
+MoveSwingRight::~MoveSwingRight(){
 }
 
 void MoveSwingRight::action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy ) {
@@ -219,6 +232,8 @@ void MoveSwingLeft::action( const vector< SpaceObject * > * fight, int x, int y,
 	// return MoveReal();
 }
 
+MoveSwingLeft::~MoveSwingLeft(){
+}
 
 //}
 //{
@@ -226,6 +241,9 @@ MoveSwingDown::MoveSwingDown( double _dx, double _dy ):
 Move( _dx, _dy ){
 	accel_x = 0;
 	accel_y = 0.13;
+}
+
+MoveSwingDown::~MoveSwingDown(){
 }
 
 void MoveSwingDown::action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy ) {
@@ -242,6 +260,9 @@ void MoveSwingDown::action( const vector< SpaceObject * > * fight, int x, int y,
 MoveSine::MoveSine( double _dx, double _dy ):
 Move( _dx, _dy ),
 ang( 0 ){}
+
+MoveSine::~MoveSine(){
+}
 
 void MoveSine::action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy ) {
 	accel_x = Tcos(ang);
@@ -262,6 +283,8 @@ ang( 90 ) {
 
 }
 
+MoveCircle_Player::~MoveCircle_Player(){
+}
 
 void MoveCircle_Player::action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy ) {
 

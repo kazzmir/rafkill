@@ -9,6 +9,8 @@ class ExplosionClass{
 public:
 	ExplosionClass( int cx, int cy, double walkx, double walky, int rad );
 
+	virtual ~ExplosionClass();
+
 	//process: moves according to dx, dy and changes radius
 	virtual bool update();
 

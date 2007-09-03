@@ -123,8 +123,10 @@ char upcase( char u ) {
 
 
 void upstring( char * who ) {
-	while ( *who != 0 )
-		*who++ = upcase( *who );
+	while ( *who != 0 ){
+		*who = upcase( *who );
+		who++;
+	}
 }
 
 

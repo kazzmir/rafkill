@@ -23,6 +23,8 @@ public:
 	virtual double Accel_Y();
 	*/
 
+	virtual ~Move();
+
 protected:
 
 	// virtual bool MoveReal();
@@ -52,6 +54,7 @@ class MoveHorizontal: public Move{
 public:
 	MoveHorizontal( double _dx, double _dy );
 	virtual void action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy );
+	virtual ~MoveHorizontal();
 protected:
 	int dir;
 };
@@ -62,6 +65,7 @@ public:
 
 	MoveMine( double _dx, double _dy );
 	virtual void action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy );
+	virtual ~MoveMine();
 protected:
 	int fx, fy;
 	double sx, sy;
@@ -72,6 +76,7 @@ class MoveAngular: public Move{
 public:
 	MoveAngular( double _dx, double _dy );
 	virtual void action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy );
+	virtual ~MoveAngular();
 protected:
 	int ang;
 	int dir;
@@ -82,6 +87,7 @@ class MoveSwingRight: public Move{
 public:
 	MoveSwingRight( double _dx, double _dy );
 	virtual void action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy );
+	virtual ~MoveSwingRight();
 };
 
 //Move down and slowly increases its negative dx speed
@@ -89,6 +95,7 @@ class MoveSwingLeft: public Move{
 public:
 	MoveSwingLeft( double _dx, double _dy );
 	virtual void action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy );
+	virtual ~MoveSwingLeft();
 };
 
 //Slowly increases its dy speed
@@ -96,6 +103,8 @@ class MoveSwingDown: public Move{
 public:
 	MoveSwingDown( double _dx, double _dy );
 	virtual void action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy );
+
+	virtual ~MoveSwingDown();
 };
 
 //Moves from side to side in a sine wave motion.
@@ -103,6 +112,7 @@ class MoveSine: public Move{
 public:
 	MoveSine( double _dx, double _dy );
 	virtual void action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy );
+	virtual ~MoveSine();
 
 protected:
 	int ang;
@@ -112,6 +122,7 @@ class MoveCircle_Player: public Move{
 public:
 	MoveCircle_Player( double _dx, double _dy );
 	virtual void action( const vector< SpaceObject * > * fight, int x, int y, double & sdx, double & sdy );
+	virtual ~MoveCircle_Player();
 
 protected:
 	int ang;

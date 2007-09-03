@@ -13,6 +13,9 @@ wx( walkx ),
 wy( walky ),
 radius( rad ),
 max_rad( rad ){}
+	
+ExplosionClass::~ExplosionClass(){
+}
 
 bool ExplosionClass::update() {
 	vx += wx;

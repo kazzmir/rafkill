@@ -65,8 +65,10 @@ static void * playMusic( void * _music ){
 
 	cout << "Playing music" << endl;
 
+	/*
 	unsigned int tick = 0;
 	unsigned int counter;
+	*/
 
 	bool playing = true;
 	while ( playing ){
