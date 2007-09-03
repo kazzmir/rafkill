@@ -799,7 +799,9 @@ bool menuClass::activate( SpaceObject * player ){
 		
 		if ( call >= MENU_SAVE && call <= MENU_SAVE+6 ){
 			int save_game = call - MENU_SAVE + 1;
-			savePlayer( player, save_game );
+			if ( savePlayer( player, save_game ) != 0 ){
+				printf( "Could not save game\n" );
+			}
 			getSaveMenu( &save_menu );
 		}
 

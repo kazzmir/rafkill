@@ -1,0 +1,34 @@
+#level 1
+
+#max hull is 9
+[hull] = 0 1 2 3 4
+
+#gun types:
+# 0 - Straight Shooter
+# 1 - Large Straight Shooter
+# 2 - Double Near Straight Shooter
+# 3 - Double Far Straight Shooter
+# 4 - Find Single
+# 5 - Fire
+# 6 - Find Single Machine
+# 7 - Find Large
+# 8 - Machine Light
+# 9 - Missle
+# 10 - Side
+# 11 - Twirl Straight
+# 12 - Twirl Find
+# 13 - Twirl Machine
+# 14 - Cork
+[guns] = 0 1 2 3 4  5 6 7 8 10 11 12 13
+
+#move types:
+# 0	Move
+# 1	Horizontal
+# 2	Mine
+# 3	Angular
+# 4	Swing Right
+# 5	Swing Left
+# 6	Sine
+# 7	Swing Down
+[move] = 0 1 2 3 4 5 6 7 8
+#end

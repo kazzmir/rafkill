@@ -101,6 +101,9 @@ int savePlayer( SpaceObject * player, int game_slot ){
 
 	// printf("Save string = %s\n", final );
 	FILE * fv = fopen( filename, "wb" );
+	if ( fv == NULL ){
+		return 1;
+	}
 	fwrite( final, sizeof(char), strlen(final), fv );
 	fclose( fv );
 
