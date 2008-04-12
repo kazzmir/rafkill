@@ -25,6 +25,7 @@ loading_screen.cpp
 logic.cpp
 main.cpp
 menu.cpp
+mouse.cpp
 move.cpp
 move_find.cpp
 music.cpp

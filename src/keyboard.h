@@ -1,5 +1,5 @@
-#ifndef _KEYBOARD_H
-#define _KEYBOARD_H
+#ifndef _rafkill_keyboard_h
+#define _rafkill_keyboard_h
 
 #include <string>
 

@@ -15,6 +15,7 @@ void init( int windowMode, int GAME_SPEED ) {
 	srand( time( NULL ) );
 	install_timer();
 	install_keyboard();
+	install_mouse();
 
 	/*
 	if ( get_desktop_resolution(&Util::screen_x,&Util::screen_y) == -1 ){

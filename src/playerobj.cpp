@@ -8,7 +8,6 @@
 #include "hull.h"
 #include "hulls/hull_player.h"
 
-
 PlayerObject::PlayerObject(int qx, int qy, int _difficulty, HullObject * hnew):
 ShipObject(qx,qy,0,hnew,NULL,NULL,TEAM_PLAYER),
 difficulty( _difficulty ),
