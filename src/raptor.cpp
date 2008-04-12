@@ -7,6 +7,7 @@
 #include "trigtable.h"
 #include "bitmap.h"
 #include "keyboard.h"
+#include "mouse.h"
 #include "strings.h"
 #include <string.h>
 #include <sstream>
@@ -46,6 +47,7 @@ static const int INIT_CREDITS = 4;
 static const int INIT_BACK = 6;
 static const int INIT_SAVE = 7;
 static const int INIT_CHANGE_KEYS = 8;
+static const int INIT_MOUSE = 9;
 static const int INIT_LOAD = 5000;
 static const int INC_RATE = 10;
 static const int DEC_RATE = 11;
@@ -55,6 +57,8 @@ static const int SOUND_INC = 15;
 static const int SOUND_DEC = 16;
 static const int MUSIC_INC = 17;
 static const int MUSIC_DEC = 18;
+static const int MOUSE_INC = 100;
+static const int MOUSE_DEC = 101;
 static const int DIFFICULT_MENU = 1000;
 
 static const int CHANGE_KEY_FORWARD = 20;
@@ -313,6 +317,7 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	RMenu frame_menu( intr, 1, 230, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
 	RMenu difficulty_menu( intr, 1, 180, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
 	RMenu changeKeyMenu( intr, 1, 180, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
+	RMenu mouseMenu( intr, 1, 180, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
 	RMenu sound_menu( intr, 1, 145, 1000, Bitmap::makeColor(120,0,0), Bitmap::makeColor(255,0,0), RAPTOR_TITLE_COLOR );
 	RMenu load_menu( intr, 1, 200, 1000, Bitmap::makeColor(128,64,0), Bitmap::makeColor(255,128,0), RAPTOR_TITLE_COLOR );
 
@@ -340,8 +345,19 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	RField * shootKey = changeKeyMenu.addMenu( string("Shoot: ") + Configuration::getShootKeyName(), normalFont, true, CHANGE_KEY_SHOOT, &changeKeyMenu, select_smp );
 
 	changeKeyMenu.addMenu( "Return", normalFont, true, INIT_OPT, NULL, select_smp );
+	
+	Font menuFont = Util::getMenuFont();
+
+	int mouse_sensitivity = (int)(mouse::getSensitivity() * 3);
+	char mouseNum[ 64 ];
+	sprintf( mouseNum, "Sensitivity: %d", mouse_sensitivity );
+	RField * mouseSensitivity = mouseMenu.addTitle( mouseNum, &menuFont );
+	mouseMenu.addMenu( "Increase sensitivity", &menuFont, true, MOUSE_INC, &mouseMenu, select_smp );
+	mouseMenu.addMenu( "Decrease sensitivity", &menuFont, true, MOUSE_DEC, &mouseMenu, select_smp );
+	mouseMenu.addMenu( "Return", normalFont, true, INIT_OPT, NULL, select_smp );
 
 	option_menu.addMenu( "Change Keys", normalFont, true, INIT_CHANGE_KEYS, &changeKeyMenu, select_smp );
+	option_menu.addMenu( "Mouse", normalFont, true, INIT_MOUSE, &mouseMenu, select_smp );
 	
 	RField * fullscreenField;
 	if ( Configuration::getWindowMode() ){
@@ -374,7 +390,6 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 
 	// int music_volume = 100;
 
-	Font menuFont = Util::getMenuFont();
 
 	sprintf( soundNum, "Sound volume %d", (int)(Util::sound_vol * 100 ));
 
@@ -462,6 +477,28 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 			case MUSIC_DEC  : {
 				Music::soften();
 				changed_music = true;
+				break;
+			}
+			case MOUSE_INC : {
+				mouse_sensitivity = mouse_sensitivity + 1;
+				if ( mouse_sensitivity > 20 ){
+					mouse_sensitivity = 20;
+				}
+				sprintf( mouseNum, "Sensitivity: %d", mouse_sensitivity );
+				string str( mouseNum );
+				mouse::setSensitivity( mouse_sensitivity );
+				mouseSensitivity->set( &str );
+				break;
+			}
+			case MOUSE_DEC : {
+				mouse_sensitivity = mouse_sensitivity - 1;
+				if ( mouse_sensitivity < 1 ){
+					mouse_sensitivity = 1;
+				}
+				sprintf( mouseNum, "Sensitivity: %d", mouse_sensitivity );
+				string str( mouseNum );
+				mouse::setSensitivity( mouse_sensitivity );
+				mouseSensitivity->set( &str );
 				break;
 			}
 			case INIT_CREDITS       : {

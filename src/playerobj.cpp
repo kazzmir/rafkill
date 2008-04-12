@@ -3,6 +3,7 @@
 #include "spaceobj.h"
 #include "booster.h"
 #include "keyboard.h"
+#include "mouse.h"
 #include "bitmap.h"
 #include "gunobj.h"
 #include "hull.h"
@@ -162,6 +163,11 @@ struct input PlayerObject::keyboardInput(){
 		all.shoot = true;
 	}
 		
+	if ( Keyboard::getAnyKey( Keyboard::ALT, Keyboard::ALTGR ) ){
+		all.change_weapons = true;
+	}
+
+	/*
 	if ( !holding_accessory ){
 		if ( Keyboard::getAnyKey( Keyboard::ALT, Keyboard::ALTGR ) ){
 			all.change_weapons = true;
@@ -172,12 +178,20 @@ struct input PlayerObject::keyboardInput(){
 	if ( ! Keyboard::getAnyKey( Keyboard::ALT, Keyboard::ALTGR ) ){
 		holding_accessory = false;
 	}
+	*/
 
 	return all;
 }
 
 struct input PlayerObject::mouseInput(){
 	struct input all = emptyInput();
+
+	int x, y;
+	mouse::get_mickeys( &x, &y );
+	all.dx = (double) x * mouse::getSensitivity();
+	all.dy = (double) y * mouse::getSensitivity();
+	all.shoot = mouse::leftClick();
+	all.change_weapons = mouse::rightClick();
 
 	return all;
 }
@@ -227,8 +241,13 @@ void PlayerObject::userInput( const vector< SpaceObject * > * fight, vector< Spa
 	setDX( mdx );
 	setDY( mdy );
 	
-	if ( all.change_weapons ){
+	if ( !holding_accessory && all.change_weapons ){
 		((PlayerHull *)hull)->NextAccessory();
+		holding_accessory = true;
+	}
+
+	if ( ! all.change_weapons ){
+		holding_accessory = false;
 	}
 	
 	if ( all.shoot ){

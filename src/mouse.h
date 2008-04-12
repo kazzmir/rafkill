@@ -8,6 +8,8 @@ namespace mouse{
 	bool leftClick();
 	bool rightClick();
 
+	double getSensitivity();
+	void setSensitivity( int x );
 }
 
 #endif

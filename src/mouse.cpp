@@ -12,3 +12,12 @@ bool mouse::leftClick(){
 bool mouse::rightClick(){
 	return mouse_b & 2;
 }
+	
+static double sensitive = 1.0;
+double mouse::getSensitivity(){
+	return sensitive;
+}
+
+void mouse::setSensitivity( int x ){
+	sensitive = (double) x / 3.0;
+}
