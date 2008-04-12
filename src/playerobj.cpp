@@ -8,6 +8,7 @@
 #include "hull.h"
 #include "hulls/hull_player.h"
 
+
 PlayerObject::PlayerObject(int qx, int qy, int _difficulty, HullObject * hnew):
 ShipObject(qx,qy,0,hnew,NULL,NULL,TEAM_PLAYER),
 difficulty( _difficulty ),
@@ -110,38 +111,61 @@ void PlayerObject::MoveMe( vector< SpaceObject * > * Ammo, const vector< SpaceOb
 
 }
 
-void PlayerObject::joyInput(){
-	/* TODO: Add joystick code */
+static struct input emptyInput(){
+	struct input i;
+	i.dx = 0;
+	i.dy = 0;
+	i.shoot = false;
+	i.change_weapons = false;
+	return i;
 }
 
-void PlayerObject::keyboardInput(){
+struct input PlayerObject::joyInput(){
+	struct input joy = emptyInput();
+	/* TODO: Add joystick code */
+	return joy;
+}
 
-	key_UP = Keyboard::getAnyKey( Keyboard::UP,
-				      Keyboard::W,
-				      Keyboard::PAD_8 );
+struct input PlayerObject::keyboardInput(){
+	struct input all = emptyInput();
+	
+	const double move = 11.23;
 
-	key_DOWN = Keyboard::getAnyKey( Keyboard::DOWN,
-			                Keyboard::X,
-					Keyboard::S,
-					Keyboard::PAD_2 );
+	if ( Keyboard::getAnyKey( Keyboard::UP,
+				  Keyboard::W,
+				  Keyboard::PAD_8 ) ){
+		all.dy = -move;
+	}
 
-	key_RIGHT = Keyboard::getAnyKey( Keyboard::RIGHT,
-			                 Keyboard::D,
-					 Keyboard::PAD_6 );
+	if ( Keyboard::getAnyKey( Keyboard::DOWN,
+				  Keyboard::X,
+				  Keyboard::S,
+				  Keyboard::PAD_2 ) ){
+		all.dy = move;
+	}
 
-	key_LEFT = Keyboard::getAnyKey( Keyboard::LEFT,
-			                Keyboard::A,
-					Keyboard::PAD_4 );
+	if ( Keyboard::getAnyKey( Keyboard::RIGHT,
+				  Keyboard::D,
+				  Keyboard::PAD_6 ) ){
+		all.dx = move;
+	}
+
+	if ( Keyboard::getAnyKey( Keyboard::LEFT,
+				  Keyboard::A,
+				  Keyboard::PAD_4 ) ){
+		all.dx = -move;
+	}
 
 
-	key_SHOOT = Keyboard::getAnyKey( Keyboard::SPACE,
-			                 Keyboard::ENTER,
-					 Keyboard::ENTER_PAD );
+	if ( Keyboard::getAnyKey( Keyboard::SPACE,
+				  Keyboard::ENTER,
+				  Keyboard::ENTER_PAD ) ){
+		all.shoot = true;
+	}
 		
 	if ( !holding_accessory ){
 		if ( Keyboard::getAnyKey( Keyboard::ALT, Keyboard::ALTGR ) ){
-			key_ACCESSORY = true;
-			// ((PlayerHull *)hull)->NextAccessory();
+			all.change_weapons = true;
 			holding_accessory = true;
 		}
 	}
@@ -150,55 +174,34 @@ void PlayerObject::keyboardInput(){
 		holding_accessory = false;
 	}
 
-	/*
-	if ( key[KEY_UP] || key[KEY_W] || key[KEY_8_PAD] ) {
-		setAccelY( -move_quick );
-		if ( change_frame % 2 == 0 ) {
-			int mx = getX() + getMaxX() / 2;
-			int my = getY() + getMaxY() / 2;
-			mx = getX();
-			my = getY();
-			engine.add( mx-7, my );
-			engine.add( mx+7, my );
-		}
-	}
-	if ( key[KEY_DOWN] || key[KEY_X] || key[KEY_S] || key[KEY_2_PAD] ) {
-		setAccelY( move_quick );
-	}
+	return all;
+}
 
-	if ( key[KEY_RIGHT] || key[KEY_D] || key[KEY_6_PAD] ) {
-		setAccelX( move_quick );
-	}
-	if ( key[KEY_LEFT] || key[KEY_A] || key[KEY_4_PAD] ) {
-		setAccelX( -move_quick );
-	}
+struct input PlayerObject::mouseInput(){
+	struct input all = emptyInput();
 
-	if ( !holding_accessory )
-	if ( key[KEY_ALT] || key[KEY_ALTGR] ) {
-		((PlayerHull *)hull)->NextAccessory();
-		holding_accessory = true;
-	}
-
-	if ( !key[KEY_ALT] && !key[KEY_ALTGR] ) holding_accessory = false;
-	*/
-
-
+	return all;
 }
 
 void PlayerObject::userInput( const vector< SpaceObject * > * fight, vector< SpaceObject * > * Ammo ){
 
-	setAccelX( 0 );
-	setAccelY( 0 );
-	
+	struct input keyboard = keyboardInput();
+	struct input mouse = mouseInput();
+	struct input joy = joyInput();
+
+	struct input all;
+	all.dx = keyboard.dx + mouse.dx + joy.dx;
+	all.dy = keyboard.dy + mouse.dy + joy.dy;
+	all.shoot = keyboard.shoot || mouse.shoot || joy.shoot;
+	all.change_weapons = keyboard.change_weapons || mouse.change_weapons || joy.change_weapons;
+
 	if ( ++change_frame >= 10 ) change_frame = 0;
 
-	key_UP = key_DOWN = key_RIGHT = key_LEFT = key_SHOOT = key_ACCESSORY = false;
+	// key_UP = key_DOWN = key_RIGHT = key_LEFT = key_SHOOT = key_ACCESSORY = false;
 
-	keyboardInput();
-	
-	#define move_quick 11.23
-	if ( key_UP ){
-		setAccelY( -move_quick );
+	setAccelY( all.dy );
+	setAccelX( all.dx );
+	if ( all.dy < 0.0 ){
 		if ( change_frame % 2 == 0 ) {
 			int mx = getX() + getMaxX() / 2;
 			int my = getY() + getMaxY() / 2;
@@ -208,18 +211,7 @@ void PlayerObject::userInput( const vector< SpaceObject * > * fight, vector< Spa
 			engine.add( mx+7, my );
 		}
 	}
-	if ( key_DOWN ){
-		setAccelY( move_quick );
-	}
 
-	if ( key_RIGHT ){
-		setAccelX( move_quick );
-	}
-
-	if ( key_LEFT ){
-		setAccelX( -move_quick );
-	}
-	#undef move_quick
 	
 	double mdx = getDX();
 	double mdy = getDY();
@@ -236,14 +228,15 @@ void PlayerObject::userInput( const vector< SpaceObject * > * fight, vector< Spa
 	setDX( mdx );
 	setDY( mdy );
 	
-	if ( key_ACCESSORY )
+	if ( all.change_weapons ){
 		((PlayerHull *)hull)->NextAccessory();
+	}
 	
-	if ( key_SHOOT )
+	if ( all.shoot ){
 		shootGuns( Ammo, fight );
-	else	idleGuns( Ammo, fight );
-
-	
+	} else {
+		idleGuns( Ammo, fight );
+	}
 }
 
 void PlayerObject::idleGuns( vector< SpaceObject * > * Ammo, const vector< SpaceObject * > * fight ){

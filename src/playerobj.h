@@ -9,6 +9,12 @@ class SpaceObject;
 class HullObject;
 class Section;
 
+struct input{
+	double dx, dy;
+	bool shoot;
+	bool change_weapons;
+};
+
 class PlayerObject:public ShipObject{
 public:
 	PlayerObject(int qx, int qy, int _difficulty, HullObject * hnew);
@@ -45,8 +51,9 @@ private:
 	// void CheckXY();
 
 	void userInput( const vector< SpaceObject * > * fight, vector< SpaceObject * > * Ammo );
-	void keyboardInput();
-	void joyInput();
+	struct input keyboardInput();
+	struct input mouseInput();
+	struct input joyInput();
 	
 	//process: sets dx=fx, dy=fy
 	void MoveD( double & d, double f_max );
@@ -64,7 +71,7 @@ private:
 
 	int level;
 
-	bool key_UP, key_DOWN, key_LEFT, key_RIGHT, key_SHOOT, key_ACCESSORY;
+	// bool key_UP, key_DOWN, key_LEFT, key_RIGHT, key_SHOOT, key_ACCESSORY;
 };
 
 #endif
