@@ -114,7 +114,19 @@ void WeaponObject::IncreasePower( int q ) {
 		if ( strength > max_strength ) strength = max_strength;
 
 }
+	
+void WeaponObject::setPower( int q ){
+	strength = q;
+	if ( strength < 0 ){
+		strength = 0;
+	}
+	if ( max_strength != -1 ){
+		if ( strength > max_strength ){
+			strength = max_strength;
+		}
+	}
 
+}
 
 /* Destructor:
  * Does nothing

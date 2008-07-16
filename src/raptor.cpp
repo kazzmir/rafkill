@@ -92,7 +92,7 @@ void do_credits(){
 	work.clear();
 
 	int y_begin = GRAPHICS_Y-20;
-	char ** creds = new char*[6];
+	const char ** creds = new const char*[6];
 	creds[0] = "Rafkill";
 	creds[1] = "Programming Jon Rafkind";
 	creds[2] = "Design Jon Rafkind";
@@ -791,6 +791,15 @@ void pauseGame(){
 	}
 }
 
+/* reset gun strengths if the player died */
+static void resetStrengths( const map<WeaponObject*,int> & guns ){
+	for ( map<WeaponObject*,int>::const_iterator it = guns.begin(); it != guns.end(); it++ ){
+		WeaponObject * weapon = (*it).first;
+		int strength = (*it).second;
+		weapon->setPower( strength );
+	}
+}
+
 void playLevel( PlayerObject * const player ){
 	char file_level[ 64 ];
 	sprintf( file_level, "level%d.lev", player->getLevel() );
@@ -799,6 +808,7 @@ void playLevel( PlayerObject * const player ){
 
 	int game_error = 0;
 	int score = player->getScore();
+	map<WeaponObject*,int> oldPower = player->gunStrengths();
 
 	// dumb_player.pause();
 	Drawer draw;
@@ -901,6 +911,7 @@ void playLevel( PlayerObject * const player ){
 		case 1  : {
 			deathScreen();
 			player->setScore( score );
+			resetStrengths( oldPower );
 			break;
 		}
 		case 2  : {
@@ -916,6 +927,7 @@ void playLevel( PlayerObject * const player ){
 		}
 		case QUIT : {
 			player->setScore( score );
+			resetStrengths( oldPower );
 			break;
 		}
 		default : {

@@ -274,6 +274,19 @@ void PlayerObject::idleGuns( vector< SpaceObject * > * Ammo, const vector< Space
 	}
 
 }
+	
+std::map<WeaponObject*,int> PlayerObject::gunStrengths(){
+	map<WeaponObject*,int> all;
+
+	WeaponObject ** myGun = hull->Guns();
+	for ( int q = 0; q < hull->maxGuns(); q += 1 ){
+		if ( myGun[q] != NULL ){
+			all[ myGun[q] ] = myGun[q]->getPower();
+		}
+	}
+
+	return all;
+}
 
 void PlayerObject::shootGuns( vector< SpaceObject * > * Ammo, const vector< SpaceObject * > * fight ){
 

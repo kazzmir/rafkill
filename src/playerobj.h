@@ -4,9 +4,11 @@
 #include "shipobj.h"
 #include "booster.h"
 #include "bitmap.h"
+#include <map>
 
 class SpaceObject;
 class HullObject;
+class WeaponObject;
 class Section;
 
 struct input{
@@ -41,7 +43,10 @@ public:
 	void Inertia( double & d );
 
 	void setControl( bool a );
-	
+
+	/* returns a map from a weapon to the power of the weapon */
+	std::map<WeaponObject*,int> gunStrengths();
+
 	int hull_num;
 
 private:

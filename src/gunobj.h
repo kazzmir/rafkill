@@ -28,6 +28,7 @@ public:
 
 	// increase strength by q, cannot excede max_power
 	virtual void IncreasePower( int q );
+	virtual void setPower( int q );
 
 	virtual inline int getPower(){
 		return strength;
