@@ -6,6 +6,7 @@
 #include "spaceobj.h"
 #include "strings.h"
 #include <string>
+#include <string.h>
 #include <vector>
 #include "gunobj.h"
 #include "hull.h"

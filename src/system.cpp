@@ -1,5 +1,6 @@
 #include "system.h"
 #include <strings.h>
+#include <string.h>
 #include <string>
 
 #ifdef WINDOWS

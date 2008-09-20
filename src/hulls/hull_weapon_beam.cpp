@@ -4,6 +4,7 @@
 #include "hull_weapon_beam.h"
 #include "trigtable.h"
 #include "ebox.h"
+#include <math.h>
 
 #ifndef debug
 #include <iostream>
@@ -59,7 +60,7 @@ void Beam_WHull::Draw( const Bitmap & who, int x, int y ) {
 		for ( int q = y-my; q < y+my; q++ ) {
 
 			int sang = (angle+q*4+360)%360;
-			if ( abs(q) % 10 == 0 ) {
+			if ( (int)fabs(q) % 10 == 0 ) {
 				color += dir;
 				if ( color == 5 ) dir = -1;
 				if ( color == 0 ) dir = 1;

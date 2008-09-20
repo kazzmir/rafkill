@@ -11,6 +11,7 @@
 #include "trigtable.h"
 #include "pck.h"
 #include <iostream>
+#include <string.h>
 
 /* TODO:
  * Add weapon icons to HUD

@@ -20,6 +20,7 @@
 #include <sys/time.h>
 #include "music.h"
 #include <iostream>
+#include <stdlib.h>
 
 #include <vector>
 

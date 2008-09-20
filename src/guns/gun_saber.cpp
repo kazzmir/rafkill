@@ -6,6 +6,7 @@
 #include "spaceobj.h"
 #include "ebox.h"
 #include <vector>
+#include <math.h>
 
 using namespace std;
 
@@ -49,7 +50,7 @@ void WeaponSaber::MakeShot(int x, int y, vector< SpaceObject * > * Ammo, const v
 			rising = 0;
 		}
 
-		int ff = rising/3 - abs(fat) + 1;
+		int ff = rising/3 - fabs(fat) + 1;
 		Ammo->push_back( new Beam(x,y-240,0,0,1, new Saber_WHull(ff/2,ff*2,480), alignment ) );
 
 		return;
@@ -71,7 +72,7 @@ void WeaponSaber::Idle( int x, int y, vector< SpaceObject * > * Ammo, const vect
 			rising = 0;
 		}
 
-		int ff = rising/3 - abs(fat) + 1;
+		int ff = rising/3 - fabs(fat) + 1;
 		Ammo->push_back( new Beam(x,y-240,0,0,1, new Saber_WHull(ff/2,ff*2,480), alignment ) );
 
 		return;

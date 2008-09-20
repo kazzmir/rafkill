@@ -4,6 +4,7 @@
 #include "hulls/hull_weapon_follow.h"
 #include "spaceobj.h"
 #include <vector>
+#include <math.h>
 
 using namespace std;
 
@@ -85,11 +86,11 @@ void Follow::MoveReal() {
 	if ( murder != NULL && Util::rnd( 3 ) ) {
 		int bang = gang( getX(), getY(), murder->getX(), murder->getY() );
 		for ( int q = 0; q < 2; q++ ) {
-			if ( abs( bang - ang ) <= 180 ) {
+			if ( fabs( bang - ang ) <= 180 ) {
 				if ( ang < bang ) ang++;
 				else ang--;
 			}
-			else if ( abs( bang - ang ) >= 270 ) {
+			else if ( fabs( bang - ang ) >= 270 ) {
 				if ( bang > ang )
 					ang--;
 				else    ang++;

@@ -3,6 +3,7 @@
 #include "weaponobj.h"
 #include "hulls/hull_weapon_machine.h"
 #include "trigtable.h"
+#include <math.h>
 
 // #define d_circle_move (2.9*8)
 
@@ -34,7 +35,7 @@ void WeaponMachineCircleGun::MakeShot(int x, int y, vector< SpaceObject * > * Am
 		int ra = ( angle + q + 360 ) % 360;
 		int bul;
 		if ( q != 0 )
-			bul = (strength+1)*11 / abs( q );
+			bul = (strength+1)*11 / fabs( q );
 		else bul = 3;
 
 		if ( bul > 3 ) bul = 3;
