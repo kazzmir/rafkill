@@ -1,6 +1,13 @@
 import os
 import sys
 
+
+def getDebug():
+    try:
+        return int(os.environ[ 'DEBUG' ])
+    except KeyError:
+        return 0
+
 env = Environment( ENV = os.environ );
 config = env.Configure();
 
@@ -11,13 +18,13 @@ print "Use 'scons -h' for help"
 prefix = '/usr/local/games'
 bin = '/usr/local/bin'
 if sys.platform == 'win32':
-	try:
-		Execute(Mkdir('gen'))
-	except:
-		pass
-	
-	prefix = 'gen'
-	bin = 'gen'
+    try:
+        Execute(Mkdir('gen'))
+    except:
+        pass
+
+    prefix = 'gen'
+    bin = 'gen'
 
 opts = Options( 'rafkill.conf' )
 opts.Add( PathOption('prefix', 'Directory to install under', prefix ) )
@@ -28,25 +35,30 @@ opts.Save( 'rafkill.conf', env )
 Help( opts.GenerateHelpText( env ) )
 
 if False:
-	env.Append( CCFLAGS = [ '-Werror' ] )
+    env.Append( CCFLAGS = [ '-Werror' ] )
 
 if False:
-	env.Append( CCFLAGS = [ '-pg' ] )
-	env.Append( LINKFLAGS = [ '-pg' ] )
+    env.Append( CCFLAGS = [ '-pg' ] )
+    env.Append( LINKFLAGS = [ '-pg' ] )
 
 env.BuildDir( 'build/', 'src/' )
 env.Append( LIBS = [ 'aldmb', 'dumb' ] );
 if sys.platform == 'win32':
-	env.Append( CCFLAGS = [ '-DWINDOWS' ] )
-	env.Append( LIBS = [ 'alleg', 'pthreadGC2' ] )
+    env.Append( CCFLAGS = [ '-DWINDOWS' ] )
+    env.Append( LIBS = [ 'alleg', 'pthreadGC2' ] )
 else:
-	env.ParseConfig( 'allegro-config --libs' );
-	env.Append( LIBS = [ 'pthread' ] )
+    env.ParseConfig( 'allegro-config --libs' );
+    env.Append( LIBS = [ 'pthread' ] )
 
 # print "Install directory = $prefix"
 # print "Directory where symlinked binary will go = $bin"
 
-flags = [ '-g3', '-Wall', '-fno-rtti', '-Woverloaded-virtual', '-O2', '-DINSTALL_DIR=\\\"$prefix\\\"' ];
+flags = [ '-Wall', '-fno-rtti', '-Woverloaded-virtual', '-DINSTALL_DIR=\\\"$prefix\\\"' ];
+if getDebug():
+    flags.append("-g3")
+else:
+    flags.append("-O2")
+
 env.Append( CCFLAGS = flags, CPPPATH = [ "build" ] )
 
 # SConscript( 'src/SConscript', build_dir='build', exports = 'env' );
@@ -54,12 +66,12 @@ sources = SConscript( 'src/SConscript', exports = 'env' );
 rafkill = env.Program( 'rafkill', map( lambda x: 'build/' + x, sources ) )
 
 def installReminder( target, source, env ):
-	print
-	print "Run 'scons install' to install rafkill"
-	return 0
+    print
+    print "Run 'scons install' to install rafkill"
+    return 0
 
 def ShutUp( target, source, env ):
-	pass
+    pass
 
 env.AddPostAction( rafkill, Action( installReminder, strfunction=ShutUp ) )
 env.Default( rafkill )

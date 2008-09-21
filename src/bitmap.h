@@ -110,7 +110,7 @@ public:
 	void drawStretched( const int x, const int y, const int new_width, const int new_height, const Bitmap & who );
 	void drawRotate( const int x, const int y, const int angle, const Bitmap & where );
 
-	void Stretch( const Bitmap & where );
+	void Stretch( const Bitmap & where, const int mx = 0, const int my = 0, const int wx = 0, const int wy = 0 );
 	void StretchBy2( const Bitmap & where );
 	void StretchBy4( const Bitmap & where );
 	void Blit( const string & xpath );

@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "defs.h"
 // #include <fblend.h>
 
 #ifdef WINDOWS
@@ -23,6 +24,8 @@ const int Bitmap::MODE_TRANS = 0;
 const int Bitmap::MODE_SOLID = 1;
 
 Bitmap * Bitmap::Screen = NULL;
+static Bitmap * scaler = NULL;
+static Bitmap * buffer = NULL;
 
 Bitmap::Bitmap():
 error( false ){
@@ -485,7 +488,18 @@ static int setGfxMode( Bitmap *& Screen, int mode, int x, int y ){
 	if ( Screen != NULL ){
 		delete Screen;
 	}
+	if ( scaler != NULL ){
+		delete scaler;
+	}
+	if ( buffer != NULL ){
+		delete buffer;
+	}
+	scaler = NULL;
 	Screen = new Bitmap( ::screen );
+	if ( (x != 0 && y != 0) && (GRAPHICS_X != x || GRAPHICS_Y != y) ){
+		scaler = new Bitmap(SCALE_X, SCALE_Y);
+		buffer = new Bitmap(GRAPHICS_X, GRAPHICS_Y);
+	}
 	return ret;
 }
 
@@ -716,9 +730,9 @@ void Bitmap::StretchBy4( const Bitmap & where ){
 
 }
 
-void Bitmap::Stretch( const Bitmap & where ){
+void Bitmap::Stretch( const Bitmap & where, const int mx, const int my, const int wx, const int wy ){
 	BITMAP * bmp = where.getBitmap();
-	::stretch_blit( getBitmap(), bmp, 0, 0, getBitmap()->w, getBitmap()->h, 0, 0, bmp->w, bmp->h );
+	::stretch_blit( getBitmap(), bmp, mx, my, getBitmap()->w, getBitmap()->h, wx, wy, bmp->w, bmp->h );
 }
 	
 void Bitmap::Blit( const string & xpath ){
@@ -754,9 +768,16 @@ void Bitmap::Blit( const Bitmap & where ){
 }
 
 void Bitmap::BlitToScreen(){
-	this->Blit( *Bitmap::Screen );
+	// this->Blit( *Bitmap::Screen );
+	this->BlitToScreen( 0, 0, 0, 0 );
 }
 	
 void Bitmap::BlitToScreen( const int mx, const int my, const int wx, const int wy ){
-	this->Blit( mx, my, wx, wy, *Bitmap::Screen );
+	if ( scaler == NULL ){
+		this->Blit( mx, my, wx, wy, *Bitmap::Screen );
+	} else {
+		this->Blit( mx, my, wx, wy, *buffer );
+		buffer->Stretch( *scaler );
+		scaler->Blit( 0, 0, 0, 0, *Screen );
+	}
 }

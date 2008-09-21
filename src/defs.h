@@ -30,8 +30,8 @@ const int GRAPHICS_X = 640;
 const int GRAPHICS_Y = 480;
 // #define GRAPHICS_Y 480
 
-const int SCALE_X = 640;
-const int SCALE_Y = 200;
+const int SCALE_X = GRAPHICS_X;
+const int SCALE_Y = GRAPHICS_Y;
 
 const int TEAM_ENEMY = 1;
 // #define TEAM_ENEMY 1

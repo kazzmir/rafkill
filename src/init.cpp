@@ -26,9 +26,9 @@ void init( int windowMode, int GAME_SPEED ) {
 
 	set_color_depth( 16 );
 	if ( windowMode ){
-		Bitmap::setGfxModeWindowed( GRAPHICS_X, GRAPHICS_Y );
+		Bitmap::setGfxModeWindowed( SCALE_X, SCALE_Y );
 	} else {
-		Bitmap::setGfxModeFullscreen( GRAPHICS_X, GRAPHICS_Y );
+		Bitmap::setGfxModeFullscreen( SCALE_X, SCALE_Y );
 	}
 	
 	reserve_voices (8, -1);
