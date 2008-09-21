@@ -212,7 +212,7 @@ void Util::unloadGlobals(){
 	unload_datafile( Util::global_snd );
 	unload_datafile( Util::global_fonts );
 	// delete Util::raptor_font;
-	delete Bitmap::Screen;
+	// delete Bitmap::Screen;
 }
 
 int Util::addcol( int c1, int c2 ) {

@@ -55,6 +55,10 @@ error( false ){
 		*own = 1;
 	}
 }
+	
+void Bitmap::CopyScreen(){
+	Screen->Blit(*this);
+}
 
 /* If a BITMAP is given to us, we didnt make it so we dont own it */
 Bitmap::Bitmap( BITMAP * who, bool deep_copy ):
@@ -476,25 +480,25 @@ void Bitmap::readLine( vector< int > & vec, int y ){
 	}
 }
 
-static int setGfxMode( int mode, int x, int y ){
+static int setGfxMode( Bitmap *& Screen, int mode, int x, int y ){
 	int ret = ::set_gfx_mode( mode, x, y, 0, 0 );
-	if ( Bitmap::Screen != NULL ){
-		delete Bitmap::Screen;
+	if ( Screen != NULL ){
+		delete Screen;
 	}
-	Bitmap::Screen = new Bitmap( ::screen );
+	Screen = new Bitmap( ::screen );
 	return ret;
 }
 
 int Bitmap::setGfxModeText(){
-	return setGfxMode( GFX_TEXT, 0, 0 );
+	return setGfxMode( Bitmap::Screen, GFX_TEXT, 0, 0 );
 }
 	
 int Bitmap::setGfxModeFullscreen( int x, int y ){
-	return setGfxMode( GFX_AUTODETECT_FULLSCREEN, x, y );
+	return setGfxMode( Bitmap::Screen, GFX_AUTODETECT_FULLSCREEN, x, y );
 }
 
 int Bitmap::setGfxModeWindowed( int x, int y ){
-	return setGfxMode( GFX_AUTODETECT_WINDOWED, x, y );
+	return setGfxMode( Bitmap::Screen, GFX_AUTODETECT_WINDOWED, x, y );
 }
 
 /*
@@ -631,6 +635,10 @@ void Bitmap::draw( const int x, const int y, const Bitmap & where ) const{
 	::draw_sprite( where.getBitmap(), getBitmap(), x, y );
 }
 	
+void Bitmap::drawToScreen( const int x, const int y ) const {
+	draw( x, y, *Screen );
+}
+	
 void Bitmap::drawHFlip( const int x, const int y, const Bitmap & where ){
 	::draw_sprite_h_flip( where.getBitmap(), getBitmap(), x, y );
 }
@@ -641,6 +649,10 @@ void Bitmap::drawLit( const int x, const int y, const int level, const Bitmap & 
 
 void Bitmap::drawTrans( const int x, const int y, const Bitmap & where ) const{
 	::draw_trans_sprite( where.getBitmap(), getBitmap(), x, y );
+}
+	
+void Bitmap::drawTransScreen( const int x, const int y ) const {
+	drawTrans( x, y, *Screen );
 }
 
 void Bitmap::drawRotate( const int x, const int y, const int angle, const Bitmap & where ){
@@ -743,4 +755,8 @@ void Bitmap::Blit( const Bitmap & where ){
 
 void Bitmap::BlitToScreen(){
 	this->Blit( *Bitmap::Screen );
+}
+	
+void Bitmap::BlitToScreen( const int mx, const int my, const int wx, const int wy ){
+	this->Blit( mx, my, wx, wy, *Bitmap::Screen );
 }

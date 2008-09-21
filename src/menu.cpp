@@ -577,9 +577,10 @@ bool menuClass::accept_sell(){
 
 	// BITMAP * sell_screen = create_bitmap( GRAPHICS_X, GRAPHICS_Y );
 	// Bitmap sell_screen( GRAPHICS_X, GRAPHICS_Y );
-	Bitmap sell_screen( *Bitmap::Screen, true );
+	Bitmap sell_screen( GRAPHICS_X, GRAPHICS_Y );
+	sell_screen.CopyScreen();
 	sell_screen.BlitToScreen();
-	Bitmap::transBlender( 0, 0, 0, 120 );
+	Bitmap::transBlender( 0, 0, 0, 210 );
 	Bitmap::drawingMode( Bitmap::MODE_TRANS );
 	sell_screen.rectangleFill( 120, 80, 450, 235, Bitmap::makeColor(0,0,0) );
 	sell_screen.rectangle( 120, 80, 450, 235, Bitmap::makeColor(255,255,255) );

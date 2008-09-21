@@ -292,9 +292,10 @@ void Drawer::Draw( const vector< SpaceObject * > * objects, const SpaceObject * 
 		trans.drawTrans( 0, 0, *transBuffer );
 
 		/* Blit the buffer to the screen */
-		transBuffer->Blit( 0, 0, 0, 0, *Bitmap::Screen );
+		// transBuffer->Blit( 0, 0, 0, 0, *Bitmap::Screen );
+		transBuffer->BlitToScreen();
 	} else {
-		work->Blit( view_port, Y_BLIT_OFFSET, 0, 0, *Bitmap::Screen );
+		work->BlitToScreen( view_port, Y_BLIT_OFFSET, 0, 0 );
 	}
 
 	/*

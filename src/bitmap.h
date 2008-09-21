@@ -19,9 +19,10 @@ class Font;
 using namespace std;
 
 class Bitmap{
+private:
+	static Bitmap * Screen;
 public:
 
-	static Bitmap * Screen;
 	
 	/* default constructor makes 10x10 bitmap */
 	Bitmap();
@@ -100,9 +101,11 @@ public:
 
 	void drawBorder( const int border, const int color ) const;
 	void draw( const int x, const int y, const Bitmap & where ) const;
+	void drawToScreen( const int x, const int y ) const;
 	void drawLit( const int x, const int y, const int level, const Bitmap & where ) const;
 	void drawHFlip( const int x, const int y, const Bitmap & where );
 	void drawTrans( const int x, const int y, const Bitmap & where ) const;
+	void drawTransScreen( const int x, const int y ) const;
 	void drawMask( const int x, const int y, const Bitmap & where );
 	void drawStretched( const int x, const int y, const int new_width, const int new_height, const Bitmap & who );
 	void drawRotate( const int x, const int y, const int angle, const Bitmap & where );
@@ -116,6 +119,8 @@ public:
 	void Blit( const int mx, const int my, const int wx, const int wy, const Bitmap & where );
 	void Blit( const int mx, const int my, const int width, const int height, const int wx, const int wy, Bitmap & where );
 	void BlitToScreen();
+	void CopyScreen();
+	void BlitToScreen( const int mx, const int my, const int wx, const int wy );
 	void fill( int color ) const;
 
 	inline void clear() const{

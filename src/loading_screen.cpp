@@ -38,6 +38,8 @@ static void * loadScreen( void * arg ){
 	unsigned int ticks;
 	Font font = Util::getNormalFont();
 	Util::getTicks( &ticks );
+	Bitmap temp( font.textLength("Loading") + 1, font.getHeight() );
+	temp.fill( Bitmap::MaskColor );
 	while ( alive ){
 		
 		LOCK;{
@@ -63,7 +65,9 @@ static void * loadScreen( void * arg ){
 			// Util::raptor_font->rtext( *Bitmap::Screen, 300, 220, color, "Loading" );
 			
 			// Bitmap::Screen->printfNormal( 300, 220, color, "Loading" );
-			Bitmap::Screen->printf( 300, 220, color, &font, "Loading" );
+			// Bitmap::Screen->printf( 300, 220, color, &font, "Loading" );
+			temp.printf( 0, 0, color, &font, "Loading" );
+			temp.drawToScreen( GRAPHICS_X / 2, GRAPHICS_Y / 2 );
 		}
 	}
 

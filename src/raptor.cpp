@@ -244,7 +244,8 @@ void popUp( const char * title ){
 	int begin = 30;
 
 	Bitmap sell_screen( GRAPHICS_X, GRAPHICS_Y );
-	Bitmap::Screen->Blit( sell_screen );
+	// Bitmap::Screen->Blit( sell_screen );
+	sell_screen.CopyScreen();
 	Bitmap::transBlender( 0, 0, 0, 120 );
 	Bitmap::drawingMode( Bitmap::MODE_TRANS );
 	sell_screen.rectangleFill( begin, 80, begin+length, 235, Bitmap::makeColor(0,0,0) );
@@ -278,7 +279,7 @@ static int userSelectKey(){
 	work.printf( 10, 10, Bitmap::makeColor( 200, 64, 23 ), normalFont, "Press a key" );
 	work.drawBorder( 2, Bitmap::makeColor( 200, 200, 200 ) );
 
-	work.drawTrans( GRAPHICS_X / 2 - work.getWidth() / 2, GRAPHICS_Y / 2 - work.getHeight() / 2 - 100, *Bitmap::Screen );
+	work.drawTransScreen( GRAPHICS_X / 2 - work.getWidth() / 2, GRAPHICS_Y / 2 - work.getHeight() / 2 - 100 );
 
 	while ( Keyboard::readKey() != -1 ){
 		Util::YIELD();
@@ -779,7 +780,8 @@ void pauseGame(){
 	Font font = Util::getNormalFont();
 	work.printf( 320 - font.textLength( "Paused" ) / 2, 240 - 10, Bitmap::makeColor(255,128,0), &font, "Paused" );
 
-	work.drawTrans( 0, 0, *Bitmap::Screen );
+	// work.drawTrans( 0, 0, *Bitmap::Screen );
+	work.drawTransScreen( 0, 0 );
 	while ( Keyboard::getAnyKey( Keyboard::P ) ){
 		Util::YIELD();
 	}
