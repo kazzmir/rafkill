@@ -45,6 +45,12 @@ RIGHT - Right arrow, Key pad 6, or D
 SHOOT - SpaceBar, Enter, Keypad Enter
 SWITCH ALTERNATE WEAPONS - Alt key
 
+PORTING:
+
+If you would like to change the screen size look at src/defs.h and change the two variables SCALE_X and SCALE_Y. Do *not* change GRAPHICS_X and GRAPHICS_Y.
+
+To change user input or add some new fancy input device look at src/playerobj.cpp and src/playerobj.h. Write or change one of the input methods (mouseInput, keyboardInput, joyInput). An input method has to return a 'struct input' object.
+
 Enjoy the game!!
 
 I love feedback, and money, so if you have either send them to me!

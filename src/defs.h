@@ -25,11 +25,13 @@ const int MAX_PLANE = 20;
 const int NO_EXPLODE = 4000;
 // #define NO_EXPLODE 4000
 
+/* do not change these values */
 const int GRAPHICS_X = 640;
-// #define GRAPHICS_X 640
 const int GRAPHICS_Y = 480;
-// #define GRAPHICS_Y 480
 
+/* these values control the size of the screen. Change them
+ * to whatever you want.
+ */
 const int SCALE_X = GRAPHICS_X;
 const int SCALE_Y = GRAPHICS_Y;
 
