@@ -56,8 +56,8 @@ void Bounce::MoveReal() {
 		change = true;
 	}
 
-	if ( actualx > 640 ) {
-		virtualx = 640;
+	if ( actualx > GRAPHICS_X ) {
+		virtualx = GRAPHICS_X;
 		dx *= -1;
 		change = true;
 	}
@@ -68,8 +68,8 @@ void Bounce::MoveReal() {
 		change = true;
 	}
 
-	if ( actualy > 480 ) {
-		virtualy = 480;
+	if ( actualy > GRAPHICS_Y ) {
+		virtualy = GRAPHICS_Y;
 		dy *= -1;
 		change = true;
 	}

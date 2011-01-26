@@ -163,7 +163,11 @@ struct input PlayerObject::keyboardInput(){
 		all.shoot = true;
 	}
 		
+	#ifdef PANDORA
+	if ( Keyboard::getAnyKey( Keyboard::LCONTROL, Keyboard::RCONTROL ) ){
+	#else
 	if ( Keyboard::getAnyKey( Keyboard::ALT, Keyboard::ALTGR ) ){
+	#endif
 		all.change_weapons = true;
 	}
 

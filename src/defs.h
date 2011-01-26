@@ -26,7 +26,11 @@ const int NO_EXPLODE = 4000;
 // #define NO_EXPLODE 4000
 
 /* do not change these values */
+#ifdef PANDORA
+const int GRAPHICS_X = 800;
+#else
 const int GRAPHICS_X = 640;
+#endif
 const int GRAPHICS_Y = 480;
 
 /* these values control the size of the screen. Change them

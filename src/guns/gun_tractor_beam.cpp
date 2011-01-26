@@ -68,7 +68,7 @@ void WeaponTractorBeam::MakeShot(int x, int y, vector< SpaceObject * > * Ammo, c
 	}
 	if ( cy ) look = NULL;
 	else {
-		if ( look->getX()>640||look->getX()<0||look->getY()>480||
+		if ( look->getX()>GRAPHICS_X||look->getX()<0||look->getY()>GRAPHICS_Y||
 			look->getY()<0 )
 			cy = true;
 		if ( !look->CanbeHit( &gay ) )

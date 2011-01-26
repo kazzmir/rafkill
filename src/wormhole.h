@@ -219,8 +219,8 @@ class WormHole{
 public:
 	WormHole(){
 		spiral = 0;
-		actualx = Util::rnd(640);
-		actualy = Util::rnd(480);
+		actualx = Util::rnd(GRAPHICS_X);
+		actualy = Util::rnd(GRAPHICS_Y);
 		virtualx = actualx;
 		virtualy = actualy;
 		zsize = Util::rnd( 20 ) + 25;

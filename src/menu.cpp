@@ -205,7 +205,7 @@ void menuClass::getAnimation( Animation * hold, SpaceObject * player, vector< Sp
 			// if ( (*it)->MoveMe( ammo, enemy, NULL, NULL ) ) {
 			int x = (*it)->getX();
 			int y = (*it)->getY();
-			if ( x < 0 || x > 640 || y < 0 || y > 480 ){
+			if ( x < 0 || x > GRAPHICS_X || y < 0 || y > GRAPHICS_Y ){
 				SpaceObject * del = *it;
 				it = ammo->erase( it );
 				delete del;
@@ -237,7 +237,7 @@ void menuClass::getAnimation( Animation * hold, SpaceObject * player, vector< Sp
 	vector< SpaceObject * > draw;
 	vectorAdd( &draw, ammo );
 	draw.push_back( player );
-	//BITMAP * add_b = create_bitmap( ANIMATION_X, 480 );
+	//BITMAP * add_b = create_bitmap( ANIMATION_X, GRAPHICS_Y );
 	const Bitmap & add_b = player_animate->show();
 	add_b.clear();
 
@@ -251,7 +251,7 @@ void menuClass::getAnimation( Animation * hold, SpaceObject * player, vector< Sp
 
 		int d = 11;
 		int col = Bitmap::makeColor(255-z*d,255-z*d,255-z*d);
-		add_b.rectangle( z, z, ANIMATION_X-z-1, 480-z-1, col );
+		add_b.rectangle( z, z, ANIMATION_X-z-1, GRAPHICS_Y-z-1, col );
 
 	}
 
@@ -662,7 +662,11 @@ bool menuClass::activate( SpaceObject * player ){
 	//BITMAP * intr = menuScreen();
 	char buyMenuFile[ 4096 ];
 	// char * buy_menu_file = Util::data_file( "buy-scene.pcx" );
+	#ifdef PANDORA
+	Util::getDataPath( buyMenuFile, "buy-scene-pandora.pcx" );
+	#else
 	Util::getDataPath( buyMenuFile, "buy-scene.pcx" );
+	#endif
 	Bitmap intr( buyMenuFile );
 	// free( buy_menu_file );
 	if ( intr.getError() ) {
@@ -685,8 +689,8 @@ bool menuClass::activate( SpaceObject * player ){
 
 	int num_guns = human->getHull()->maxGuns()-1;
 
-	player_animate = new Animation( 640-ANIMATION_X, 0 );
-	Bitmap pa( ANIMATION_X, 480 );
+	player_animate = new Animation( GRAPHICS_X-ANIMATION_X, 0 );
+	Bitmap pa( ANIMATION_X, GRAPHICS_Y );
 	player_animate->add( pa );
 
 	RMenu intro_menu( intr, 1, 40, 1000, Bitmap::makeColor(90,0,0), Bitmap::makeColor(255,136,0), MENU_TITLE_COLOR );

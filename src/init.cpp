@@ -19,8 +19,8 @@ void init( int windowMode, int GAME_SPEED ) {
 
 	/*
 	if ( get_desktop_resolution(&Util::screen_x,&Util::screen_y) == -1 ){
-		Util::screen_x = 640;
-		Util::screen_y = 480;
+		Util::screen_x = GRAPHICS_X;
+		Util::screen_y = GRAPHICS_Y;
 	}
 	*/
 

@@ -1,4 +1,5 @@
 #include "fader.h"
+#include "defs.h"
 #include "allegro.h"
 
 Fader::Fader( RLE_SPRITE * back ) {
@@ -12,7 +13,7 @@ Fader::Fader( RLE_SPRITE * back ) {
 
 RLE_SPRITE * Fader::blend() {
 
-	for ( int x = 0; x < 640; x++ )
+	for ( int x = 0; x < GRAPHICS_X; x++ )
 		((short *)own->line[y])[x] += makecol(9,9,9);
 	y++;
 	if ( y >= first->h ) {

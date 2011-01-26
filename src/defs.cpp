@@ -28,8 +28,8 @@ DATAFILE * Util::global_fonts;
 
 // RFont * Util::raptor_font;
 
-int Util::screen_x = 640*3/2;
-int Util::screen_y = 480;
+int Util::screen_x = GRAPHICS_X*3/2;
+int Util::screen_y = GRAPHICS_Y;
 
 int * Util::e_color;
 float Util::sound_vol;

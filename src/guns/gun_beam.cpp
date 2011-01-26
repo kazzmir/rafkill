@@ -1,4 +1,5 @@
 #include "gunobj.h"
+#include "defs.h"
 #include "gun_beam.h"
 // #include "spaceobj.h"
 
@@ -29,7 +30,7 @@ void WeaponBeam::MakeShot(int x, int y, vector< SpaceObject * > * Ammo, const ve
 		shot_counter = 0;
 		tear--;
 		length += 63;
-		if( length > 480 ) length = 480;
+		if( length > GRAPHICS_Y ) length = GRAPHICS_Y;
 		fat--;
 		if ( fat < 1 ) {
 			fat = 1;

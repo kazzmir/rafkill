@@ -50,8 +50,14 @@ Bitmap * pckLoader::load( const char * sf ) {
 
 void pckLoader::set( Bitmap * fat, int & x, int & y, int col) {
 	if ( x >= 0 && x < 640 && y >= 0 && y < 480 )
+	{
 		// _putpixel16( fat, x, y, col );
 		fat->putPixel( x, y, col );
+		#ifdef PANDORA
+		if (x<160)
+			fat->putPixel( x+640, y, col );
+		#endif
+	}
 	x++;
 	if ( x >= 640 ) {
 		y++;
@@ -62,8 +68,8 @@ void pckLoader::set( Bitmap * fat, int & x, int & y, int col) {
 
 Bitmap * pckLoader::load_pck( char * sf, int * shade, int max ) {
 
-	// Bitmap * choice = create_bitmap( 640, 480 );
-	Bitmap * choice = new Bitmap( 640, 480 );
+	// Bitmap * choice = create_bitmap( GRAPHICS_X, GRAPHICS_Y );
+	Bitmap * choice = new Bitmap( GRAPHICS_X, GRAPHICS_Y );
 	if ( !choice ) {
 		printf("Supreme error with backgruond!\n");
 		return NULL;
@@ -81,7 +87,7 @@ Bitmap * pckLoader::load_pck( char * sf, int * shade, int max ) {
 		return NULL;
 	}
 
-	while ( y != 480 ) {
+	while ( y != GRAPHICS_Y ) {
 		unsigned char rd;
 
 		fread( &rd, sizeof( unsigned char ), 1, fv );

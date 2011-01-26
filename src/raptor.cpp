@@ -168,7 +168,7 @@ void do_credits(){
 
 Bitmap get_help_screen() {
 
-	Bitmap work( 640, 480 );
+	Bitmap work( GRAPHICS_X, GRAPHICS_Y );
 	work.fill( Bitmap::makeColor( 0, 12, 19 ) );
 
 	//int cy = 10;
@@ -209,7 +209,7 @@ SpaceObject * getNewPlayer( int difficulty ){
 	}
 
 	HullObject * hwho = new PlayerHull( pics, 100, 100, 3, 1, new ECollide( pics[4] ) );
-	player = new PlayerObject(320,450, difficulty, hwho );
+	player = new PlayerObject(Util::screen_x / 2, 450, difficulty, hwho );
 	WeaponObject * wwho = new WeaponMachineGun( 0, -1, -1, TEAM_PLAYER );
 	player->giveWeapon( wwho, 0 );
 	( ((PlayerObject *) player ) )->setLevel( 1 );
@@ -301,7 +301,11 @@ static int userSelectKey(){
 int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 
 	char backgroundFile[ 4096 ];
+	#ifdef PANDORA
+	Util::getDataPath( backgroundFile, "logosmoot-pandora.pcx" );
+	#else
 	Util::getDataPath( backgroundFile, "logosmoot.pcx" );
+	#endif
 	Bitmap intr( backgroundFile );
 
 	if ( intr.getError() ) {
@@ -662,8 +666,8 @@ int intro_screen( int & frames, SpaceObject ** player, DATAFILE * sound ){
 	if ( *player != NULL ){
 		PlayerObject * px = (PlayerObject *)(*player);
 		if ( px->getDifficulty() == 1 )
-			Util::screen_x = 640;
-		else    Util::screen_x = 640*3/2;
+			Util::screen_x = GRAPHICS_X;
+		else    Util::screen_x = GRAPHICS_X*3/2;
 	}
 
 	Configuration::saveConfiguration();
@@ -772,13 +776,16 @@ void pauseGame(){
 	Bitmap work( Util::screen_x, Util::screen_y );
 	work.fill( Bitmap::makeColor( 32, 32, 32 ) );
 
+        int halfX = Util::screen_x / 2;
+        int halfY = Util::screen_y / 2;
+
 	int width = 100;
 	int height = 50;
 
-	work.rectangleFill( 320 - width / 2, 240 - height / 2, 320 + width / 2, 240 + height / 2, Bitmap::makeColor( 0, 0, 0 ) );
-	work.rectangle( 320 - width / 2, 240 - height / 2, 320 + width / 2, 240 + height / 2, Bitmap::makeColor( 200, 0, 0 ) );
+	work.rectangleFill(halfX - width / 2, halfY - height / 2, halfX + width / 2, halfY + height / 2, Bitmap::makeColor( 0, 0, 0 ) );
+	work.rectangle(halfX - width / 2, halfY - height / 2, halfX + width / 2, halfY + height / 2, Bitmap::makeColor( 200, 0, 0 ) );
 	Font font = Util::getNormalFont();
-	work.printf( 320 - font.textLength( "Paused" ) / 2, 240 - 10, Bitmap::makeColor(255,128,0), &font, "Paused" );
+	work.printf(halfX - font.textLength( "Paused" ) / 2, halfY - 10, Bitmap::makeColor(255,128,0), &font, "Paused" );
 
 	// work.drawTrans( 0, 0, *Bitmap::Screen );
 	work.drawTransScreen( 0, 0 );

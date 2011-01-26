@@ -8,12 +8,17 @@ def getDebug():
     except KeyError:
         return 0
 
+
+def usePandora():
+    try:
+        return "pandora" in ARGUMENTS[ 'env' ]
+    except KeyError:
+        return False
+
 env = Environment( ENV = os.environ );
 config = env.Configure();
 
 # env.Append( CCFLAGS = flags, CPPPATH = [ "../src" ] );
-
-print "Use 'scons -h' for help"
 
 prefix = '/usr/local/games'
 bin = '/usr/local/bin'
@@ -26,14 +31,6 @@ if sys.platform == 'win32':
     prefix = 'gen'
     bin = 'gen'
 
-opts = Options( 'rafkill.conf' )
-opts.Add( PathOption('prefix', 'Directory to install under', prefix ) )
-opts.Add( PathOption('bin', 'Directory where symlinked executable should go', bin ) )
-opts.Update( env )
-opts.Save( 'rafkill.conf', env )
-
-Help( opts.GenerateHelpText( env ) )
-
 if False:
     env.Append( CCFLAGS = [ '-Werror' ] )
 
@@ -41,19 +38,42 @@ if False:
     env.Append( CCFLAGS = [ '-pg' ] )
     env.Append( LINKFLAGS = [ '-pg' ] )
 
-env.BuildDir( 'build/', 'src/' )
+env.VariantDir( 'build/', 'src/' )
 env.Append( LIBS = [ 'aldmb', 'dumb' ] );
 if sys.platform == 'win32':
     env.Append( CCFLAGS = [ '-DWINDOWS' ] )
     env.Append( LIBS = [ 'alleg', 'pthreadGC2' ] )
+elif usePandora():
+    print "Using pandora Config"
+    prefix = '/mnt/utmp'
+    bin = '/mnt/utmp/rafkill/bin'
+    env['CC'] = os.environ['CC']
+    env['CXX'] = os.environ['CXX']
+    env['LD'] = os.environ['CC']
+    env['AS'] = os.environ['AS']
+    env['AR'] = os.environ['AR']
+    env.Append(CPPDEFINES = ['PANDORA'])
+    env.Append( LINKFLAGS = [ '-L/mnt/utmp/rafkill/lib' ] )
+    env.Append( LIBS = [ 'pthread', 'alleg' ] )
+    flags = ['-pipe', '-march=armv7-a', '-mtune=cortex-a8', '-mfpu=neon', '-mfloat-abi=softfp', '-ftree-vectorize', '-ffast-math', '-fsingle-precision-constant', '-DINSTALL_DIR=\\\"$prefix\\\"' ]
 else:
     env.ParseConfig( 'allegro-config --libs' );
     env.Append( LIBS = [ 'pthread' ] )
 
+
+print "Use 'scons -h' for help"
+opts = Options( 'rafkill.conf' )
+opts.Add( PathOption('prefix', 'Directory to install under', prefix ) )
+opts.Add( PathOption('bin', 'Directory where symlinked executable should go', bin ) )
+opts.Update( env )
+opts.Save( 'rafkill.conf', env )
+Help( opts.GenerateHelpText( env ) )
+
 # print "Install directory = $prefix"
 # print "Directory where symlinked binary will go = $bin"
 
-flags = [ '-Wall', '-fno-rtti', '-Woverloaded-virtual', '-DINSTALL_DIR=\\\"$prefix\\\"' ];
+if not usePandora():
+    flags = [ '-Wall', '-fno-rtti', '-Woverloaded-virtual', '-DINSTALL_DIR=\\\"$prefix\\\"' ];
 if getDebug():
     flags.append("-g3")
 else:
@@ -98,8 +118,6 @@ map( lambda x: addData( x ), Split( """
 2.pck
 3.pck
 beast.fnt
-buy-menu.pcx
-buy-scene.pcx
 fonts.dat
 intro.mod
 level1.lev
@@ -110,12 +128,19 @@ level5.lev
 level6.lev
 level7.lev
 level8.lev
-logosmoot.pcx
 raptor.dat
 sound.dat
 table.col
 vulture.fnt
 """));
+if usePandora():
+    addData("buy-menu-pandora.pcx");
+    addData("buy-scene-pandora.pcx");
+    addData("logosmoot-pandora.pcx");
+else:
+    addData("buy-menu.pcx");
+    addData("buy-scene.pcx");
+    addData("logosmoot.pcx");
 
 def addMusic( file ):
 	env.Install( installDir + 'rafkill/music', "music/%s" % file )

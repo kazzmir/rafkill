@@ -172,6 +172,15 @@ string Keyboard::keyToString( int key ){
 	return "Unknown";
 }
 
+#ifndef PANDORA
+const int Keyboard::ESC = KEY_ESC;
+const int Keyboard::SPACE = KEY_SPACE;
+const int Keyboard::ENTER_PAD = KEY_ENTER_PAD;
+#else
+const int Keyboard::ESC = KEY_ALT;
+const int Keyboard::SPACE = KEY_HOME;
+const int Keyboard::ENTER_PAD = KEY_PGUP;
+#endif
 const int Keyboard::A = KEY_A;
 const int Keyboard::B = KEY_B;
 const int Keyboard::C = KEY_C;
@@ -230,7 +239,6 @@ const int Keyboard::F9 = KEY_F9;
 const int Keyboard::F10 = KEY_F10;
 const int Keyboard::F11 = KEY_F11;
 const int Keyboard::F12 = KEY_F12;
-const int Keyboard::ESC = KEY_ESC;
 const int Keyboard::TILDE = KEY_TILDE;
 const int Keyboard::MINUS = KEY_MINUS;
 const int Keyboard::EQUALS = KEY_EQUALS;
@@ -246,7 +254,6 @@ const int Keyboard::BACKSLASH2 = KEY_BACKSLASH2;
 const int Keyboard::COMMA = KEY_COMMA;
 const int Keyboard::STOP = KEY_STOP;
 const int Keyboard::SLASH = KEY_SLASH;
-const int Keyboard::SPACE = KEY_SPACE;
 const int Keyboard::INSERT = KEY_INSERT;
 const int Keyboard::DEL = KEY_DEL;
 const int Keyboard::HOME = KEY_HOME;
@@ -262,7 +269,6 @@ const int Keyboard::ASTERISK = KEY_ASTERISK;
 const int Keyboard::MINUS_PAD = KEY_MINUS_PAD;
 const int Keyboard::PLUS_PAD = KEY_PLUS_PAD;
 const int Keyboard::DEL_PAD = KEY_DEL_PAD;
-const int Keyboard::ENTER_PAD = KEY_ENTER_PAD;
 const int Keyboard::PRTSCR = KEY_PRTSCR;
 const int Keyboard::PAUSE = KEY_PAUSE;
 const int Keyboard::C1 = KEY_ABNT_C1;

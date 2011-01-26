@@ -51,7 +51,7 @@ void WeaponSaber::MakeShot(int x, int y, vector< SpaceObject * > * Ammo, const v
 		}
 
 		int ff = rising/3 - fabs(fat) + 1;
-		Ammo->push_back( new Beam(x,y-240,0,0,1, new Saber_WHull(ff/2,ff*2,480), alignment ) );
+		Ammo->push_back( new Beam(x,y-GRAPHICS_Y/2,0,0,1, new Saber_WHull(ff/2,ff*2,GRAPHICS_Y), alignment ) );
 
 		return;
 
@@ -73,7 +73,7 @@ void WeaponSaber::Idle( int x, int y, vector< SpaceObject * > * Ammo, const vect
 		}
 
 		int ff = rising/3 - fabs(fat) + 1;
-		Ammo->push_back( new Beam(x,y-240,0,0,1, new Saber_WHull(ff/2,ff*2,480), alignment ) );
+		Ammo->push_back( new Beam(x,y-GRAPHICS_Y/2,0,0,1, new Saber_WHull(ff/2,ff*2,GRAPHICS_Y), alignment ) );
 
 		return;
 

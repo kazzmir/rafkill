@@ -1100,13 +1100,13 @@ void LevelCreator::create( vector< SpaceObject * > * sh, int leva, const double 
 			double dx = (double)( Util::rnd(90) ) / (double)( 25 ) * (Util::rnd(2)*2-1);
 			double dy = (double)( Util::rnd(200) ) / (double)( 25 ) + 2.3;
 			//int lv = (int)( 25.0 + real_level * 2 );
-			//SpaceObject * use =  new ShipObject( Util::rnd( 640 ), Util::rnd( 30 ) - 50, 40, new MeteorHull(leva,lv,gl_collide[ gl_map(METEOR_1) ] ), NULL, new Move(dx,dy), TEAM_ENEMY );
+			//SpaceObject * use =  new ShipObject( Util::rnd( GRAPHICS_X ), Util::rnd( 30 ) - 50, 40, new MeteorHull(leva,lv,gl_collide[ gl_map(METEOR_1) ] ), NULL, new Move(dx,dy), TEAM_ENEMY );
 			int mpics = METEOR_9_20 - METEOR_1 + 1;
 			BITMAP ** pics = new BITMAP*[ mpics ];
 			for ( int q = 0; q < mpics; q++ )
 				pics[ q ] = (BITMAP *)global_data[ METEOR_1 + q ].dat;
 
-			SpaceObject * use = new MeteorObject(Util::rnd(640),Util::rnd(30)-50,-meteor_life*3, new HullAnimation( pics, mpics,NULL,meteor_life,0,0,0,10,false,gl_collide[gl_map(METEOR_1)]), new Move(dx,dy) );
+			SpaceObject * use = new MeteorObject(Util::rnd(GRAPHICS_X),Util::rnd(30)-50,-meteor_life*3, new HullAnimation( pics, mpics,NULL,meteor_life,0,0,0,10,false,gl_collide[gl_map(METEOR_1)]), new Move(dx,dy) );
 
 			sh->push_back( use );
 			*/
@@ -1119,7 +1119,7 @@ void LevelCreator::create( vector< SpaceObject * > * sh, int leva, const double 
 			num_cloud = 60;
 
 			double dy = (double)Util::rnd(120) / 50.0 - 1.0;
-			SpaceObject * use = new ShipObject( Util::rnd(640), -200, 0, new HullObject((BITMAP *)global_data[CLOUD1].dat, 1,0,0,0,Util::rnd( 7 ) + 6, true, NULL ), NULL, new Move( 0, 3.0+dy ), TEAM_ENEMY );
+			SpaceObject * use = new ShipObject( Util::rnd(GRAPHICS_X), -200, 0, new HullObject((BITMAP *)global_data[CLOUD1].dat, 1,0,0,0,Util::rnd( 7 ) + 6, true, NULL ), NULL, new Move( 0, 3.0+dy ), TEAM_ENEMY );
 			sh->push_back( use );
 		}
 		*/

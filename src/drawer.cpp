@@ -219,7 +219,7 @@ void Drawer::Draw( const vector< SpaceObject * > * objects, const SpaceObject * 
 	time.startTime();
 	*/
 
-	land_counter = (land_counter+1) % 480;
+	land_counter = (land_counter+1) % GRAPHICS_Y;
 
 	map< int, vector< const SpaceObject * > > map_draw;
 	for ( vector< SpaceObject *>::const_iterator it = objects->begin(); it != objects->end(); ++it ){

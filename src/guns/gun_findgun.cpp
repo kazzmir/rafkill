@@ -71,7 +71,7 @@ void WeaponFindGun::MakeShot(int x, int y, vector< SpaceObject * > * Ammo, const
 		}
 		if ( cy ) look[q] = NULL;
 		else {
-			if ( look[q]->getX()>640||look[q]->getX()<0||look[q]->getY()>480||
+			if ( look[q]->getX()>GRAPHICS_X||look[q]->getX()<0||look[q]->getY()>GRAPHICS_Y||
 				look[q]->getY()<0 )
 				cy = true;
 			if ( !look[q]->CanbeHit( &gay ) )
