@@ -80,6 +80,7 @@ public:
 
 	//process: increments objects score
 	virtual void IncScore( int j );
+        virtual void addPowerBonus(double value);
 
 	//returns hull->drawlevel
 	virtual int lookPlane() const;

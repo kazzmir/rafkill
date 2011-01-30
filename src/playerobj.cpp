@@ -11,14 +11,15 @@
 
 PlayerObject::PlayerObject(int qx, int qy, int _difficulty, HullObject * hnew):
 ShipObject(qx,qy,0,hnew,NULL,NULL,TEAM_PLAYER),
-difficulty( _difficulty ),
-change_frame( 0 ),
-holding_accessory( true ),
-user_control( true ),
-level( 1 ){
-	score = 10000;
+difficulty(_difficulty),
+change_frame(0),
+holding_accessory(true),
+user_control(true),
+level(1),
+powerBonus(0),
+powerBonusLevel(800 * difficulty){
+    score = 10000;
 }
-
 
 PlayerObject::~PlayerObject() {
 }
@@ -68,7 +69,6 @@ void PlayerObject::Draw( const Bitmap & less, ExplosionClass ** _explr, int MAX_
 
 	engine.Draw( less, offset );
 	ph->Draw( less, getX(), getY()+offset );
-
 }
 
 
@@ -79,16 +79,15 @@ bool PlayerObject::powerUp() {
 
 void PlayerObject::MoveD( double & d, double f_max ) {
 
-	#define move_change 3.9
+    const double move_change = 3.9;
 
-	if ( f_max > 0 ) {
-		d += move_change;
-		if ( d > f_max ) d = f_max;
-	}
-	else {
-		d -= move_change;
-		if ( d < f_max ) d = f_max;
-	}
+    if ( f_max > 0 ) {
+        d += move_change;
+        if ( d > f_max ) d = f_max;
+    } else {
+        d -= move_change;
+        if ( d < f_max ) d = f_max;
+    }
 
 }
 
@@ -263,19 +262,19 @@ void PlayerObject::userInput( const vector< SpaceObject * > * fight, vector< Spa
 
 void PlayerObject::idleGuns( vector< SpaceObject * > * Ammo, const vector< SpaceObject * > * fight ){
 
-	int mx = getX();
-	int my = getY();
+    int mx = getX();
+    int my = getY();
 
-	WeaponObject ** myGun = hull->Guns();
-	for ( int q = 0; q < hull->maxGuns(); q++ ){
-		if ( myGun[q] != NULL ) {
-			if ( myGun[q]->getShotCounter() > 0 )
-				myGun[q]->Wait( 1 );
-			else {
-				myGun[q]->Idle( mx, my, Ammo, fight );
-			}
-		}
-	}
+    WeaponObject ** myGun = hull->Guns();
+    for ( int q = 0; q < hull->maxGuns(); q++ ){
+        if ( myGun[q] != NULL ) {
+            if ( myGun[q]->getShotCounter() > 0 )
+                myGun[q]->Wait( 1 );
+            else {
+                myGun[q]->Idle( mx, my, Ammo, fight );
+            }
+        }
+    }
 
 }
 	
@@ -330,8 +329,32 @@ void PlayerObject::setLevel( int s ){
 }
 
 void PlayerObject::Inertia( double & d ) {
-	#define slowdown 1.69
-	if ( d > slowdown ) d -= slowdown;
-	else if ( d < -slowdown ) d += slowdown;
-	else d = 0;
+    const double slowdown = 1.69;
+    if ( d > slowdown ) d -= slowdown;
+    else if ( d < -slowdown ) d += slowdown;
+    else d = 0;
+}
+        
+void PlayerObject::addPowerBonus(double amount){
+    powerBonus += amount;
+    if (powerBonus > powerBonusLevel){
+        powerBonus = powerBonusLevel;
+    }
+}
+
+bool PlayerObject::powerBonusReady(){
+    return powerBonus >= powerBonusLevel;
+}
+
+void PlayerObject::nextPowerBonus(){
+    powerBonus = 0;
+    powerBonusLevel *= 3;
+}
+        
+double PlayerObject::getPowerBonus() const {
+    return powerBonus;
+}
+
+double PlayerObject::getMaxPowerBonus() const {
+    return powerBonusLevel;
 }

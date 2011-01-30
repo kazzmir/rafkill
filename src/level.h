@@ -34,6 +34,7 @@ public:
 	//void emergency( vector< SpaceObject * > * sh );
 	void Draw( BITMAP * work, int xfac, int yfac );
 	SpaceObject * special( int x, int y, const SpaceObject * player );
+        SpaceObject * createPowerUp( const int x, const int y );
 	~LevelCreator();
 	
 	HullObject * getHull( int a, int l, int _life );

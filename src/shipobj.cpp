@@ -27,12 +27,13 @@ special( spc ) {
 }
 
 void ShipObject::Died( SpaceObject * check, ExplosionClass ** explr, int ME ){
-	if ( check != NULL ){
-		check->IncScore( special + (int)(hull->original_life * 10) );
-	}
-	this->Explode( explr, ME );
+    if (check != NULL){
+        check->IncScore(special + (int)(hull->original_life * 10));
+        check->addPowerBonus(hull->original_life);
+    }
+    this->Explode(explr, ME);
 
-	Util::playSound( SND_EXPLODE_2, 180 );
+    Util::playSound(SND_EXPLODE_2, 180);
 }
 
 bool ShipObject::powerUp() {

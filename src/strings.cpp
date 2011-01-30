@@ -19,7 +19,7 @@ int numDig( int q ) {
 
 }
 
-string int2str( int z ) {
+string int2str(int z){
 	bool neg = z < 0;
 	int nd = numDig( z );
 	char * str = (char *)malloc( sizeof(char) * (neg + nd + 1) );

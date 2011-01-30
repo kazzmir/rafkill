@@ -6,6 +6,7 @@
 #include "sound.h"
 #include "defs.h"
 #include "group.h"
+#include "playerobj.h"
 
 #include <iostream>
 
@@ -51,6 +52,15 @@ int Logic::runCycle( SpaceObject * player, LevelCreator * level ){
 	clearCollide( &objects );
 	checkCollision( &section, player, SND_SUSTAIN, 12 );
 	DeleteSpace( &objects, &section, player, level );
+        if (player != NULL){
+            PlayerObject * realPlayer = (PlayerObject*) player;
+            if (realPlayer->powerBonusReady()){
+                int x = Util::rnd(Util::screen_x - 50) + 25;
+                int y = -100;
+                objects.push_back(level->createPowerUp(x, y));
+                realPlayer->nextPowerBonus();
+            }
+        }
 
 	for ( vector< SpaceObject * >::iterator it = objects.begin(); it != objects.end(); ){
 		if ( *it == player ){
@@ -211,60 +221,61 @@ void Logic::DeleteSpace( vector< SpaceObject *> * objs, Section * sec, const Spa
 
 void Logic::checkCollision( Section * fight, SpaceObject * take, int sound, int vol ) {
 
-	/* Reset section lists. Look at section.cpp to see why this is important */
-	fight->reset();
+    /* Reset section lists. Look at section.cpp to see why this is important */
+    fight->reset();
 
-	vector< SpaceObject * > * fight_space = fight->getNext();
+    vector< SpaceObject * > * fight_space = fight->getNext();
 
-	int total = 0;
-	while ( fight_space != NULL ) {
+    int total = 0;
+    while ( fight_space != NULL ) {
 
-		// Loop through bad objects next
-		for ( vector< SpaceObject * >::iterator fight_it = fight_space->begin(); fight_it != fight_space->end(); fight_it++ ) {
+        // Loop through bad objects next
+        for ( vector< SpaceObject * >::iterator fight_it = fight_space->begin(); fight_it != fight_space->end(); fight_it++ ) {
 
-			for ( vector< SpaceObject * >::iterator good_it = fight_it+1; good_it != fight_space->end(); good_it++){
+            for ( vector< SpaceObject * >::iterator good_it = fight_it+1; good_it != fight_space->end(); good_it++){
 
-				SpaceObject * g_use = *good_it;
-				SpaceObject * f_use = *fight_it;
+                SpaceObject * g_use = *good_it;
+                SpaceObject * f_use = *fight_it;
 
-				// First test to see if badobject life is less than 0
-				// and if good object has already collided with bad object
-				++total;
+                // First test to see if badobject life is less than 0
+                // and if good object has already collided with bad object
+                ++total;
 
-				/*
-				cout << "F: " << f_use << " G: " << g_use << endl;
-				cout << "F-hit: " << f_use->CanbeHit( g_use ) << " G-hit: " << g_use->CanbeHit( f_use ) << endl;
-				*/
-				if ( (f_use->CanbeHit(g_use) || g_use->CanbeHit(f_use)) && f_use->getLife() > 0 && !g_use->haveCollide( f_use ) ){
-					if ( g_use->Collide( f_use ) || f_use->Collide( g_use ) ) { 
-						// Util::play_sound( Util::global_snd, sound, vol );
-						Util::playSound( sound, vol );
+                /*
+                   cout << "F: " << f_use << " G: " << g_use << endl;
+                   cout << "F-hit: " << f_use->CanbeHit( g_use ) << " G-hit: " << g_use->CanbeHit( f_use ) << endl;
+                   */
+                if ( (f_use->CanbeHit(g_use) || g_use->CanbeHit(f_use)) && f_use->getLife() > 0 && !g_use->haveCollide( f_use ) ){
+                    if ( g_use->Collide( f_use ) || f_use->Collide( g_use ) ) { 
+                        // Util::play_sound( Util::global_snd, sound, vol );
+                        Util::playSound( sound, vol );
 
-						float fhurt = f_use->Hurt();
-						float ghurt = g_use->Hurt();
+                        float fhurt = f_use->Hurt();
+                        float ghurt = g_use->Hurt();
 
-						if ( g_use->Damage( fhurt ) )
-							g_use->Died( take, expl, MAX_EXPL );
-						if ( f_use->Damage( ghurt ) ) 
-							f_use->Died( take, expl, MAX_EXPL );
+                        if ( g_use->Damage(fhurt))
+                            g_use->Died(take, expl, MAX_EXPL);
+                        if ( f_use->Damage(ghurt)){
+                            f_use->Died(take, expl, MAX_EXPL);
+                        }
 
-						// Let both objects know they collided with something
-						g_use->Collided( f_use, expl, MAX_EXPL );
-						f_use->Collided( g_use, expl, MAX_EXPL );
+                        // Let both objects know they collided with something
+                        g_use->Collided( f_use, expl, MAX_EXPL );
+                        f_use->Collided( g_use, expl, MAX_EXPL );
 
-						g_use->addCollide( f_use );
-						f_use->addCollide( g_use );
+                        g_use->addCollide( f_use );
+                        f_use->addCollide( g_use );
 
-						//g_use->addCollide( f_use );
-						//f_use->addCollide( g_use );
-					}
-				}//if
+                        //g_use->addCollide( f_use );
+                        //f_use->addCollide( g_use );
+                    }
+                }//if
 
-			}			  //for fight
+            }			  //for fight
 
-		}				  //for good
+        }				  //for good
 
-		fight_space = fight->getNext();
+        fight_space = fight->getNext();
 
-	}					  //while
+    }					  //while
 }

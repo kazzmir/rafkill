@@ -52,6 +52,7 @@ drawTrans( false ){
 	
 	Util::blend_palette( shade_energy, MAX_ATTRIBUTE_COLOR, Bitmap::makeColor(255,0,0), Bitmap::makeColor(255,255,255) );
 	Util::blend_palette( shade_shield, MAX_ATTRIBUTE_COLOR, Bitmap::makeColor(0,100,140), Bitmap::makeColor(255,255,255) );
+	Util::blend_palette( shade_power, MAX_ATTRIBUTE_COLOR, Bitmap::makeColor(50,80,100), Bitmap::makeColor(90,160,200) );
 
 	land = loadLand();
 }
@@ -140,6 +141,7 @@ void Drawer::drawHud( const PlayerObject * player ){
 
 	showAttribute( (int)ph->getLife(), (int)ph->getMaxLife(), view_port+GRAPHICS_X-10, Y_BLIT_OFFSET, shade_energy );
 	showAttribute( (int)ph->getShield(), (int)ph->getMaxShield(), view_port+1, Y_BLIT_OFFSET, shade_shield );
+        showAttribute((int) player->getPowerBonus(), (int) player->getMaxPowerBonus(), view_port + GRAPHICS_X - 20, Y_BLIT_OFFSET, shade_power);
 
 }
 

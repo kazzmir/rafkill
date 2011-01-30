@@ -32,6 +32,12 @@ public:
 	
 	virtual bool Destroyable() const;
 
+        virtual void addPowerBonus(double amount);
+        virtual bool powerBonusReady();
+        virtual void nextPowerBonus();
+        virtual double getPowerBonus() const;
+        virtual double getMaxPowerBonus() const;
+
 	virtual bool acceptSpecial() const;
 	virtual void Radar( const Bitmap & rad )const;
 
@@ -75,6 +81,8 @@ private:
 	bool user_control;
 
 	int level;
+        double powerBonus;
+        int powerBonusLevel;
 
 	// bool key_UP, key_DOWN, key_LEFT, key_RIGHT, key_SHOOT, key_ACCESSORY;
 };

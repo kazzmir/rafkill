@@ -255,6 +255,10 @@ void SpaceObject::eraseWeapon( int num ) {
 void SpaceObject::IncScore( int j ) {
 	score += j;
 }
+        
+void SpaceObject::addPowerBonus(double value){
+    /* nothing */
+}
 
 
 /* Team:

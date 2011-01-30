@@ -803,14 +803,14 @@ static SpaceObject * createCloak( const int x, const int y ){
 
 }
 
-static SpaceObject * createPowerUp( const int x, const int y ){
-	vector< Bitmap > pics;
+SpaceObject * LevelCreator::createPowerUp( const int x, const int y ){
+    vector< Bitmap > pics;
 
-	int mpics = POWERUP_A_14 - POWERUP_1 + 1;
-	for ( int q = 0; q < mpics; q++ ){
-		pics.push_back( Util::getDataSprite( POWERUP_1 + q ) );
-	}
-	return new PowerUp( x, y, new HullAnimation( pics, vector< Bitmap >(), 1, 0, 0, 0, 10, false, gl_collide[gl_map(POWERUP_1)]), new Move(0,2.5) );
+    int mpics = POWERUP_A_14 - POWERUP_1 + 1;
+    for ( int q = 0; q < mpics; q++ ){
+        pics.push_back( Util::getDataSprite( POWERUP_1 + q ) );
+    }
+    return new PowerUp( x, y, new HullAnimation( pics, vector< Bitmap >(), 1, 0, 0, 0, 10, false, gl_collide[gl_map(POWERUP_1)]), new Move(0,2.5) );
 
 }
 

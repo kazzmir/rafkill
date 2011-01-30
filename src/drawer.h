@@ -62,6 +62,7 @@ protected:
 
 	int shade_energy[ MAX_ATTRIBUTE_COLOR ];
 	int shade_shield[ MAX_ATTRIBUTE_COLOR ];
+	int shade_power[ MAX_ATTRIBUTE_COLOR ];
 
 	bool draw_land;
 	bool drawTrans;
