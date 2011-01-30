@@ -17,7 +17,7 @@ holding_accessory(true),
 user_control(true),
 level(1),
 powerBonus(0),
-powerBonusLevel(800 * difficulty){
+powerBonusLevel(500 * difficulty){
     score = 10000;
 }
 
@@ -96,6 +96,13 @@ bool PlayerObject::Destroyable() const{
 }
 
 void PlayerObject::MoveMe( vector< SpaceObject * > * Ammo, const vector< SpaceObject * > * fight, Section * onscreen ){
+
+    if (powerBonus > 0){
+        powerBonus -= (double) powerBonusLevel / 50000.0;
+        if (powerBonus < 0){
+            powerBonus = 0;
+        }
+    }
 
 	if ( user_control )
 		userInput( fight, Ammo );

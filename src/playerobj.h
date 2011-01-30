@@ -82,7 +82,7 @@ private:
 
 	int level;
         double powerBonus;
-        int powerBonusLevel;
+        double powerBonusLevel;
 
 	// bool key_UP, key_DOWN, key_LEFT, key_RIGHT, key_SHOOT, key_ACCESSORY;
 };
