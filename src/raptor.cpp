@@ -82,7 +82,7 @@ void credits() {
 	cout << "Concept and design: Jon Rafkind" << endl;
 	cout << "Almost all ideas stolen from other games, including idea to steal in the first place" << endl;
 	cout << "Made with the Allegro graphics library by Shawn Hargreaves" << endl;
-	cout << "Email Jon at: workmin@ccs.neu.edu" << endl;
+	cout << "Email Jon at: jon@rafkind.com" << endl;
 }
 
 
