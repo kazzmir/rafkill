@@ -2,6 +2,7 @@
 #include <strings.h>
 #include <string.h>
 #include <string>
+#include <unistd.h>
 
 #ifdef WINDOWS
 static const char * type(){
