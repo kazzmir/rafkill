@@ -3,7 +3,7 @@
 #include "menu.h"
 #include "loadsave.h"
 #include "trigtable.h"
-#include "strings.h"
+#include "strings_util.h"
 #include <string.h>
 #include "animation.h"
 #include "spaceobj.h"

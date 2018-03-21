@@ -10,7 +10,7 @@
 #include "sound.h"
 #include "move.h"
 #include "defs.h"
-#include "strings.h"
+#include "strings_util.h"
 #include "booster.h"
 #include "section.h"
 

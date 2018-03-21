@@ -321,7 +321,7 @@ bool Music::internal_loadSong( const char * path ){
 				break;
 			}
 			case 3 : {
-				music_file = dumb_load_mod( path );
+				music_file = dumb_load_mod( path, 0 );
 				break;
 			}
 		}

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "defs.h"
-#include "strings.h"
+#include "strings_util.h"
 #include "raptor.h"
 #include "ebox.h"
 #include "trigger.h"

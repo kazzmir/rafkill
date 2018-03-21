@@ -8,7 +8,7 @@
 #include "bitmap.h"
 #include "keyboard.h"
 #include "mouse.h"
-#include "strings.h"
+#include "strings_util.h"
 #include <string.h>
 #include <sstream>
 #include <iostream>

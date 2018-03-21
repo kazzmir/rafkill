@@ -4,7 +4,7 @@
 #include "loadsave.h"
 #include <stdio.h>
 #include "spaceobj.h"
-#include "strings.h"
+#include "strings_util.h"
 #include <string>
 #include <string.h>
 #include <vector>

@@ -1,5 +1,5 @@
 #include "pck.h"
-#include "strings.h"
+#include "strings_util.h"
 #include "defs.h"
 #include "bitmap.h"
 

@@ -11,7 +11,7 @@
 #include "bitmap.h"
 #include "sound.h"
 
-#include "strings.h"
+#include "strings_util.h"
 #include <string.h>
 
 #include <vector>

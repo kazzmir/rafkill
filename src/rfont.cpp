@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "rfont.h"
-#include "strings.h"
+#include "strings_util.h"
 #include "bitmap.h"
 #include "defs.h"
 
